@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>С 8 Марта!</title>
+    <title>Для тебя ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Pacifico&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
@@ -31,35 +31,42 @@
         }
 
         header {
-            min-height: 80vh;
+            min-height: 60vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 40px 20px;
         }
 
         h1 {
             font-family: 'Pacifico', cursive;
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             color: white;
             text-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 10px;
+            margin: 0;
+        }
+
+        .timer-label {
+            margin-top: 30px;
+            font-size: 1.1rem;
+            color: white;
+            font-weight: 300;
         }
 
         .timer {
-            background: rgba(255, 255, 255, 0.3);
-            padding: 25px;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 20px;
             border-radius: 20px;
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            display: inline-block;
-            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
             border: 1px solid rgba(255,255,255,0.4);
         }
 
         .timer-unit {
-            display: inline-block;
             margin: 0 10px;
         }
 
@@ -67,44 +74,46 @@
             font-weight: 600;
             font-size: 1.8rem;
             display: block;
-            color: #fff;
+            color: white;
+        }
+
+        .timer-text {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
         }
 
         .section {
-            padding: 60px 20px;
+            padding: 40px 20px;
             max-width: 1000px;
             margin: 0 auto;
         }
 
-        /* Стиль Галереи */
         .gallery {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 30px;
-            margin-top: 40px;
+            gap: 25px;
+            margin-top: 20px;
         }
 
-        /* Вырез под фото (Полароид стиль) */
         .photo-frame {
             width: 280px;
             background: white;
-            padding: 15px 15px 40px 15px;
+            padding: 12px 12px 35px 12px;
             box-shadow: 0 15px 25px rgba(0,0,0,0.1);
             transition: 0.4s ease;
-            position: relative;
         }
 
         .photo-placeholder {
             width: 100%;
             height: 250px;
-            background: #f0f0f0;
+            background: #ffeef0;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #ccc;
-            font-size: 0.9rem;
-            border: 1px dashed #ddd;
+            border: 1px dashed var(--primary-pink);
             overflow: hidden;
         }
 
@@ -118,43 +127,34 @@
             margin-top: 15px;
             font-family: 'Pacifico', cursive;
             font-size: 1.1rem;
-            color: #888;
+            color: var(--dark-pink);
         }
 
         .frame-1 { transform: rotate(-3deg); }
         .frame-2 { transform: rotate(2deg); }
-        .frame-3 { transform: rotate(-1deg); }
-
-        .photo-frame:hover {
-            transform: scale(1.05) rotate(0deg);
-            z-index: 5;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
+        .frame-3 { transform: rotate(-2deg); }
 
         .btn-surprise {
-            background: #fff;
+            background: white;
             color: var(--dark-pink);
             border: none;
             padding: 18px 40px;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin: 40px 0;
             transition: 0.3s;
-            margin-top: 40px;
         }
 
-        .btn-surprise:hover {
-            transform: scale(1.1);
-            background: var(--dark-pink);
-            color: white;
-        }
+        .btn-surprise:active { transform: scale(0.95); }
 
         footer {
-            padding: 50px;
-            opacity: 0.7;
-            font-style: italic;
+            padding: 40px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 300;
         }
     </style>
 </head>
@@ -163,50 +163,46 @@
     <div class="heart-bg" id="hearts"></div>
 
     <header>
-        <h1>С 8 Марта, любимая!</h1>
-        <div class="timer">
-            <p style="margin-top:0">Мы счастливы вместе уже:</p>
-            <div id="timer"></div>
-        </div>
+        <h1>С 8 Марта!</h1>
+        <p class="timer-label">Мы вместе уже:</p>
+        <div class="timer" id="timer">
+            </div>
     </header>
 
     <div class="section">
-        <h2 style="color: white; text-shadow: 1px 1px 5px rgba(0,0,0,0.1);">Наши лучшие моменты</h2>
-        
         <div class="gallery">
             <div class="photo-frame frame-1">
                 <div class="photo-placeholder">
-                    Место для вашего фото №1
+                    <span style="color: var(--dark-pink)">Твое фото №1</span>
                 </div>
-                <div class="photo-caption">Самый первый день...</div>
+                <div class="photo-caption">Помнишь этот день?</div>
             </div>
 
             <div class="photo-frame frame-2">
                 <div class="photo-placeholder">
-                    Место для вашего фото №2
+                    <span style="color: var(--dark-pink)">Твое фото №2</span>
                 </div>
-                <div class="photo-caption">Твоя улыбка</div>
+                <div class="photo-caption">Самая красивая</div>
             </div>
 
             <div class="photo-frame frame-3">
                 <div class="photo-placeholder">
-                    Место для вашего фото №3
+                    <span style="color: var(--dark-pink)">Твое фото №3</span>
                 </div>
-                <div class="photo-caption">Любимый момент</div>
+                <div class="photo-caption">Люблю тебя</div>
             </div>
         </div>
 
-        <button class="btn-surprise" onclick="celebrate()">Нажми, чтобы увидеть магию!</button>
+        <button class="btn-surprise" onclick="celebrate()">Нажми на меня! ✨</button>
     </div>
 
     <footer>
-        С любовью, только для тебя ❤️
+        Для моей любимой ❤️ 2025
     </footer>
 
     <script>
-        // ДАТА НАЧАЛА: 2 ноября 2025
-        // Месяцы: 0-Янв, 1-Фев, 2-Мар, 3-Апр, 4-Май, 5-Июн, 6-Июл, 7-Авг, 8-Сен, 9-Окт, 10-Ноя, 11-Дек
-        const startDate = new Date(2025, 10, 2); 
+        // ДАТА: 2 ноября 2025 (Месяц 10 = Ноябрь)
+        const startDate = new Date(2025, 10, 2, 0, 0, 0); 
 
         function updateTimer() {
             const now = new Date();
@@ -218,10 +214,10 @@
             const secs = Math.floor((diff / 1000) % 60);
 
             document.getElementById('timer').innerHTML = `
-                <div class="timer-unit"><span class="timer-num">${days}</span>дн.</div>
-                <div class="timer-unit"><span class="timer-num">${hours}</span>час.</div>
-                <div class="timer-unit"><span class="timer-num">${mins}</span>мин.</div>
-                <div class="timer-unit"><span class="timer-num">${secs}</span>сек.</div>
+                <div class="timer-unit"><span class="timer-num">${days}</span><span class="timer-text">дн</span></div>
+                <div class="timer-unit"><span class="timer-num">${hours}</span><span class="timer-text">час</span></div>
+                <div class="timer-unit"><span class="timer-num">${mins}</span><span class="timer-text">мин</span></div>
+                <div class="timer-unit"><span class="timer-num">${secs}</span><span class="timer-text">сек</span></div>
             `;
         }
 
@@ -229,28 +225,15 @@
         updateTimer();
 
         function celebrate() {
-            const duration = 5 * 1000;
-            const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-            function randomInRange(min, max) {
-              return Math.random() * (max - min) + min;
-            }
-
-            const interval = setInterval(function() {
-              const timeLeft = animationEnd - Date.now();
-
-              if (timeLeft <= 0) {
-                return clearInterval(interval);
-              }
-
-              const particleCount = 50 * (timeLeft / duration);
-              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-            }, 250);
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ffffff', '#ff8e91', '#ffafbd']
+            });
         }
 
-        // Сердечки на фоне
+        // Фоновые сердечки
         const heartContainer = document.getElementById('hearts');
         function createHeart() {
             const heart = document.createElement('div');
@@ -260,16 +243,17 @@
             heart.style.top = '-20px';
             heart.style.fontSize = Math.random() * 15 + 10 + 'px';
             heart.style.opacity = Math.random() * 0.5 + 0.3;
-            heart.style.transition = 'transform 5s linear, opacity 5s';
+            
+            heart.animate([
+                { transform: 'translateY(0) rotate(0deg)', opacity: heart.style.opacity },
+                { transform: `translateY(100vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+            ], {
+                duration: 4000 + Math.random() * 3000,
+                easing: 'linear'
+            });
             
             heartContainer.appendChild(heart);
-
-            setTimeout(() => {
-                heart.style.transform = `translateY(105vh) translateX(${Math.random() * 100 - 50}px)`;
-                heart.style.opacity = '0';
-            }, 100);
-
-            setTimeout(() => heart.remove(), 6000);
+            setTimeout(() => heart.remove(), 7000);
         }
         setInterval(createHeart, 400);
     </script>
