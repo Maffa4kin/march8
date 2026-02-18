@@ -13,111 +13,109 @@
         :root {
             --pink: #ff00ff;
             --blue: #00ffff;
-            --dark: #0a0015;
+            --dark: #050110;
         }
 
-        /* 1. ГАРАНТИРОВАННЫЙ ФОН */
+        /* БАЗОВЫЙ ФОН */
         body, html {
             margin: 0; padding: 0;
-            background: var(--dark) !important;
+            background-color: var(--dark) !important;
             color: white;
             font-family: 'Exo 2', sans-serif;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Анимированные туманности на фоне */
-        .bg-glow {
+        /* ЖЕСТКИЙ ФОНОВЫЙ СЛОЙ */
+        .bg-fixed {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 10% 10%, rgba(255, 0, 255, 0.15), transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(0, 255, 255, 0.15), transparent 40%);
+            background: radial-gradient(circle at 50% 50%, #1a0533 0%, #050110 100%);
             z-index: -10;
+            transform: translateZ(0);
         }
 
-        /* 2. СЕРДЕЧКИ (Слой над фоном) */
-        #heart-screen {
+        /* СОЛНЦЕ (Упрощенное) */
+        .sun {
+            position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
+            width: 250px; height: 250px;
+            background: linear-gradient(to bottom, #ff0080, #ff8c00);
+            border-radius: 50%;
+            box-shadow: 0 0 80px rgba(255, 0, 128, 0.8);
+            z-index: -9;
+        }
+
+        /* СЕТКА */
+        .grid {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(transparent 0%, var(--pink) 1px, transparent 2px),
+                linear-gradient(90deg, transparent 0%, var(--pink) 1px, transparent 2px);
+            background-size: 40px 40px;
+            transform: perspective(300px) rotateX(65deg) scale(2);
+            transform-origin: center bottom;
+            animation: move-grid 2s linear infinite;
+            opacity: 0.3; z-index: -8;
+        }
+
+        @keyframes move-grid {
+            from { background-position: 0 0; }
+            to { background-position: 0 40px; }
+        }
+
+        /* СЕРДЕЧКИ */
+        #heart-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1; pointer-events: none;
         }
 
-        /* 3. РЕТРО-СЕТКА */
-        .grid {
-            position: fixed; bottom: -50%; left: -50%; width: 200%; height: 100%;
-            background-image: 
-                linear-gradient(var(--pink) 1px, transparent 1px),
-                linear-gradient(90deg, var(--pink) 1px, transparent 1px);
-            background-size: 50px 50px;
-            transform: perspective(300px) rotateX(60deg);
-            animation: moveGrid 3s linear infinite;
-            opacity: 0.2; z-index: -5;
-        }
-
-        @keyframes moveGrid {
-            from { background-position: 0 0; }
-            to { background-position: 0 50px; }
-        }
-
-        /* 4. СОЛНЦЕ */
-        .retro-sun {
-            position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
-            width: 300px; height: 300px;
-            background: linear-gradient(#ff0080, #ff8c00);
-            border-radius: 50%;
-            box-shadow: 0 0 60px var(--pink);
-            z-index: -6;
-            -webkit-mask-image: repeating-linear-gradient(black, black 15px, transparent 20px);
-        }
-
-        /* КОНТЕНТ */
+        /* ИНТЕРФЕЙС */
         .music-btn {
             position: fixed; top: 20px; right: 20px; z-index: 100;
-            background: rgba(0,0,0,0.8); border: 2px solid var(--blue);
-            color: var(--blue); padding: 12px; border-radius: 50%; cursor: pointer;
+            background: rgba(0,0,0,0.6); border: 2px solid var(--blue);
+            color: var(--blue); padding: 12px; border-radius: 50%;
         }
 
         header { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         
         h1 { 
-            font-family: 'Press Start 2P', cursive; font-size: 2rem; 
-            text-shadow: 0 0 15px var(--pink); margin-bottom: 20px;
+            font-family: 'Press Start 2P', cursive; font-size: 1.8rem; 
+            text-shadow: 4px 4px var(--pink); margin: 0;
         }
 
         .timer {
-            background: rgba(0,0,0,0.8); padding: 20px;
-            border: 2px solid var(--blue); box-shadow: 0 0 20px var(--blue);
-            display: flex; gap: 15px;
+            margin-top: 30px; background: rgba(0,0,0,0.8); padding: 15px;
+            border: 2px solid var(--blue); box-shadow: 0 0 15px var(--blue);
+            display: flex; gap: 10px;
         }
-        .t-num { font-size: 2rem; color: white; display: block; }
-        .t-lab { font-size: 0.6rem; color: var(--pink); font-family: 'Press Start 2P'; }
+        .t-num { font-size: 1.8rem; color: white; display: block; }
+        .t-lab { font-size: 0.5rem; color: var(--pink); font-family: 'Press Start 2P'; }
 
-        .container { max-width: 800px; margin: 0 auto; padding: 100px 20px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 50px 20px; }
 
-        .moment { margin-bottom: 200px; text-align: center; }
+        .moment { margin-bottom: 150px; text-align: center; }
 
         .card {
-            background: #000; border: 3px solid var(--blue);
-            padding: 10px; box-shadow: 0 0 30px var(--blue);
-            transition: 0.4s; display: inline-block;
+            background: #000; border: 2px solid var(--blue);
+            padding: 8px; box-shadow: 0 0 20px var(--blue);
+            display: inline-block; max-width: 90%;
         }
-        .card:hover { transform: scale(1.05); border-color: var(--pink); box-shadow: 0 0 40px var(--pink); }
-        .card img { max-width: 100%; height: auto; display: block; }
+        .card img { width: 100%; height: auto; display: block; }
 
-        .phrase { margin-top: 30px; font-size: 1.2rem; font-weight: bold; text-shadow: 0 0 10px var(--blue); }
+        .phrase { margin-top: 25px; font-size: 1.1rem; font-weight: bold; text-shadow: 0 0 10px var(--blue); color: #fff; }
 
         .btn-order {
-            font-family: 'Press Start 2P', cursive; padding: 25px 40px;
-            background: transparent; border: 3px solid var(--pink);
-            color: white; cursor: pointer; box-shadow: 0 0 20px var(--pink);
+            font-family: 'Press Start 2P', cursive; font-size: 10px;
+            padding: 20px 30px; background: transparent; border: 3px solid var(--pink);
+            color: white; cursor: pointer; box-shadow: 0 0 15px var(--pink);
         }
-        .btn-order:hover { background: var(--pink); }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
-    <div id="heart-screen"></div>
+    <div class="bg-fixed"></div>
+    <div class="sun"></div>
     <div class="grid"></div>
-    <div class="retro-sun"></div>
+    <div id="heart-layer"></div>
 
     <button class="music-btn" onclick="playM()">🎵
         <audio id="audio" loop><source src="music.mp3" type="audio/mpeg"></audio>
@@ -126,7 +124,7 @@
     <header>
         <h1 data-aos="zoom-in">VIOLETTA</h1>
         <div class="timer" data-aos="fade-up">
-            <div id="countdown"></div>
+            <div id="countdown" style="display:flex; gap:15px;"></div>
         </div>
     </header>
 
@@ -134,7 +132,7 @@
         <div class="moment" data-aos="fade-right">
             <div class="card">
                 <img src="1.jpg">
-                <p style="font-family:'Press Start 2P'; font-size:9px; color:var(--pink); margin-top:10px;">CORE_MEMORY_01</p>
+                <p style="font-family:'Press Start 2P'; font-size:8px; color:var(--pink); margin-top:10px;">IMG_DATA_01</p>
             </div>
             <p id="p1" class="phrase"></p>
         </div>
@@ -142,7 +140,7 @@
         <div class="moment" data-aos="fade-left">
             <div class="card">
                 <img src="2.jpg">
-                <p style="font-family:'Press Start 2P'; font-size:9px; color:var(--pink); margin-top:10px;">CORE_MEMORY_02</p>
+                <p style="font-family:'Press Start 2P'; font-size:8px; color:var(--pink); margin-top:10px;">IMG_DATA_02</p>
             </div>
             <p id="p2" class="phrase"></p>
         </div>
@@ -153,21 +151,21 @@
     </div>
 
     <script>
-        AOS.init();
+        AOS.init({ once: true });
 
         const phrases = [
-            "Ты — мой главный ритм в этом синтвейве.",
-            "С тобой реальность ярче любого неона.",
-            "Твоя улыбка — энергия этого города.",
-            "Ты — самая яркая звезда на моем небе.",
-            "Моё сердце бьется в темпе 120 BPM.",
+            "Ты — мой ритм в этом синтвейве.",
+            "Реальность с тобой ярче неона.",
+            "Твоя улыбка — энергия города.",
+            "Ты — яркая звезда на моем небе.",
+            "Сердце бьется в темпе 120 BPM.",
             "Ты — лучший баг в моей системе.",
-            "Любовь к тебе зациклена бесконечно.",
+            "Моя любовь зациклена бесконечно.",
             "Ты — мой неоновый рай."
         ];
 
         function shuffle() {
-            const s = phrases.sort(() => 0.5 - Math.random());
+            const s = [...phrases].sort(() => 0.5 - Math.random());
             document.getElementById('p1').innerText = s[0];
             document.getElementById('p2').innerText = s[1];
         }
@@ -182,10 +180,10 @@
             const mins = Math.floor((d / 60000) % 60);
             const secs = Math.floor((d / 1000) % 60);
             document.getElementById('countdown').innerHTML = `
-                <div style="display:inline-block"><span class="t-num">${days}</span><span class="t-lab">DAYS</span></div>
-                <div style="display:inline-block; margin-left:15px"><span class="t-num">${hours}</span><span class="t-lab">HRS</span></div>
-                <div style="display:inline-block; margin-left:15px"><span class="t-num">${mins}</span><span class="t-lab">MIN</span></div>
-                <div style="display:inline-block; margin-left:15px"><span class="t-num">${secs}</span><span class="t-lab">SEC</span></div>
+                <div><span class="t-num">${days}</span><br><span class="t-lab">DAYS</span></div>
+                <div><span class="t-num">${hours}</span><br><span class="t-lab">HRS</span></div>
+                <div><span class="t-num">${mins}</span><br><span class="t-lab">MIN</span></div>
+                <div><span class="t-num">${secs}</span><br><span class="t-lab">SEC</span></div>
             `;
         }
         setInterval(update, 1000); update();
@@ -195,35 +193,27 @@
             a.paused ? a.play() : a.pause();
         }
 
-        // ЖЕСТКАЯ ГЕНЕРАЦИЯ СЕРДЕЧЕК
-        function createHeart() {
-            const scr = document.getElementById('heart-screen');
+        // УПРОЩЕННЫЕ СЕРДЕЧКИ
+        function createH() {
+            const lyr = document.getElementById('heart-layer');
             const h = document.createElement('div');
             h.innerHTML = Math.random() > 0.5 ? '💜' : '✨';
             h.style.cssText = `
-                position: absolute;
-                left: ${Math.random() * 100}vw;
-                top: -50px;
-                font-size: ${Math.random() * 20 + 10}px;
-                text-shadow: 0 0 10px #ff00ff;
-                opacity: ${Math.random()};
+                position: absolute; left: ${Math.random()*100}vw; top: -50px;
+                font-size: 20px; text-shadow: 0 0 10px #ff00ff; opacity: 0.7;
             `;
-            const dur = Math.random() * 3000 + 3000;
-            const anim = h.animate([
-                { transform: 'translateY(0) rotate(0deg)' },
-                { transform: `translateY(110vh) rotate(${Math.random() * 360}deg)` }
-            ], dur);
-            
-            scr.appendChild(h);
-            anim.onfinish = () => h.remove();
+            const dur = 5000;
+            const a = h.animate([{transform:'translateY(0)'}, {transform:'translateY(110vh)'}], dur);
+            lyr.appendChild(h);
+            a.onfinish = () => h.remove();
         }
-        setInterval(createHeart, 250);
+        setInterval(createH, 400);
 
         function send() {
-            confetti({ particleCount: 300, spread: 90, colors: ['#ff00ff', '#00ffff'] });
+            confetti({ particleCount: 200, spread: 70, colors: ['#ff00ff', '#00ffff'] });
             setTimeout(() => {
                 window.location.href = `https://t.me/brvg23?text=${encodeURIComponent("Любимый, я выбираю подарок: Кольцо за 100 звёзд! 💍")}`;
-            }, 1500);
+            }, 1000);
         }
     </script>
 </body>
