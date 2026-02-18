@@ -46,25 +46,30 @@
         /* КНОПКА СТИХОВ */
         .poem-btn {
             font-family: 'Press Start 2P', cursive; font-size: 10px;
-            background: var(--pink); border: none; color: white;
+            background: transparent; border: 2px solid var(--pink); color: white;
             padding: 15px 25px; cursor: pointer; border-radius: 5px;
             box-shadow: 0 0 15px var(--pink); transition: 0.3s;
         }
-        .poem-btn:hover { transform: scale(1.1); box-shadow: 0 0 25px var(--pink); }
+        .poem-btn:hover { background: var(--pink); transform: scale(1.1); }
 
         /* МОДАЛЬНОЕ ОКНО */
         #poem-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
         }
         .modal-content {
-            background: rgba(20, 5, 40, 0.8); border: 2px solid var(--pink);
-            padding: 30px; max-width: 80%; text-align: center; position: relative;
-            box-shadow: 0 0 30px var(--pink); border-radius: 15px;
+            background: rgba(10, 2, 25, 0.9); border: 2px solid var(--pink);
+            padding: 40px; max-width: 85%; text-align: center; position: relative;
+            box-shadow: 0 0 40px var(--pink); border-radius: 20px;
         }
-        .close-btn { position: absolute; top: 10px; right: 15px; color: var(--pink); font-size: 25px; cursor: pointer; }
-        .poem-text { line-height: 1.8; font-size: 1.1rem; color: #fff; text-shadow: 0 0 5px var(--blue); white-space: pre-line; }
+        .close-btn { position: absolute; top: 10px; right: 15px; color: var(--pink); font-size: 30px; cursor: pointer; opacity: 0.7; }
+        .close-btn:hover { opacity: 1; }
+        .poem-text { 
+            line-height: 2; font-size: 1.1rem; color: #fff; 
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5); 
+            white-space: pre-line; font-style: italic;
+        }
 
         .container { position: relative; z-index: 20; padding: 50px 20px; }
         .card { background: #000; border: 2px solid var(--blue); padding: 8px; margin-bottom: 20px; box-shadow: 0 0 20px var(--blue); display: inline-block; }
@@ -93,22 +98,22 @@
         <div class="timer-box" data-aos="fade-up">
             <div id="countdown" style="display:flex; gap:12px;"></div>
         </div>
-        <button class="poem-btn" onclick="openPoem()" data-aos="zoom-in">ОТКРЫТЬ ПОСЛАНИЕ</button>
+        <button class="poem-btn" onclick="openPoem()" data-aos="zoom-in">ПОСЛАНИЕ ДЛЯ ТЕБЯ</button>
     </header>
 
     <div id="poem-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closePoem()">&times;</span>
             <div class="poem-text">
-                В мире из линий и ярких огней,
-                Нет никого тебя в нем родней.
-                Сквозь синтвейва ритм и неона свет,
-                Я шлю тебе свой бесконечный привет.
+                В этой холодной, пустой тишине,
+                Ты — единственный свет, что дорог мне.
+                Когда мир замирает, теряя черты,
+                В моих мыслях останешься только ты.
 
-                Пусть звезды пульсируют в такт нашей встрече,
-                С тобой будет ярким любой этот вечер.
-                Виолетта, ты — солнце в моей пустоте,
-                Единственный путь в этой всей высоте.
+                Пусть время летит, замерзают года,
+                Но ты в моем сердце теперь навсегда.
+                Виолетта, ты — солнце в моей темноте,
+                Единственный смысл в земной суете.
             </div>
         </div>
     </div>
@@ -123,7 +128,7 @@
                 <div class="card"><img src="2.jpg"></div>
                 <p id="p2" class="phrase"></p>
             </div>
-            <button onclick="gift()" style="font-family:'Press Start 2P'; border:2px solid var(--pink); padding:15px; background:transparent; color:white; cursor:pointer;">GET GIFT // 100 STARS</button>
+            <button onclick="gift()" style="font-family:'Press Start 2P'; border:2px solid var(--pink); padding:15px; background:transparent; color:white; cursor:pointer; margin-bottom: 50px;">GET GIFT // 100 STARS</button>
         </center>
     </div>
 
@@ -142,7 +147,6 @@
             }
         }
 
-        // МОДАЛКА СТИХОВ
         function openPoem() { document.getElementById('poem-modal').style.display = 'flex'; }
         function closePoem() { document.getElementById('poem-modal').style.display = 'none'; }
 
