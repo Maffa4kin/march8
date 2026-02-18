@@ -30,6 +30,7 @@
             min-height: 100vh;
         }
 
+        /* Золотая рамка по периметру */
         body::before {
             content: ''; position: fixed; top: 10px; left: 10px; right: 10px; bottom: 10px;
             border: 2px solid var(--gold-soft);
@@ -90,19 +91,40 @@
         @keyframes shine { to { background-position: 200% center; } }
         .btn-luxe:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 40px rgba(184, 134, 11, 0.6); }
 
+        /* --- ГАЛЕРЕЯ (СЕТКА) --- */
         .gallery-section { padding: 120px 20px; text-align: center; z-index: 10; position: relative; }
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            align-items: center;
+        }
         .polaroid {
             display: inline-block; background: #fff; padding: 15px 15px 40px 15px;
             border-radius: 2px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            margin: 40px; transform: rotate(-3deg);
+            transform: rotate(-2deg);
             transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             border: 1px solid #eee;
         }
-        .polaroid:nth-child(even) { transform: rotate(4deg); }
+        .polaroid:nth-child(even) { transform: rotate(3deg); }
         .polaroid:hover { transform: rotate(0deg) translateY(-15px); box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
-        .polaroid img { width: 100%; max-width: 300px; display: block; }
-        .caption { font-family: 'Playfair Display', serif; font-style: italic; margin-top: 20px; color: var(--deep-red); font-size: 1.3rem; }
+        .polaroid img { width: 100%; height: auto; display: block; }
+        .caption { font-family: 'Playfair Display', serif; font-style: italic; margin-top: 20px; color: var(--deep-red); font-size: 1.1rem; }
 
+        .center-heart {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px dashed var(--gold-soft);
+            border-radius: 20px;
+            min-height: 250px;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        .heart-content { font-family: 'Playfair Display', serif; color: #fff; font-style: italic; text-align: center; }
+
+        /* Музыкальный виджет */
         .music-widget {
             position: fixed; top: 25px; right: 25px; z-index: 1001;
             background: #fff; padding: 10px 20px; border-radius: 40px;
@@ -110,6 +132,7 @@
             cursor: pointer; display: flex; align-items: center; gap: 10px;
         }
 
+        /* Модалка */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(48, 31, 31, 0.95); z-index: 2000;
@@ -119,9 +142,12 @@
             background: #fff; width: 90%; max-width: 500px; padding: 50px 30px;
             border-radius: 40px; text-align: center; border: 2px solid var(--gold-soft);
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            position: relative;
         }
-        .modal-content h2 { font-family: 'Playfair Display', serif; color: var(--gold); margin-bottom: 20px; font-size: 2rem; }
+
+        @media (max-width: 768px) {
+            .photo-grid { grid-template-columns: 1fr; }
+            .center-heart { order: -1; margin-bottom: 20px; }
+        }
     </style>
 </head>
 <body>
@@ -139,9 +165,9 @@
 
     <header>
         <div class="decorative-text" data-aos="fade-down">8 March • Spring Symphony</div>
-        <h1 data-aos="fade-up" data-aos-delay="200">Виолетта</h1>
+        <h1 data-aos="fade-up">Виолетта</h1>
         
-        <div class="timer-container" data-aos="zoom-in" data-aos-delay="400">
+        <div class="timer-container" data-aos="zoom-in">
             <div class="timer-unit"><span class="timer-val" id="d">00</span><span class="timer-label">Дней</span></div>
             <div class="timer-unit"><span class="timer-val" id="h">00</span><span class="timer-label">Час</span></div>
             <div class="timer-unit"><span class="timer-val" id="m">00</span><span class="timer-label">Мин</span></div>
@@ -152,14 +178,24 @@
     </header>
 
     <div class="gallery-section">
-        <div class="polaroid" data-aos="fade-right">
-            <img src="1.jpg">
-            <div class="caption">Моя Вселенная</div>
-        </div>
-        
-        <div class="polaroid" data-aos="fade-left">
-            <img src="2.jpg">
-            <div class="caption">Нежность в каждом дне</div>
+        <div class="photo-grid">
+            <div class="polaroid" data-aos="zoom-in"><img src="1.jpg"><div class="caption">Моя Вселенная</div></div>
+            <div class="polaroid" data-aos="zoom-in" data-aos-delay="100"><img src="2.jpg"><div class="caption">Нежность</div></div>
+            <div class="polaroid" data-aos="zoom-in" data-aos-delay="200"><img src="3.jpg"><div class="caption">Твоя улыбка</div></div>
+            
+            <div class="center-heart" data-aos="fade-up">
+                <div class="heart-content">
+                    <span style="font-size: 1.5rem;">❤</span>
+                    <p>ТЫ В ЦЕНТРЕ МОЕГО МИРА</p>
+                    <span style="font-size: 1.5rem;">❤</span>
+                </div>
+            </div>
+
+            <div class="polaroid" data-aos="zoom-in" data-aos-delay="300"><img src="4.jpg"><div class="caption">Особенный момент</div></div>
+            <div class="polaroid" data-aos="zoom-in" data-aos-delay="400"><img src="5.jpg"><div class="caption">Самая лучшая</div></div>
+            <div class="polaroid" data-aos="zoom-in" data-aos-delay="500"><img src="6.jpg"><div class="caption">Весна в тебе</div></div>
+            <div class="polaroid" data-aos="zoom-in" data-aos-delay="600"><img src="7.jpg"><div class="caption">Любимая</div></div>
+            <div class="polaroid" data-aos="zoom-in" data-aos-delay="700"><img src="8.jpg"><div class="caption">Виолетта</div></div>
         </div>
 
         <div style="margin-top: 60px;">
@@ -174,85 +210,62 @@
             <h2 id="m-title">Для тебя</h2>
             <p id="m-text" style="font-size: 1.1rem; line-height: 1.8; color: #555; font-style: italic; margin-bottom: 30px;"></p>
             <button class="btn-luxe" id="m-btn" onclick="handleModalAction()" style="width: 100%; margin-top: 0;">ПОНЯТНО</button>
-            <p style="font-size: 0.6rem; color: #999; margin-top: 15px;">С ЛЮБОВЬЮ ДЛЯ ВИОЛЕТТЫ</p>
         </div>
     </div>
 
     <script>
-        AOS.init({ duration: 1200, once: true });
+        AOS.init({ duration: 1000, once: true });
 
+        // МУЗЫКА
         const audio = document.getElementById('bg-track');
         const mText = document.getElementById('music-text');
-        const mIcon = document.getElementById('music-icon');
-        let audioUnlocked = false;
+        let audioActive = false;
 
         function updateUI(playing) {
             mText.innerText = playing ? 'SOUND: ON' : 'SOUND: OFF';
-            mIcon.innerText = playing ? '⏸' : '🎵';
+            document.getElementById('music-icon').innerText = playing ? '⏸' : '🎵';
         }
 
         function togglePlay(e) {
             if (e) e.stopPropagation();
-            if (audio.paused) {
-                audio.play().then(() => updateUI(true)).catch(err => console.log(err));
-            } else {
-                audio.pause();
-                updateUI(false);
-            }
-            audioUnlocked = true;
+            if (audio.paused) { audio.play(); updateUI(true); } 
+            else { audio.pause(); updateUI(false); }
+            audioActive = true;
         }
 
-        // Активация звука при любом взаимодействии
-        const unlockAudio = () => {
-            if (!audioUnlocked) {
-                audio.play().then(() => {
-                    updateUI(true);
-                    audioUnlocked = true;
-                }).catch(() => {});
+        // Авто-разблокировка при любом клике
+        document.addEventListener('click', () => {
+            if (!audioActive) {
+                audio.play().then(() => { updateUI(true); audioActive = true; }).catch(() => {});
             }
-        };
+        }, { once: true });
 
-        document.body.addEventListener('click', unlockAudio, { once: true });
-        document.body.addEventListener('touchstart', unlockAudio, { once: true });
-        window.addEventListener('scroll', unlockAudio, { once: true });
-
-
+        // МОДАЛКИ
         const modalData = {
-            letter: {
-                title: "Мое письмо",
-                text: "Виолетта, ты — та самая мелодия, которая звучит в моем сердце каждый день. В этот прекрасный праздник весны я хочу пожелать тебе всегда оставаться такой же светлой, вдохновляющей и бесконечно любимой. Ты мой самый дорогой человек.",
-                btn: "ЗАКРЫТЬ С ЛЮБОВЬЮ",
-                isGift: false
-            },
-            gift: {
-                title: "Твой сюрприз",
-                text: "Я подготовил для тебя кое-что особенное. Нажми на кнопку ниже, чтобы забрать свой подарок в Telegram. Я уже жду твоего сообщения!",
-                btn: "ЗАБРАТЬ ПОДАРОК 💖",
-                isGift: true
-            }
+            letter: { title: "Мое письмо", text: "Виолетта, ты — та самая мелодия, которая звучит в моем сердце каждый день. В этот прекрасный праздник весны я хочу пожелать тебе всегда оставаться такой же светлой и бесконечно любимой.", isGift: false },
+            gift: { title: "Твой сюрприз", text: "Я подготовил для тебя кое-что особенное. Нажми кнопку, чтобы получить подарок и отправить мне весточку!", isGift: true }
         };
-
-        let giftModeActive = false;
+        let giftMode = false;
 
         function openModal(type) {
             const d = modalData[type];
             document.getElementById('m-title').innerText = d.title;
             document.getElementById('m-text').innerText = d.text;
-            document.getElementById('m-btn').innerText = d.btn;
-            giftModeActive = d.isGift;
+            giftMode = d.isGift;
             document.getElementById('main-modal').style.display = 'flex';
-            confetti({ particleCount: 100, spread: 70, colors: ['#b8860b', '#f1d38e'] });
+            confetti({ particleCount: 100, spread: 70 });
         }
 
         function handleModalAction() {
-            if (giftModeActive) {
-                const msg = "Любимый, я зашла на сайт и хочу получить свой подарок! С 8 марта меня! 💖✨";
+            if (giftMode) {
+                const msg = "Любимый, я зашла на сайт и хочу получить свой подарок! 💖✨";
                 window.location.href = "https://t.me/brvg23?text=" + encodeURIComponent(msg);
             } else {
                 document.getElementById('main-modal').style.display = 'none';
             }
         }
 
+        // ТАЙМЕР
         const startDate = new Date(2025, 10, 2); 
         function updateTimer() {
             const diff = new Date() - startDate;
@@ -263,12 +276,12 @@
         }
         setInterval(updateTimer, 1000); updateTimer();
 
+        // ЧАСТИЦЫ
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let parts = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.onresize = resize; resize();
-
         class P {
             constructor() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.v = Math.random()*0.3; this.s = Math.random()*2; }
             draw() {
@@ -277,19 +290,18 @@
                 this.y -= this.v; if(this.y < 0) this.y = canvas.height;
             }
         }
-        for(let i=0; i<70; i++) parts.push(new P());
-        function loop() { ctx.clearRect(0,0,canvas.width, canvas.height); parts.forEach(p => p.draw()); requestAnimationFrame(loop); }
-        loop();
+        for(let i=0; i<60; i++) parts.push(new P());
+        function anim() { ctx.clearRect(0,0,canvas.width, canvas.height); parts.forEach(p => p.draw()); requestAnimationFrame(anim); }
+        anim();
 
         setInterval(() => {
             const p = document.createElement('div');
-            p.innerHTML = Math.random() > 0.5 ? '🌸' : '💖';
-            p.className = 'flower-petal';
+            p.innerHTML = '🌸'; p.className = 'flower-petal';
             p.style.left = Math.random() * 100 + 'vw';
             p.style.fontSize = (Math.random()*10 + 20) + 'px';
             document.getElementById('petal-layer').appendChild(p);
             setTimeout(() => p.remove(), 10000);
-        }, 700);
+        }, 800);
     </script>
 </body>
 </html>
