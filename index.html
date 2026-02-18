@@ -20,28 +20,65 @@
             background-color: var(--dark); 
             margin: 0; padding: 0; color: white; 
             font-family: 'Exo 2', sans-serif; 
-            overflow-x: hidden; 
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* ФОНОВЫЕ СЛОИ */
-        .fixed-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #1a0533 0%, #050110 100%); z-index: -10; }
+        /* 1. САМЫЙ НИЖНИЙ СЛОЙ - ГРАДИЕНТ */
+        .fixed-bg { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: radial-gradient(circle at 50% 50%, #1a0533 0%, #050110 100%); 
+            z-index: -10; 
+        }
         
-        .sun-wrapper { position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%); z-index: -9; }
-        .sun { width: min(300px, 70vw); height: min(300px, 70vw); background: linear-gradient(to bottom, #ff0080, #ff8c00); border-radius: 50%; box-shadow: 0 0 60px var(--pink); position: relative; z-index: 5; }
+        /* 2. СЛОЙ СОЛНЦА И КОЛЕЦ */
+        .sun-wrapper { 
+            position: fixed; top: 45%; left: 50%; 
+            transform: translate(-50%, -50%); 
+            z-index: -5; /* Подняли выше фона, но ниже контента */
+            display: flex; align-items: center; justify-content: center;
+        }
+        .sun { 
+            width: min(280px, 65vw); height: min(280px, 65vw); 
+            background: linear-gradient(to bottom, #ff0080, #ff8c00); 
+            border-radius: 50%; 
+            box-shadow: 0 0 60px var(--pink); 
+            position: relative;
+        }
         
         /* КОЛЬЦА */
-        .ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 2px solid var(--blue); border-radius: 50%; opacity: 0; pointer-events: none; width: 300px; height: 300px; }
+        .ring { 
+            position: absolute; border: 2px solid var(--blue); border-radius: 50%; 
+            opacity: 0; pointer-events: none; width: 280px; height: 280px; 
+        }
         .playing .ring { animation: pulse-ring 2s cubic-bezier(0.21, 0.53, 0.56, 0.8) infinite; }
         .playing .ring:nth-child(2) { animation-delay: 0.5s; }
         .playing .ring:nth-child(3) { animation-delay: 1s; }
-        @keyframes pulse-ring { 0% { width: 300px; height: 300px; opacity: 0.8; } 100% { width: 600px; height: 600px; opacity: 0; } }
+        @keyframes pulse-ring { 
+            0% { width: 280px; height: 280px; opacity: 0.8; } 
+            100% { width: 600px; height: 600px; opacity: 0; } 
+        }
 
-        .grid { position: fixed; bottom: 0; left: -50%; width: 200%; height: 50%; background-image: linear-gradient(rgba(255, 0, 255, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 0, 255, 0.2) 1px, transparent 1px); background-size: 45px 45px; transform: perspective(200px) rotateX(60deg); transform-origin: center bottom; animation: move-grid 3s linear infinite; z-index: -8; }
+        /* 3. СЕТКА */
+        .grid { 
+            position: fixed; bottom: 0; left: -50%; width: 200%; height: 50%; 
+            background-image: linear-gradient(rgba(255, 0, 255, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 0, 255, 0.2) 1px, transparent 1px); 
+            background-size: 45px 45px; transform: perspective(200px) rotateX(60deg); 
+            transform-origin: center bottom; animation: move-grid 3s linear infinite; 
+            z-index: -4; 
+        }
         @keyframes move-grid { from { background-position: 0 0; } to { background-position: 0 45px; } }
 
+        /* 4. СЕРДЕЧКИ */
         #hearts { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
 
-        header { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; z-index: 15; }
+        /* 5. КОНТЕНТ */
+        header { 
+            height: 100vh; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            text-align: center; position: relative; z-index: 20; 
+            background: transparent;
+        }
         h1 { font-family: 'Press Start 2P', cursive; font-size: 1.8rem; text-shadow: 0 0 20px var(--pink); margin-bottom: 20px; }
         
         .timer-box { background: rgba(0,0,0,0.7); padding: 15px; border: 2px solid var(--blue); box-shadow: 0 0 15px var(--blue); display: flex; gap: 15px; backdrop-filter: blur(5px); margin-bottom: 30px; }
@@ -53,10 +90,9 @@
             box-shadow: 0 0 15px var(--pink); transition: 0.3s;
         }
 
-        /* МОДАЛКА */
         #poem-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.9); z-index: 5000; align-items: center; justify-content: center;
             backdrop-filter: blur(15px);
         }
         .modal-content {
@@ -67,21 +103,23 @@
         .close-btn { position: absolute; top: 10px; right: 15px; color: var(--pink); font-size: 30px; cursor: pointer; }
         .poem-text { line-height: 2; font-size: 1.1rem; color: #fff; white-space: pre-line; font-style: italic; }
 
-        .container { position: relative; z-index: 20; padding: 50px 20px; text-align: center; }
+        .container { position: relative; z-index: 30; padding: 50px 20px; text-align: center; }
         .card { background: #000; border: 2px solid var(--blue); padding: 8px; margin-bottom: 20px; box-shadow: 0 0 20px var(--blue); display: inline-block; }
         .card img { width: 280px; height: auto; display: block; }
         .phrase { font-weight: bold; margin-bottom: 150px; text-shadow: 0 0 10px var(--blue); }
 
-        .music-btn { position: fixed; top: 20px; right: 20px; z-index: 3000; background: rgba(0,0,0,0.5); border: 2px solid var(--blue); color: var(--blue); border-radius: 50%; width: 50px; height: 50px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .music-btn { position: fixed; top: 20px; right: 20px; z-index: 4000; background: rgba(0,0,0,0.5); border: 2px solid var(--blue); color: var(--blue); border-radius: 50%; width: 50px; height: 50px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
 
     <div class="fixed-bg"></div>
+    
     <div class="sun-wrapper" id="sun-viz">
         <div class="sun"></div>
         <div class="ring"></div><div class="ring"></div><div class="ring"></div>
     </div>
+
     <div class="grid"></div>
     <div id="hearts"></div>
 
@@ -113,7 +151,7 @@
             <div class="card"><img src="2.jpg"></div>
             <p id="p2" class="phrase"></p>
         </div>
-        <button onclick="gift()" style="font-family:'Press Start 2P'; border:2px solid var(--pink); padding:15px; background:transparent; color:white; cursor:pointer; margin-bottom: 50px;">GET GIFT // 100 STARS</button>
+        <button onclick="gift()" style="font-family:'Press Start 2P'; border:2px solid var(--pink); padding:15px; background:transparent; color:white; cursor:pointer; margin-bottom: 50px; z-index: 100;">GET GIFT // 100 STARS</button>
     </div>
 
     <script>
@@ -123,13 +161,12 @@
         const btn = document.getElementById('mBtn');
         const sunViz = document.getElementById('sun-viz');
 
-        // МУЗЫКА
         function toggleM() {
             if (audio.paused) {
                 audio.play().then(() => { 
                     btn.innerText = '⏸️'; 
                     sunViz.classList.add('playing'); 
-                }).catch(() => alert("Нажми еще раз!"));
+                }).catch(() => alert("Нажми кнопку еще раз!"));
             } else {
                 audio.pause(); 
                 btn.innerText = '🎵'; 
@@ -137,22 +174,10 @@
             }
         }
 
-        // РАНДОМНЫЕ СТИХИ (Добавляй свои сюда!)
         const myPoems = [
-            `В этой холодной, пустой тишине,
-            Ты — единственный свет, что дорог мне.
-            Когда мир замирает, теряя черты,
-            В моих мыслях останешься только ты.`,
-            
-            `Пусть время летит, замерзают года,
-            Но ты в моем сердце теперь навсегда.
-            Виолетта, ты — солнце в моей темноте,
-            Единственный смысл в земной суете.`,
-
-            `Сквозь бесконечность ночных дорог,
-            Я бы найти тебя только смог.
-            Пусть гаснут звезды и меркнет свет,
-            Твоей любви в мире равных нет.`
+            `В этой холодной, пустой тишине,\nТы — единственный свет, что дорог мне.\nКогда мир замирает, теряя черты,\nВ моих мыслях останешься только ты.`,
+            `Пусть время летит, замерзают года,\nНо ты в моем сердце теперь навсегда.\nВиолетта, ты — солнце в моей темноте,\nЕдинственный смысл в земной суете.`,
+            `Сквозь бесконечность ночных дорог,\nЯ бы найти тебя только смог.\nПусть гаснут звезды и меркнет свет,\nТвоей любви в мире равных нет.`
         ];
 
         function openPoem() {
@@ -164,7 +189,6 @@
 
         function closePoem() { document.getElementById('poem-modal').style.display = 'none'; }
 
-        // ТАЙМЕР
         const start = new Date(2025, 10, 2); 
         function update() {
             const d = new Date() - start;
@@ -180,7 +204,6 @@
         }
         setInterval(update, 1000); update();
 
-        // СЕРДЕЧКИ
         setInterval(() => {
             const c = document.getElementById('hearts');
             const h = document.createElement('div'); h.innerHTML = '💜';
@@ -195,7 +218,7 @@
 
         function gift() {
             confetti({particleCount:200, spread:70});
-            setTimeout(() => { window.location.href="https://t.me/brvg23?text=Love!"; }, 1000);
+            setTimeout(() => { window.location.href="https://t.me/brvg23?text=" + encodeURIComponent("Любимый, я выбираю подарок! 💍"); }, 1000);
         }
     </script>
 </body>
