@@ -3,28 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для Виолетты ❤️</title>
+    <title>Виолетта ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Pacifico&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/scrollreveal"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --bg-dark: #1a0b2e; /* Глубокий фиолетовый */
-            --accent-violet: #9d50bb; /* Яркий фиолет */
-            --soft-lavender: #e0c3fc; /* Лавандовый для текста */
-            --glass: rgba(255, 255, 255, 0.1);
+            --bg-dark: #120520;
+            --accent-violet: #a166ab;
+            --soft-lavender: #dcd0ff;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: 'Montserrat', sans-serif;
-            background: radial-gradient(circle at center, #2e1a47 0%, #1a0b2e 100%);
+            background: #0f041a;
             color: var(--soft-lavender);
             overflow-x: hidden;
-            text-align: center;
         }
 
-        /* Анимированный фон с частицами */
+        /* Музыкальный плеер */
+        .music-player {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 10px;
+            border-radius: 50%;
+            border: 1px solid var(--accent-violet);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .music-player.playing {
+            animation: rotate 3s linear infinite;
+            box-shadow: 0 0 15px var(--accent-violet);
+        }
+        @keyframes rotate { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+
         .heart-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -33,206 +51,151 @@
         }
 
         header {
-            min-height: 70vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 20px;
+            text-align: center;
         }
 
         h1 {
             font-family: 'Pacifico', cursive;
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: white;
-            text-shadow: 0 0 20px rgba(157, 80, 187, 0.8);
+            text-shadow: 0 0 30px rgba(161, 102, 171, 0.6);
             margin: 0;
-            letter-spacing: 2px;
         }
 
-        .timer-label {
-            margin-top: 30px;
-            font-size: 1.1rem;
-            color: var(--soft-lavender);
-            font-weight: 300;
-            opacity: 0.8;
+        .timer-container {
+            margin-top: 40px;
+            opacity: 0; /* Проявится через JS */
         }
 
         .timer {
-            background: var(--glass);
-            padding: 25px;
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 0 30px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,255,255,0.1);
             display: flex;
-            justify-content: center;
-            margin-top: 15px;
+            gap: 15px;
+            background: var(--glass);
+            padding: 20px;
+            border-radius: 20px;
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .timer-unit {
-            margin: 0 15px;
-        }
+        .timer-num { font-size: 2rem; font-weight: 600; display: block; color: white; }
+        .timer-text { font-size: 0.7rem; text-transform: uppercase; opacity: 0.7; }
 
-        .timer-num {
-            font-weight: 600;
-            font-size: 2.2rem;
-            display: block;
-            color: white;
-            text-shadow: 0 0 10px var(--accent-violet);
-        }
-
-        .timer-text {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--soft-lavender);
-        }
-
-        .section {
-            padding: 60px 20px;
-            max-width: 1100px;
+        /* Контент секций */
+        .content-section {
+            padding: 100px 20px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
-        .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 30px;
+        .moment-card {
+            margin-bottom: 150px;
+            text-align: center;
         }
 
-        .photo-frame {
-            width: 280px;
-            background: #fff; /* Классический белый для контраста фото */
-            padding: 12px 12px 40px 12px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
+        .photo-wrap {
+            position: relative;
+            display: inline-block;
+            background: white;
+            padding: 15px 15px 60px 15px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
         }
 
-        .photo-placeholder {
-            width: 100%;
-            height: 260px;
-            background: #2a1b3d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
+        .photo-wrap img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            background: #222;
         }
 
-        .photo-placeholder img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .photo-caption {
-            margin-top: 15px;
-            font-family: 'Pacifico', cursive;
+        .moment-text {
             font-size: 1.2rem;
-            color: #4a148c; /* Темно-фиолетовый для подписи на белом */
+            line-height: 1.6;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--soft-lavender);
+            max-width: 500px;
+            margin: 0 auto;
         }
 
-        .frame-1 { transform: rotate(-3deg); }
-        .frame-2 { transform: rotate(3deg); }
-        .frame-3 { transform: rotate(-2deg); }
-
-        .photo-frame:hover {
-            transform: scale(1.1) rotate(0deg) translateY(-10px);
-            box-shadow: 0 30px 50px rgba(157, 80, 187, 0.3);
-        }
-
-        .btn-surprise {
-            background: linear-gradient(45deg, var(--accent-violet), #6a11cb);
+        .btn-celebrate {
+            background: transparent;
             color: white;
-            border: none;
-            padding: 20px 50px;
-            font-size: 1.3rem;
+            border: 2px solid var(--accent-violet);
+            padding: 20px 40px;
+            font-size: 1.2rem;
             border-radius: 50px;
             cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 10px 25px rgba(106, 17, 203, 0.4);
-            margin: 50px 0;
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            transition: 0.4s;
+            margin-bottom: 100px;
         }
+        .btn-celebrate:hover { background: var(--accent-violet); box-shadow: 0 0 30px var(--accent-violet); }
 
-        .btn-surprise:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 35px rgba(106, 17, 203, 0.6);
-        }
-
-        footer {
-            padding: 60px;
-            color: var(--soft-lavender);
-            font-size: 0.9rem;
-            opacity: 0.6;
-            letter-spacing: 2px;
-        }
-
-        /* Кастомный скроллбар под стиль */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-dark); }
-        ::-webkit-scrollbar-thumb { background: var(--accent-violet); border-radius: 10px; }
+        footer { padding: 50px; opacity: 0.4; text-align: center; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
+    <div class="music-player" id="playerBtn" onclick="toggleMusic()">
+        <span id="musicIcon">🎵</span>
+        <audio id="myAudio" loop>
+            <source src="music.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
     <div class="heart-bg" id="hearts"></div>
 
     <header>
-        <h1>Виолетта, ты мой мир</h1>
-        <p class="timer-label">Счастливы вместе уже:</p>
-        <div class="timer" id="timer"></div>
+        <h1 class="reveal-title">Виолетта</h1>
+        <div class="timer-container reveal-timer">
+            <p>Счастливы вместе уже:</p>
+            <div class="timer" id="timer"></div>
+        </div>
     </header>
 
-    <div class="section">
-        <div class="gallery">
-            <div class="photo-frame frame-1">
-                <div class="photo-placeholder">
-                    <span style="color: var(--soft-lavender)">Фото №1</span>
-                </div>
-                <div class="photo-caption">Твоя магия...</div>
+    <div class="content-section">
+        <div class="moment-card reveal-moment">
+            <div class="photo-wrap">
+                <div style="width:300px; height:400px; background:#2a1a35; display:flex; align-items:center; justify-content:center;">Фото 1</div>
             </div>
-
-            <div class="photo-frame frame-2">
-                <div class="photo-placeholder">
-                    <span style="color: var(--soft-lavender)">Фото №2</span>
-                </div>
-                <div class="photo-caption">Моя бесконечность</div>
-            </div>
-
-            <div class="photo-frame frame-3">
-                <div class="photo-placeholder">
-                    <span style="color: var(--soft-lavender)">Фото №3</span>
-                </div>
-                <div class="photo-caption">Наше «навсегда»</div>
-            </div>
+            <p class="moment-text">"Тут можно написать текст о вашем первом свидании или о том, что ты почувствовал в этот миг..."</p>
         </div>
 
-        <button class="btn-surprise" onclick="celebrate()">Увидеть магию ✨</button>
+        <div class="moment-card reveal-moment">
+            <div class="photo-wrap">
+                <div style="width:300px; height:400px; background:#2a1a35; display:flex; align-items:center; justify-content:center;">Фото 2</div>
+            </div>
+            <p class="moment-text">"Твоя улыбка — это то, ради чего я готов горы свернуть. Каждое фото с тобой — это сокровище."</p>
+        </div>
+
+        <div class="moment-card reveal-moment">
+            <div class="photo-wrap">
+                <div style="width:300px; height:400px; background:#2a1a35; display:flex; align-items:center; justify-content:center;">Фото 3</div>
+            </div>
+            <p class="moment-text">"2 ноября 2025 года — день, когда мой мир стал ярче. Люблю тебя бесконечно."</p>
+        </div>
+
+        <center>
+            <button class="btn-celebrate" onclick="celebrate()">Нажми на меня ✨</button>
+        </center>
     </div>
 
-    <footer>
-        Специально для Виолетты ❤️ 2026
-    </footer>
+    <footer>Создано для тебя с любовью ❤️</footer>
 
     <script>
-        // ДАТА: 2 ноября 2025
-        const startDate = new Date(2025, 10, 2, 0, 0, 0); 
-
+        // ТАЙМЕР
+        const startDate = new Date(2025, 10, 2); 
         function updateTimer() {
             const now = new Date();
             const diff = now - startDate;
-
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
             const mins = Math.floor((diff / 1000 / 60) % 60);
             const secs = Math.floor((diff / 1000) % 60);
-
             document.getElementById('timer').innerHTML = `
                 <div class="timer-unit"><span class="timer-num">${days}</span><span class="timer-text">дн</span></div>
                 <div class="timer-unit"><span class="timer-num">${hours}</span><span class="timer-text">час</span></div>
@@ -240,42 +203,56 @@
                 <div class="timer-unit"><span class="timer-num">${secs}</span><span class="timer-text">сек</span></div>
             `;
         }
-
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        function celebrate() {
-            confetti({
-                particleCount: 200,
-                spread: 100,
-                origin: { y: 0.6 },
-                colors: ['#e0c3fc', '#9d50bb', '#ffffff', '#6a11cb']
-            });
+        // МУЗЫКА
+        const audio = document.getElementById('myAudio');
+        const playerBtn = document.getElementById('playerBtn');
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                playerBtn.classList.add('playing');
+                document.getElementById('musicIcon').innerText = '⏸️';
+            } else {
+                audio.pause();
+                playerBtn.classList.remove('playing');
+                document.getElementById('musicIcon').innerText = '🎵';
+            }
         }
 
+        // АНИМАЦИЯ ПОЯВЛЕНИЯ
+        ScrollReveal().reveal('.reveal-title', { delay: 200, distance: '50px', origin: 'top' });
+        ScrollReveal().reveal('.reveal-timer', { delay: 600, opacity: 0 });
+        ScrollReveal().reveal('.reveal-moment', { 
+            delay: 300, 
+            distance: '100px', 
+            origin: 'bottom',
+            interval: 200 
+        });
+
+        // КОНФЕТТИ
+        function celebrate() {
+            confetti({ particleCount: 250, spread: 100, origin: { y: 0.7 }, colors: ['#a166ab', '#ffffff'] });
+        }
+
+        // СЕРДЕЧКИ
         const heartContainer = document.getElementById('hearts');
         function createHeart() {
             const heart = document.createElement('div');
-            // Чередуем сердечки и искорки
-            heart.innerHTML = Math.random() > 0.5 ? '💜' : '✨';
+            heart.innerHTML = '💜';
             heart.style.position = 'absolute';
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.top = '-20px';
-            heart.style.fontSize = Math.random() * 15 + 10 + 'px';
-            heart.style.opacity = Math.random() * 0.5 + 0.2;
-            
-            heart.animate([
-                { transform: 'translateY(0) rotate(0deg)', opacity: heart.style.opacity },
-                { transform: `translateY(100vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
-            ], {
+            heart.style.opacity = Math.random() * 0.4 + 0.2;
+            heart.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(100vh)' }], {
                 duration: 5000 + Math.random() * 3000,
                 easing: 'linear'
             });
-            
             heartContainer.appendChild(heart);
             setTimeout(() => heart.remove(), 8000);
         }
-        setInterval(createHeart, 600);
+        setInterval(createHeart, 500);
     </script>
 </body>
 </html>
