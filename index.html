@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для Виолетты ❤️</title>
+    <title>Виолетта ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Pacifico&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -23,11 +23,11 @@
             overflow-x: hidden;
         }
 
-        /* Плеер */
         .music-btn {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
             background: rgba(255,255,255,0.1); border: 1px solid var(--accent-purple);
             padding: 12px; border-radius: 50%; cursor: pointer; backdrop-filter: blur(10px);
+            color: white; font-size: 20px;
         }
 
         .heart-bg {
@@ -41,57 +41,56 @@
         }
 
         h1 {
-            font-family: 'Pacifico', cursive; font-size: 3.5rem; color: white;
+            font-family: 'Pacifico', cursive; font-size: 3rem; color: white;
             text-shadow: 0 0 20px var(--accent-purple); margin: 0;
         }
 
-        /* Счетчик */
         .timer-box {
             margin-top: 30px; background: rgba(255,255,255,0.05);
             padding: 20px; border-radius: 20px; border: 1px solid rgba(157, 80, 187, 0.3);
         }
-        .timer-display { display: flex; gap: 20px; }
-        .t-num { font-size: 2.2rem; font-weight: 600; color: white; display: block; }
-        .t-text { font-size: 0.8rem; opacity: 0.7; text-transform: uppercase; }
+        .timer-display { display: flex; gap: 15px; }
+        .t-num { font-size: 2rem; font-weight: 600; color: white; display: block; }
+        .t-text { font-size: 0.7rem; opacity: 0.7; text-transform: uppercase; }
 
-        /* Секции с фото */
         .container { max-width: 900px; margin: 0 auto; padding: 50px 20px; }
 
         .moment {
-            margin-bottom: 200px; display: flex; flex-direction: column; align-items: center;
+            margin-bottom: 150px; display: flex; flex-direction: column; align-items: center;
         }
 
         .photo-holder {
-            width: 100%; max-width: 500px; background: white; padding: 15px 15px 50px 15px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8); transform: rotate(-2deg);
-            margin-bottom: 40px;
+            width: 100%; max-width: 400px; background: white; padding: 12px 12px 45px 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); margin-bottom: 30px;
         }
 
-        .photo-holder img { width: 100%; height: auto; display: block; filter: grayscale(20%); }
+        .photo-holder img { width: 100%; height: auto; display: block; background: #eee; }
 
         .moment-desc {
-            font-size: 1.3rem; font-style: italic; text-align: center;
-            line-height: 1.6; max-width: 600px; opacity: 0.9;
+            font-size: 1.1rem; font-style: italic; text-align: center;
+            line-height: 1.6; max-width: 500px; opacity: 0.9;
         }
 
         .btn-end {
-            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            background: linear-gradient(45deg, #6a11cb, #9d50bb);
             color: white; border: none; padding: 20px 40px;
             border-radius: 50px; font-weight: bold; cursor: pointer;
-            font-size: 1.2rem; transition: 0.3s; margin-bottom: 100px;
+            font-size: 1.1rem; transition: 0.3s; margin-top: 30px;
+            box-shadow: 0 0 20px rgba(157, 80, 187, 0.4);
         }
 
-        footer { padding: 40px; text-align: center; opacity: 0.3; font-size: 0.8rem; }
+        .btn-end:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--accent-purple); }
 
+        footer { padding: 40px; text-align: center; opacity: 0.3; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
-    <button class="music-btn" onclick="toggleMusic()">🎵
+    <button class="music-btn" onclick="toggleMusic()" id="mBtn">🎵
         <audio id="track" loop><source src="music.mp3" type="audio/mpeg"></audio>
     </button>
 
-    <div class="heart-bg" id="hearts"></div>
+    <div id="hearts"></div>
 
     <header>
         <h1 data-aos="zoom-in">Виолетта</h1>
@@ -104,47 +103,41 @@
     <div class="container">
         
         <div class="moment">
-            <div class="photo-holder" data-aos="fade-up" data-aos-duration="1000">
-                <img src="1.jpg" alt="Наше фото">
-                <p style="color: #333; font-family: 'Pacifico'; margin-top: 15px;">Тот самый день...</p>
+            <div class="photo-holder" style="transform: rotate(-2deg);" data-aos="fade-up">
+                <img src="1.jpg" alt="Фото 1">
+                <p style="color: #333; font-family: 'Pacifico'; margin-top: 15px; text-align: center;">Тот самый миг</p>
             </div>
-            <div class="moment-desc" data-aos="fade-left" data-aos-delay="300">
-                С этого момента моя жизнь изменилась навсегда. Твой смех — моя любимая музыка.
-            </div>
-        </div>
-
-        <div class="moment">
-            <div class="photo-holder" style="transform: rotate(3deg);" data-aos="fade-up" data-aos-duration="1000">
-                <img src="2.jpg" alt="Наше фото">
-                <p style="color: #333; font-family: 'Pacifico'; margin-top: 15px;">Твоя нежность</p>
-            </div>
-            <div class="moment-desc" data-aos="fade-right" data-aos-delay="300">
-                Обожаю, как ты смотришь на мир. В твоих глазах я вижу наше будущее.
+            <div class="moment-desc" data-aos="fade-up">
+                С этого момента моя жизнь изменилась навсегда.
             </div>
         </div>
 
         <div class="moment">
-            <div class="photo-holder" style="transform: rotate(-1deg);" data-aos="fade-up" data-aos-duration="1000">
-                <img src="3.jpg" alt="Наше фото">
-                <p style="color: #333; font-family: 'Pacifico'; margin-top: 15px;">Навсегда</p>
+            <div class="photo-holder" style="transform: rotate(3deg);" data-aos="fade-up">
+                <img src="2.jpg" alt="Фото 2">
+                <p style="color: #333; font-family: 'Pacifico'; margin-top: 15px; text-align: center;">Твоя нежность</p>
             </div>
-            <div class="moment-desc" data-aos="fade-up" data-aos-delay="300">
-                Я благодарен каждой секунде, проведенной с тобой. Ты — мой самый лучший подарок.
+            <div class="moment-desc" data-aos="fade-up">
+                Обожаю, как ты улыбаешься.
             </div>
         </div>
 
         <center>
-            <button class="btn-end" onclick="boom()" data-aos="zoom-in">Нажми на меня ✨</button>
+            <div data-aos="zoom-in">
+                <p style="font-family: 'Pacifico'; font-size: 1.5rem;">Готова к подарку?</p>
+                <button class="btn-end" onclick="sendGiftRequest()">
+                    Отправить запрос на 100 звёзд 💍
+                </button>
+            </div>
         </center>
     </div>
 
-    <footer>Сделано с любовью для Виолетты ❤️ 2026</footer>
+    <footer>Создано для Виолетты ❤️ 2026</footer>
 
     <script>
-        // Инициализация анимаций
-        AOS.init({ duration: 1000, once: false });
+        AOS.init({ duration: 1000 });
 
-        // ЛОГИКА ТАЙМЕРА (2 ноября 2025)
+        // Таймер на 2 ноября 2025
         const start = new Date(2025, 10, 2); 
         function update() {
             const now = new Date();
@@ -153,7 +146,6 @@
             const hours = Math.floor((d / 3600000) % 24);
             const mins = Math.floor((d / 60000) % 60);
             const secs = Math.floor((d / 1000) % 60);
-            
             document.getElementById('countdown').innerHTML = `
                 <div class="t-unit"><span class="t-num">${days}</span><span class="t-text">дн</span></div>
                 <div class="t-unit"><span class="t-num">${hours}</span><span class="t-text">ч</span></div>
@@ -163,64 +155,31 @@
         }
         setInterval(update, 1000); update();
 
-        // МУЗЫКА
         function toggleMusic() {
             const a = document.getElementById('track');
-            a.paused ? a.play() : a.pause();
+            const b = document.getElementById('mBtn');
+            if(a.paused) { a.play(); b.innerText = '⏸️'; } 
+            else { a.pause(); b.innerText = '🎵'; }
         }
 
-        // КОНФЕТТИ
-        function boom() {
-            confetti({ particleCount: 300, spread: 100, origin: { y: 0.6 }, colors: ['#9d50bb', '#ffffff'] });
+        function sendGiftRequest() {
+            confetti({ particleCount: 300, spread: 100, origin: { y: 0.6 } });
+            setTimeout(() => {
+                const nick = "brvg23"; 
+                const text = encodeURIComponent("Милый, я выбираю подарок: Кольцо за 100 звёзд! ✨💍");
+                window.location.href = `https://t.me/${nick}?text=${text}`;
+            }, 1500);
         }
 
-        // ФОНОВЫЕ СЕРДЕЧКИ
         setInterval(() => {
             const h = document.createElement('div');
-            h.innerHTML = '💜'; h.className = 'heart-bg';
-            h.style.left = Math.random() * 100 + 'vw';
-            h.style.top = '-20px'; h.style.fontSize = '20px';
-            h.style.zIndex = '-1';
-            h.animate([{transform: 'translateY(0)'}, {transform: 'translateY(100vh)'}], 6000);
+            h.innerHTML = '💜';
+            h.style.position = 'fixed'; h.style.left = Math.random() * 100 + 'vw';
+            h.style.top = '-20px'; h.style.zIndex = '-1';
+            h.animate([{transform: 'translateY(0)'}, {transform: 'translateY(105vh)'}], 5000);
             document.body.appendChild(h);
-            setTimeout(() => h.remove(), 6000);
-        }, 500);
+            setTimeout(() => h.remove(), 5000);
+        }, 600);
     </script>
 </body>
 </html>
-<center>
-    <div class="gift-container" data-aos="zoom-in">
-        <p style="font-family: 'Pacifico'; color: white; margin-bottom: 10px;">Финальный сюрприз...</p>
-        <button class="btn-end" onclick="sendGiftRequest()">
-            Отправить запрос на 100 звёзд 💍
-        </button>
-    </div>
-</center>
-<script>
-    function sendGiftRequest() {
-    // 1. Запускаем мощное конфетти
-    const duration = 5 * 1000;
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-    function randomInRange(min, max) {
-        return Math.random() * (max - min) + min;
-    }
-
-    const interval = setInterval(function() {
-        const timeLeft = animationEnd - Date.now();
-        if (timeLeft <= 0) return clearInterval(interval);
-        const particleCount = 50 * (timeLeft / duration);
-        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-    }, 250);
-
-    // 2. Ждем пару секунд, чтобы она насладилась эффектом, и перекидываем в ТГ
-    setTimeout(() => {
-        const myTelegramNick = "brvg23"; // ЗАМЕНИ НА СВОЙ НИК
-        const message = encodeURIComponent("Милый, я выбираю подарок: Кольцо за 100 звёзд! ✨💍");
-        window.location.href = `https://t.me/${brvg23}?text=${message}`;
-    }, 2000);
-}
-    <script>
-    
