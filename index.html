@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VIOLETTA // ETERNITY</title>
+    <title>VIOLETTA // BEAT</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:wght@700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -19,21 +19,49 @@
         html { background-color: var(--dark); }
         body { margin: 0; padding: 0; color: white; font-family: 'Exo 2', sans-serif; overflow-x: hidden; background: transparent; }
 
-        /* ФОНОВЫЕ СЛОИ */
+        /* ФОН */
         .fixed-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 50%, #1a0533 0%, #050110 100%);
             z-index: -10;
         }
 
-        .sun {
+        /* СОЛНЦЕ И КОЛЬЦА */
+        .sun-wrapper {
             position: fixed; top: 45%; left: 50%; 
             transform: translate(-50%, -50%);
-            width: min(320px, 75vw); height: min(320px, 75vw);
+            z-index: -9;
+        }
+
+        .sun {
+            width: min(300px, 70vw); height: min(300px, 70vw);
             background: linear-gradient(to bottom, #ff0080, #ff8c00);
             border-radius: 50%;
-            box-shadow: 0 0 80px var(--pink);
-            z-index: -9;
+            box-shadow: 0 0 60px var(--pink);
+            position: relative; z-index: 5;
+        }
+
+        /* Пульсирующие кольца */
+        .ring {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid var(--blue);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Анимация пульсации (активируется классом .playing) */
+        .playing .ring {
+            animation: pulse-ring 2s cubic-bezier(0.21, 0.53, 0.56, 0.8) infinite;
+        }
+
+        .playing .ring:nth-child(2) { animation-delay: 0.5s; }
+        .playing .ring:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes pulse-ring {
+            0% { width: 300px; height: 300px; opacity: 0.8; border-color: var(--blue); }
+            100% { width: 600px; height: 600px; opacity: 0; border-color: var(--pink); }
         }
 
         .grid {
@@ -52,63 +80,43 @@
 
         #hearts { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
 
-        /* ИНТЕРФЕЙС */
         header { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-
-        h1 {
-            font-family: 'Press Start 2P', cursive; font-size: 2rem;
-            text-shadow: 0 0 20px var(--pink); margin-bottom: 25px;
-            letter-spacing: 4px;
-        }
+        h1 { font-family: 'Press Start 2P', cursive; font-size: 1.8rem; text-shadow: 0 0 20px var(--pink); margin-bottom: 25px; }
 
         .timer-box {
-            background: rgba(0,0,0,0.7); padding: 20px;
-            border: 2px solid var(--blue); box-shadow: 0 0 25px var(--blue);
-            display: flex; gap: 15px; backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.7); padding: 15px;
+            border: 2px solid var(--blue); box-shadow: 0 0 15px var(--blue);
+            display: flex; gap: 15px; backdrop-filter: blur(5px);
         }
 
         .container { position: relative; z-index: 20; padding: 50px 20px; }
-
-        .card {
-            background: #000 !important; border: 2px solid var(--blue);
-            padding: 10px; margin-bottom: 20px;
-            box-shadow: 0 0 25px var(--blue);
-            display: inline-block; transition: 0.5s ease;
-        }
-        .card img { width: 300px; height: auto; display: block; }
-
-        .phrase { 
-            font-weight: bold; margin-bottom: 180px; font-size: 1.2rem;
-            text-shadow: 0 0 10px var(--blue); color: white;
-            max-width: 350px; line-height: 1.5;
-        }
-
-        .btn-order {
-            font-family: 'Press Start 2P', cursive; font-size: 11px;
-            background: transparent; border: 3px solid var(--pink);
-            color: white; padding: 25px 35px; cursor: pointer;
-            box-shadow: 0 0 20px var(--pink); transition: 0.3s;
-        }
+        .card { background: #000; border: 2px solid var(--blue); padding: 8px; margin-bottom: 20px; box-shadow: 0 0 20px var(--blue); display: inline-block; }
+        .card img { width: 280px; height: auto; display: block; }
+        .phrase { font-weight: bold; margin-bottom: 150px; text-shadow: 0 0 10px var(--blue); }
 
         .music-btn {
-            position: fixed; top: 25px; right: 25px; z-index: 1000;
-            background: rgba(0,0,0,0.6); border: 2px solid var(--blue);
-            color: var(--blue); border-radius: 50%; width: 55px; height: 55px; 
-            cursor: pointer; box-shadow: 0 0 15px var(--blue); font-size: 1.2rem;
-            display: flex; align-items: center; justify-content: center;
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            background: rgba(0,0,0,0.5); border: 2px solid var(--blue);
+            color: var(--blue); border-radius: 50%; width: 50px; height: 50px; cursor: pointer;
         }
     </style>
 </head>
 <body>
 
     <div class="fixed-bg"></div>
-    <div class="sun"></div>
+    
+    <div class="sun-wrapper" id="sun-viz">
+        <div class="sun"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+    </div>
+
     <div class="grid"></div>
     <div id="hearts"></div>
 
-    <button class="music-btn" onclick="toggleM()" id="mBtn">
-        🎵
-        <audio id="track" preload="auto">
+    <button class="music-btn" onclick="toggleM()" id="mBtn">🎵
+        <audio id="track" loop>
             <source src="track.mp3" type="audio/mpeg">
         </audio>
     </button>
@@ -116,51 +124,47 @@
     <header>
         <h1 data-aos="zoom-in">VIOLETTA</h1>
         <div class="timer-box" data-aos="fade-up">
-            <div id="countdown" style="display:flex; gap:15px;"></div>
+            <div id="countdown" style="display:flex; gap:12px;"></div>
         </div>
     </header>
 
     <div class="container">
         <center>
-            <div class="moment" data-aos="fade-right">
+            <div class="moment" data-aos="fade-up">
                 <div class="card"><img src="1.jpg"></div>
-                <p id="phrase1" class="phrase"></p>
+                <p id="p1" class="phrase"></p>
             </div>
-
-            <div class="moment" data-aos="fade-left">
+            <div class="moment" data-aos="fade-up">
                 <div class="card"><img src="2.jpg"></div>
-                <p id="phrase2" class="phrase"></p>
+                <p id="p2" class="phrase"></p>
             </div>
-
-            <button class="btn-order" onclick="sendReq()" data-aos="zoom-out-up">
-                ПОЛУЧИТЬ ПОДАРОК // 100 STARS
+            <button onclick="gift()" style="font-family:'Press Start 2P'; border:2px solid var(--pink); padding:15px; background:transparent; color:white; cursor:pointer;">
+                GET GIFT // 100 STARS
             </button>
         </center>
     </div>
 
     <script>
-        AOS.init({ duration: 1000, once: true });
+        AOS.init({ once: true });
 
-        // МУЗЫКА
         const audio = document.getElementById('track');
         const btn = document.getElementById('mBtn');
+        const sunViz = document.getElementById('sun-viz');
 
         function toggleM() {
             if (audio.paused) {
                 audio.play().then(() => {
                     btn.innerText = '⏸️';
-                    btn.style.boxShadow = "0 0 25px var(--blue)";
-                }).catch(e => {
-                    alert("Нажми еще раз, браузер блокирует первый запуск!");
-                });
+                    sunViz.classList.add('playing'); // ВКЛЮЧАЕМ КОЛЬЦА
+                }).catch(() => alert("Нажми еще раз!"));
             } else {
                 audio.pause();
                 btn.innerText = '🎵';
-                btn.style.boxShadow = "0 0 15px var(--blue)";
+                sunViz.classList.remove('playing'); // ВЫКЛЮЧАЕМ КОЛЬЦА
             }
         }
 
-        // ТАЙМЕР (С 2 ноября 2025)
+        // ТАЙМЕР
         const start = new Date(2025, 10, 2); 
         function update() {
             const d = new Date() - start;
@@ -169,40 +173,30 @@
             const min = Math.floor((d / 60000) % 60);
             const sec = Math.floor((d / 1000) % 60);
             document.getElementById('countdown').innerHTML = `
-                <div><span style="font-size:2rem; font-weight:bold;">${days}</span><br><span style="font-size:0.6rem; color:var(--pink); font-family:'Press Start 2P';">DAYS</span></div>
-                <div><span style="font-size:2rem; font-weight:bold;">${hrs}</span><br><span style="font-size:0.6rem; color:var(--pink); font-family:'Press Start 2P';">HRS</span></div>
-                <div><span style="font-size:2rem; font-weight:bold;">${min}</span><br><span style="font-size:0.6rem; color:var(--pink); font-family:'Press Start 2P';">MIN</span></div>
-                <div><span style="font-size:2rem; font-weight:bold;">${sec}</span><br><span style="font-size:0.6rem; color:var(--pink); font-family:'Press Start 2P';">SEC</span></div>`;
+                <div><span style="font-size:1.8rem;">${days}</span><br><small>DAYS</small></div>
+                <div><span style="font-size:1.8rem;">${hrs}</span><br><small>HRS</small></div>
+                <div><span style="font-size:1.8rem;">${min}</span><br><small>MIN</small></div>
+                <div><span style="font-size:1.8rem;">${sec}</span><br><small>SEC</small></div>`;
         }
         setInterval(update, 1000); update();
 
         // СЕРДЕЧКИ
-        function createH() {
+        setInterval(() => {
             const c = document.getElementById('hearts');
             const h = document.createElement('div');
-            h.innerHTML = Math.random() > 0.4 ? '💜' : '✨';
-            h.style.cssText = `position:absolute; left:${Math.random()*100}vw; top:-40px; font-size:20px; text-shadow:0 0 15px #f0f;`;
-            const a = h.animate([{transform:'translateY(0)'},{transform:'translateY(110vh)'}], 6000);
+            h.innerHTML = '💜';
+            h.style.cssText = `position:absolute; left:${Math.random()*100}vw; top:-30px; font-size:20px; text-shadow:0 0 10px #f0f;`;
+            const a = h.animate([{transform:'translateY(0)'},{transform:'translateY(110vh)'}], 5000);
             c.appendChild(h); a.onfinish = () => h.remove();
-        }
-        setInterval(createH, 300);
+        }, 300);
 
-        // ФРАЗЫ
-        const phrases = [
-            "Ты — мой главный ритм в синтвейве.",
-            "Ярче любого неона в этом городе.",
-            "Энергия моей системы — это ты.",
-            "Лучший баг в моей жизни.",
-            "Мой бесконечный неоновый рай."
-        ];
-        document.getElementById('phrase1').innerText = phrases[Math.floor(Math.random()*phrases.length)];
-        document.getElementById('phrase2').innerText = phrases[Math.floor(Math.random()*phrases.length)];
+        const phrases = ["Ты мой неон", "Мой главный ритм", "Ярче всех звезд", "Любовь в 120 BPM"];
+        document.getElementById('p1').innerText = phrases[Math.floor(Math.random()*phrases.length)];
+        document.getElementById('p2').innerText = phrases[Math.floor(Math.random()*phrases.length)];
 
-        function sendReq() {
-            confetti({particleCount:200, spread:70, colors:['#f0f','#0ff']});
-            setTimeout(() => { 
-                window.location.href="https://t.me/brvg23?text=" + encodeURIComponent("Любимый, я выбираю подарок! 💍"); 
-            }, 1000);
+        function gift() {
+            confetti({particleCount:200, spread:70});
+            setTimeout(() => { window.location.href="https://t.me/brvg23?text=Love!"; }, 1000);
         }
     </script>
 </body>
