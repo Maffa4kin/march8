@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VIOLETTA // BEAT</title>
+    <title>VIOLETTA // ETERNITY</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:wght@700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -19,106 +19,73 @@
         html { background-color: var(--dark); }
         body { margin: 0; padding: 0; color: white; font-family: 'Exo 2', sans-serif; overflow-x: hidden; background: transparent; }
 
-        /* ФОН */
-        .fixed-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a0533 0%, #050110 100%);
-            z-index: -10;
-        }
-
-        /* СОЛНЦЕ И КОЛЬЦА */
-        .sun-wrapper {
-            position: fixed; top: 45%; left: 50%; 
-            transform: translate(-50%, -50%);
-            z-index: -9;
-        }
-
-        .sun {
-            width: min(300px, 70vw); height: min(300px, 70vw);
-            background: linear-gradient(to bottom, #ff0080, #ff8c00);
-            border-radius: 50%;
-            box-shadow: 0 0 60px var(--pink);
-            position: relative; z-index: 5;
-        }
-
-        /* Пульсирующие кольца */
-        .ring {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            border: 2px solid var(--blue);
-            border-radius: 50%;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* Анимация пульсации (активируется классом .playing) */
-        .playing .ring {
-            animation: pulse-ring 2s cubic-bezier(0.21, 0.53, 0.56, 0.8) infinite;
-        }
-
+        /* ФОНОВЫЕ СЛОИ */
+        .fixed-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #1a0533 0%, #050110 100%); z-index: -10; }
+        
+        .sun-wrapper { position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%); z-index: -9; }
+        .sun { width: min(300px, 70vw); height: min(300px, 70vw); background: linear-gradient(to bottom, #ff0080, #ff8c00); border-radius: 50%; box-shadow: 0 0 60px var(--pink); position: relative; z-index: 5; }
+        
+        /* КОЛЬЦА ПОД БИТ */
+        .ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 2px solid var(--blue); border-radius: 50%; opacity: 0; pointer-events: none; }
+        .playing .ring { animation: pulse-ring 2s cubic-bezier(0.21, 0.53, 0.56, 0.8) infinite; }
         .playing .ring:nth-child(2) { animation-delay: 0.5s; }
         .playing .ring:nth-child(3) { animation-delay: 1s; }
+        @keyframes pulse-ring { 0% { width: 300px; height: 300px; opacity: 0.8; } 100% { width: 600px; height: 600px; opacity: 0; } }
 
-        @keyframes pulse-ring {
-            0% { width: 300px; height: 300px; opacity: 0.8; border-color: var(--blue); }
-            100% { width: 600px; height: 600px; opacity: 0; border-color: var(--pink); }
-        }
-
-        .grid {
-            position: fixed; bottom: 0; left: -50%; width: 200%; height: 50%;
-            background-image: 
-                linear-gradient(rgba(255, 0, 255, 0.2) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 0, 255, 0.2) 1px, transparent 1px);
-            background-size: 45px 45px;
-            transform: perspective(200px) rotateX(60deg);
-            transform-origin: center bottom;
-            animation: move-grid 3s linear infinite;
-            z-index: -8;
-        }
-
+        .grid { position: fixed; bottom: 0; left: -50%; width: 200%; height: 50%; background-image: linear-gradient(rgba(255, 0, 255, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 0, 255, 0.2) 1px, transparent 1px); background-size: 45px 45px; transform: perspective(200px) rotateX(60deg); transform-origin: center bottom; animation: move-grid 3s linear infinite; z-index: -8; }
         @keyframes move-grid { from { background-position: 0 0; } to { background-position: 0 45px; } }
 
         #hearts { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
 
+        /* ИНТЕРФЕЙС */
         header { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        h1 { font-family: 'Press Start 2P', cursive; font-size: 1.8rem; text-shadow: 0 0 20px var(--pink); margin-bottom: 25px; }
+        h1 { font-family: 'Press Start 2P', cursive; font-size: 1.8rem; text-shadow: 0 0 20px var(--pink); margin-bottom: 20px; }
+        
+        .timer-box { background: rgba(0,0,0,0.7); padding: 15px; border: 2px solid var(--blue); box-shadow: 0 0 15px var(--blue); display: flex; gap: 15px; backdrop-filter: blur(5px); margin-bottom: 30px; }
 
-        .timer-box {
-            background: rgba(0,0,0,0.7); padding: 15px;
-            border: 2px solid var(--blue); box-shadow: 0 0 15px var(--blue);
-            display: flex; gap: 15px; backdrop-filter: blur(5px);
+        /* КНОПКА СТИХОВ */
+        .poem-btn {
+            font-family: 'Press Start 2P', cursive; font-size: 10px;
+            background: var(--pink); border: none; color: white;
+            padding: 15px 25px; cursor: pointer; border-radius: 5px;
+            box-shadow: 0 0 15px var(--pink); transition: 0.3s;
         }
+        .poem-btn:hover { transform: scale(1.1); box-shadow: 0 0 25px var(--pink); }
+
+        /* МОДАЛЬНОЕ ОКНО */
+        #poem-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        .modal-content {
+            background: rgba(20, 5, 40, 0.8); border: 2px solid var(--pink);
+            padding: 30px; max-width: 80%; text-align: center; position: relative;
+            box-shadow: 0 0 30px var(--pink); border-radius: 15px;
+        }
+        .close-btn { position: absolute; top: 10px; right: 15px; color: var(--pink); font-size: 25px; cursor: pointer; }
+        .poem-text { line-height: 1.8; font-size: 1.1rem; color: #fff; text-shadow: 0 0 5px var(--blue); white-space: pre-line; }
 
         .container { position: relative; z-index: 20; padding: 50px 20px; }
         .card { background: #000; border: 2px solid var(--blue); padding: 8px; margin-bottom: 20px; box-shadow: 0 0 20px var(--blue); display: inline-block; }
         .card img { width: 280px; height: auto; display: block; }
         .phrase { font-weight: bold; margin-bottom: 150px; text-shadow: 0 0 10px var(--blue); }
 
-        .music-btn {
-            position: fixed; top: 20px; right: 20px; z-index: 1000;
-            background: rgba(0,0,0,0.5); border: 2px solid var(--blue);
-            color: var(--blue); border-radius: 50%; width: 50px; height: 50px; cursor: pointer;
-        }
+        .music-btn { position: fixed; top: 20px; right: 20px; z-index: 1000; background: rgba(0,0,0,0.5); border: 2px solid var(--blue); color: var(--blue); border-radius: 50%; width: 50px; height: 50px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="fixed-bg"></div>
-    
     <div class="sun-wrapper" id="sun-viz">
         <div class="sun"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
+        <div class="ring"></div><div class="ring"></div><div class="ring"></div>
     </div>
-
     <div class="grid"></div>
     <div id="hearts"></div>
 
     <button class="music-btn" onclick="toggleM()" id="mBtn">🎵
-        <audio id="track" loop>
-            <source src="track.mp3" type="audio/mpeg">
-        </audio>
+        <audio id="track" loop><source src="track.mp3" type="audio/mpeg"></audio>
     </button>
 
     <header>
@@ -126,7 +93,25 @@
         <div class="timer-box" data-aos="fade-up">
             <div id="countdown" style="display:flex; gap:12px;"></div>
         </div>
+        <button class="poem-btn" onclick="openPoem()" data-aos="zoom-in">ОТКРЫТЬ ПОСЛАНИЕ</button>
     </header>
+
+    <div id="poem-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closePoem()">&times;</span>
+            <div class="poem-text">
+                В мире из линий и ярких огней,
+                Нет никого тебя в нем родней.
+                Сквозь синтвейва ритм и неона свет,
+                Я шлю тебе свой бесконечный привет.
+
+                Пусть звезды пульсируют в такт нашей встрече,
+                С тобой будет ярким любой этот вечер.
+                Виолетта, ты — солнце в моей пустоте,
+                Единственный путь в этой всей высоте.
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <center>
@@ -138,9 +123,7 @@
                 <div class="card"><img src="2.jpg"></div>
                 <p id="p2" class="phrase"></p>
             </div>
-            <button onclick="gift()" style="font-family:'Press Start 2P'; border:2px solid var(--pink); padding:15px; background:transparent; color:white; cursor:pointer;">
-                GET GIFT // 100 STARS
-            </button>
+            <button onclick="gift()" style="font-family:'Press Start 2P'; border:2px solid var(--pink); padding:15px; background:transparent; color:white; cursor:pointer;">GET GIFT // 100 STARS</button>
         </center>
     </div>
 
@@ -153,16 +136,15 @@
 
         function toggleM() {
             if (audio.paused) {
-                audio.play().then(() => {
-                    btn.innerText = '⏸️';
-                    sunViz.classList.add('playing'); // ВКЛЮЧАЕМ КОЛЬЦА
-                }).catch(() => alert("Нажми еще раз!"));
+                audio.play().then(() => { btn.innerText = '⏸️'; sunViz.classList.add('playing'); }).catch(() => alert("Нажми еще раз!"));
             } else {
-                audio.pause();
-                btn.innerText = '🎵';
-                sunViz.classList.remove('playing'); // ВЫКЛЮЧАЕМ КОЛЬЦА
+                audio.pause(); btn.innerText = '🎵'; sunViz.classList.remove('playing');
             }
         }
+
+        // МОДАЛКА СТИХОВ
+        function openPoem() { document.getElementById('poem-modal').style.display = 'flex'; }
+        function closePoem() { document.getElementById('poem-modal').style.display = 'none'; }
 
         // ТАЙМЕР
         const start = new Date(2025, 10, 2); 
@@ -173,18 +155,17 @@
             const min = Math.floor((d / 60000) % 60);
             const sec = Math.floor((d / 1000) % 60);
             document.getElementById('countdown').innerHTML = `
-                <div><span style="font-size:1.8rem;">${days}</span><br><small>DAYS</small></div>
-                <div><span style="font-size:1.8rem;">${hrs}</span><br><small>HRS</small></div>
-                <div><span style="font-size:1.8rem;">${min}</span><br><small>MIN</small></div>
-                <div><span style="font-size:1.8rem;">${sec}</span><br><small>SEC</small></div>`;
+                <div><span style="font-size:1.8rem;">${days}</span><br><small>ДНИ</small></div>
+                <div><span style="font-size:1.8rem;">${hrs}</span><br><small>ЧАСЫ</small></div>
+                <div><span style="font-size:1.8rem;">${min}</span><br><small>МИН</small></div>
+                <div><span style="font-size:1.8rem;">${sec}</span><br><small>СЕК</small></div>`;
         }
         setInterval(update, 1000); update();
 
         // СЕРДЕЧКИ
         setInterval(() => {
             const c = document.getElementById('hearts');
-            const h = document.createElement('div');
-            h.innerHTML = '💜';
+            const h = document.createElement('div'); h.innerHTML = '💜';
             h.style.cssText = `position:absolute; left:${Math.random()*100}vw; top:-30px; font-size:20px; text-shadow:0 0 10px #f0f;`;
             const a = h.animate([{transform:'translateY(0)'},{transform:'translateY(110vh)'}], 5000);
             c.appendChild(h); a.onfinish = () => h.remove();
