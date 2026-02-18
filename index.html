@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>8 Марта для Виолетты</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <title>Violetta's Spring</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -12,199 +12,303 @@
     <style>
         :root {
             --dusty-rose: #d4a3a3;
-            --deep-rose: #a67575;
-            --gold: #d4af37;
-            --bg-soft: #f4e1e1;
+            --deep-rose: #8a5a5a;
+            --gold-light: #f1d38e;
+            --gold-dark: #b8860b;
         }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body, html {
             margin: 0; padding: 0;
-            /* Фон стал темнее и мягче */
-            background: linear-gradient(135deg, #e9cfcf 0%, #d4a3a3 100%);
+            background: radial-gradient(circle at top, #f2dede 0%, #d4a3a3 100%);
             color: #4a3434;
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
             min-height: 100vh;
         }
 
-        /* Мягкое свечение в центре (вместо резкого солнца) */
-        .aura {
-            position: fixed; top: 45%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
-            z-index: -1;
+        /* Золотая пыльца на фоне */
+        #sparkles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
         }
 
-        /* Эффект падающих лепестков */
+        /* Атмосферные лепестки */
         .petal {
             position: fixed; pointer-events: none; z-index: 100;
-            animation: fall 10s infinite linear;
-            font-size: 24px; filter: drop-shadow(0 0 5px rgba(0,0,0,0.1));
+            animation: fall 8s infinite linear;
+            font-size: 20px; filter: drop-shadow(0 0 3px rgba(255,192,203,0.5));
         }
         @keyframes fall {
-            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            0% { transform: translateY(-10vh) rotate(0deg) translateX(0); opacity: 0; }
             10% { opacity: 1; }
-            100% { transform: translateY(110vh) translateX(50px) rotate(360deg); opacity: 0; }
+            100% { transform: translateY(110vh) rotate(720deg) translateX(100px); opacity: 0; }
         }
 
         header {
             height: 100vh; display: flex; flex-direction: column;
             align-items: center; justify-content: center; text-align: center;
-            padding: 20px;
+            position: relative; z-index: 10; padding: 20px;
+        }
+
+        .pre-title { 
+            font-size: 0.8rem; letter-spacing: 5px; color: var(--deep-rose); 
+            margin-bottom: 10px; font-weight: 700; 
         }
 
         h1 {
-            font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 8vw, 4rem);
-            color: #fff; text-shadow: 2px 4px 10px rgba(0,0,0,0.15);
+            font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 10vw, 5rem);
+            background: linear-gradient(to right, #fff, var(--gold-light), #fff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.1);
             margin: 0; font-style: italic;
         }
 
-        .timer-wrap {
-            margin-top: 30px; display: flex; gap: 15px;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 25px; border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-        .t-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #fff; display: block; }
-        .t-txt { font-size: 0.7rem; color: #6e4c4c; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
-
-        .btn-gold {
-            margin-top: 50px; padding: 18px 40px;
-            background: linear-gradient(45deg, #d4af37, #f4e1e1);
-            border: none; border-radius: 50px;
-            color: #4a3434; font-weight: bold; font-family: 'Montserrat', sans-serif;
-            text-transform: uppercase; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
-            transition: 0.4s; letter-spacing: 1px;
-        }
-        .btn-gold:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5); }
-
-        /* Карточки с фото */
-        .photo-area { padding: 100px 20px; max-width: 900px; margin: 0 auto; text-align: center; }
-        .photo-card {
+        /* Таймер с эффектом парящего стекла */
+        .timer-card {
+            margin-top: 40px; display: flex; gap: 20px;
             background: rgba(255, 255, 255, 0.2);
-            padding: 15px; border-radius: 10px;
-            display: inline-block; margin-bottom: 80px;
-            border: 1px solid var(--gold);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            padding: 30px; border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 40px rgba(138, 90, 90, 0.2);
         }
-        .photo-card img { width: 100%; max-width: 350px; border-radius: 5px; }
-        .photo-card p { font-family: 'Playfair Display', serif; font-style: italic; margin-top: 15px; font-size: 1.2rem; }
+        .t-num { font-family: 'Playfair Display', serif; font-size: 3rem; color: #fff; line-height: 1; }
+        .t-txt { font-size: 0.7rem; color: var(--deep-rose); font-weight: 700; text-transform: uppercase; margin-top: 5px; }
+
+        .btn-main {
+            margin-top: 50px; padding: 20px 50px;
+            background: linear-gradient(45deg, var(--gold-dark), var(--gold-light));
+            border: none; border-radius: 50px;
+            color: #fff; font-weight: 700; font-size: 0.9rem;
+            text-transform: uppercase; cursor: pointer; letter-spacing: 2px;
+            box-shadow: 0 10px 25px rgba(184, 134, 11, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .btn-main:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 15px 35px rgba(184, 134, 11, 0.6); }
+
+        /* Фото-галерея */
+        .gallery { padding: 100px 20px; text-align: center; }
+        .photo-wrap {
+            position: relative; display: inline-block; padding: 15px;
+            background: #fff; border-radius: 2px; margin-bottom: 80px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            transform: rotate(-2deg); transition: 0.5s;
+        }
+        .photo-wrap:nth-child(even) { transform: rotate(2deg); }
+        .photo-wrap:hover { transform: rotate(0deg) scale(1.05); z-index: 50; }
+        .photo-wrap img { width: 100%; max-width: 320px; display: block; border: 1px solid #eee; }
+        
+        /* Декоративная печать на фото */
+        .photo-wrap::after {
+            content: '❤'; position: absolute; bottom: -20px; right: -20px;
+            width: 50px; height: 50px; background: var(--deep-rose);
+            color: #fff; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-size: 20px; border: 3px solid #fff;
+        }
 
         /* Плеер */
-        .music-btn {
-            position: fixed; bottom: 20px; right: 20px;
-            width: 50px; height: 50px; border-radius: 50%;
-            background: #fff; border: 2px solid var(--gold);
-            cursor: pointer; z-index: 1000;
+        .music-player {
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.8); padding: 8px 15px; border-radius: 30px;
+            border: 1px solid var(--gold-light); cursor: pointer;
         }
 
-        #modal {
+        /* Модальные окна */
+        .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(74, 52, 52, 0.8); z-index: 2000; align-items: center; justify-content: center;
+            background: rgba(74, 52, 52, 0.9); z-index: 2000; 
+            align-items: center; justify-content: center; backdrop-filter: blur(10px);
         }
-        .modal-body {
-            background: #fdf2f7; padding: 40px; border-radius: 30px;
-            max-width: 500px; width: 85%; text-align: center; border: 2px solid var(--gold);
+        .modal-box {
+            background: #fff; padding: 50px 30px; border-radius: 40px;
+            max-width: 500px; width: 90%; text-align: center;
+            border: 3px solid var(--gold-light); position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
         }
+        .modal-box h2 { font-family: 'Playfair Display', serif; color: var(--deep-rose); }
     </style>
 </head>
-<body>
+<body onclick="initAudio()">
 
-    <div class="aura"></div>
+    <canvas id="sparkles"></canvas>
     <div id="petals"></div>
 
-    <button class="music-btn" onclick="toggleM()" id="mBtn">🎵
-        <audio id="track" loop><source src="XdrianGM - Hold Me (Quavier Edit).mp3" type="audio/mpeg"></audio>
-    </button>
+    <div class="music-player" onclick="toggleM()">
+        <span id="mStatus" style="font-size: 0.7rem; font-weight: 700; color: var(--deep-rose);">SOUND OFF</span>
+        <div id="mIcon">🎵</div>
+        <audio id="track" loop preload="auto">
+            <source src="XdrianGM - Hold Me (Quavier Edit).mp3" type="audio/mpeg">
+        </audio>
+    </div>
 
     <header>
-        <p data-aos="fade-down" style="color: #fff; letter-spacing: 3px;">SPECIAL MOMENTS</p>
-        <h1 data-aos="zoom-in">Для моей Виолетты</h1>
+        <div class="pre-title" data-aos="fade-down">8 MARCH EDITION</div>
+        <h1 data-aos="zoom-in">Виолетта</h1>
         
-        <div class="timer-wrap" data-aos="fade-up">
+        <div class="timer-card" data-aos="fade-up">
             <div style="text-align: center;"><span class="t-num" id="d">00</span><span class="t-txt">Дней</span></div>
             <div style="text-align: center;"><span class="t-num" id="h">00</span><span class="t-txt">Часов</span></div>
             <div style="text-align: center;"><span class="t-num" id="m">00</span><span class="t-txt">Мин</span></div>
             <div style="text-align: center;"><span class="t-num" id="s">00</span><span class="t-txt">Сек</span></div>
         </div>
 
-        <button class="btn-gold" onclick="openMsg()">Открыть послание</button>
+        <button class="btn-main" onclick="openMsg('letter')">Прочитать письмо</button>
     </header>
 
-    <div class="photo-area">
-        <div class="photo-card" data-aos="fade-right">
+    <div class="gallery">
+        <div class="photo-wrap" data-aos="fade-right">
             <img src="1.jpg">
-            <p>Свет твоей улыбки</p>
+            <p style="margin-top:15px; font-family:'Playfair Display'; font-style:italic;">Моя бесконечность</p>
         </div>
         <br>
-        <div class="photo-card" data-aos="fade-left">
+        <div class="photo-wrap" data-aos="fade-left">
             <img src="2.jpg">
-            <p>Весна в твоем сердце</p>
+            <p style="margin-top:15px; font-family:'Playfair Display'; font-style:italic;">Самый нежный взгляд</p>
         </div>
         <br>
-        <button class="btn-gold" onclick="getGift()" style="background: #fff; color: var(--gold); border: 2px solid var(--gold);">
+        <button class="btn-main" onclick="openMsg('gift')" style="background: #fff; color: var(--gold-dark); border: 2px solid var(--gold-dark);">
             🎁 ПОЛУЧИТЬ ПОДАРОК
         </button>
     </div>
 
-    <div id="modal">
-        <div class="modal-body">
-            <p id="msg-text" style="font-size: 1.2rem; line-height: 1.8; color: #4a3434; font-style: italic;"></p>
-            <button class="btn-gold" onclick="closeMsg()" style="width: 100%;">Закрыть</button>
+    <div id="modal" class="modal">
+        <div class="modal-box">
+            <h2 id="modal-title">Для тебя</h2>
+            <p id="modal-text" style="font-size: 1.1rem; line-height: 1.8; margin: 25px 0; color: #666; font-style: italic;"></p>
+            <button class="btn-main" id="modal-btn" onclick="closeModal()" style="width: 100%; margin: 0;">Понятно</button>
         </div>
     </div>
 
     <script>
-        AOS.init({ duration: 1000 });
+        AOS.init({ duration: 1200 });
 
+        // Исправление музыки для мобильных устройств
         const audio = document.getElementById('track');
+        let audioStarted = false;
+
+        function initAudio() {
+            if (!audioStarted) {
+                audio.play().then(() => {
+                    audio.pause();
+                    audioStarted = true;
+                });
+            }
+        }
+
         function toggleM() {
-            if (audio.paused) { audio.play(); document.getElementById('mBtn').innerText = '⏸'; }
-            else { audio.pause(); document.getElementById('mBtn').innerText = '🎵'; }
+            if (audio.paused) {
+                audio.play();
+                document.getElementById('mStatus').innerText = 'SOUND ON';
+                document.getElementById('mIcon').innerText = '⏸';
+            } else {
+                audio.pause();
+                document.getElementById('mStatus').innerText = 'SOUND OFF';
+                document.getElementById('mIcon').innerText = '🎵';
+            }
         }
 
-        const msgs = [
-            "Виолетта, ты — самое прекрасное, что случилось в моей жизни. С 8 Марта!",
-            "С каждым днем я люблю тебя всё сильнее. Пусть эта весна будет для нас особенной.",
-            "Ты сияешь ярче любого солнца. Спасибо, что ты есть у меня!"
-        ];
+        // Логика сообщений
+        const content = {
+            letter: {
+                title: "Мое послание",
+                text: "Виолетта, в этот весенний день я хочу напомнить тебе, что ты — самое нежное сияние в моей жизни. Пусть каждый твой день будет наполнен ароматом цветов и теплом, которое ты даришь окружающим. Люблю тебя!",
+                btn: "Закрыть с любовью",
+                action: null
+            },
+            gift: {
+                title: "Твой подарок",
+                text: "Этот подарок — лишь малая часть того, что ты заслуживаешь. Я подготовил для тебя кое-что особенное в Телеграм. Нажми кнопку ниже, чтобы забрать его!",
+                btn: "ЗАБРАТЬ ПОДАРОК 💖",
+                action: () => { window.location.href = "https://t.me/brvg23"; }
+            }
+        };
 
-        function openMsg() {
-            document.getElementById('msg-text').innerText = msgs[Math.floor(Math.random()*msgs.length)];
+        let currentAction = null;
+
+        function openMsg(type) {
+            const data = content[type];
+            document.getElementById('modal-title').innerText = data.title;
+            document.getElementById('modal-text').innerText = data.text;
+            document.getElementById('modal-btn').innerText = data.btn;
+            currentAction = data.action;
+            
             document.getElementById('modal').style.display = 'flex';
-            confetti({ particleCount: 100, spread: 70, colors: ['#d4af37', '#f4e1e1', '#ff69b4'] });
+            confetti({ particleCount: 150, spread: 70, colors: ['#b8860b', '#f1d38e', '#ffffff'] });
         }
-        function closeMsg() { document.getElementById('modal').style.display = 'none'; }
 
-        // Таймер
+        function closeModal() {
+            if (currentAction) {
+                currentAction();
+            } else {
+                document.getElementById('modal').style.display = 'none';
+            }
+        }
+
+        // Таймер (отсчет С момента события 2 ноября 2025)
         const start = new Date(2025, 10, 2); 
-        function update() {
+        function updateTimer() {
             const diff = new Date() - start;
             document.getElementById('d').innerText = Math.floor(diff / 86400000);
             document.getElementById('h').innerText = String(Math.floor((diff/3600000)%24)).padStart(2, '0');
             document.getElementById('m').innerText = String(Math.floor((diff/60000)%60)).padStart(2, '0');
             document.getElementById('s').innerText = String(Math.floor((diff/1000)%60)).padStart(2, '0');
         }
-        setInterval(update, 1000); update();
+        setInterval(updateTimer, 1000); updateTimer();
+
+        // Анимация частиц (золотая пыль)
+        const canvas = document.getElementById('sparkles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.onresize = resize; resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y > canvas.height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(184, 134, 11, 0.3)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
 
         // Лепестки
         setInterval(() => {
             const p = document.createElement('div');
             p.innerHTML = '🌸'; p.className = 'petal';
             p.style.left = Math.random() * 100 + 'vw';
-            p.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            p.style.fontSize = (Math.random() * 15 + 15) + 'px';
             document.getElementById('petals').appendChild(p);
-            setTimeout(() => p.remove(), 10000);
-        }, 500);
-
-        function getGift() {
-            confetti({ particleCount: 200, spread: 100 });
-            setTimeout(() => { window.location.href="https://t.me/brvg23"; }, 1500);
-        }
+            setTimeout(() => p.remove(), 8000);
+        }, 600);
     </script>
 </body>
 </html>
