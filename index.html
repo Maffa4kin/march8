@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIOLETTA // FOREVER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VIOLETTA // 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:wght@700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -16,158 +16,167 @@
             --dark: #050110;
         }
 
-        /* БАЗОВЫЙ ФОН */
+        /* Убираем лишние отступы, чтобы всё влезло в экран */
+        * { box-sizing: border-box; }
+
         body, html {
             margin: 0; padding: 0;
-            background-color: var(--dark) !important;
+            background-color: var(--dark);
             color: white;
             font-family: 'Exo 2', sans-serif;
-            min-height: 100vh;
+            height: 100%;
             overflow-x: hidden;
         }
 
-        /* ЖЕСТКИЙ ФОНОВЫЙ СЛОЙ */
-        .bg-fixed {
+        /* ФОНОВЫЙ КОСМОС */
+        .bg-space {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 50%, #1a0533 0%, #050110 100%);
             z-index: -10;
-            transform: translateZ(0);
         }
 
-        /* СОЛНЦЕ (Упрощенное) */
+        /* СОЛНЦЕ - ТЕПЕРЬ ОНО ВСЕГДА ЗА ТЕКСТОМ */
         .sun {
-            position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
-            width: 250px; height: 250px;
+            position: fixed; 
+            top: 45%; left: 50%; 
+            transform: translate(-50%, -50%); /* Центрируем по экрану */
+            width: 300px; height: 300px;
             background: linear-gradient(to bottom, #ff0080, #ff8c00);
             border-radius: 50%;
-            box-shadow: 0 0 80px rgba(255, 0, 128, 0.8);
-            z-index: -9;
+            box-shadow: 0 0 80px var(--pink);
+            z-index: -5;
         }
 
-        /* СЕТКА */
+        /* СЕТКА - ПРИВЯЗАНА К НИЗУ ЭКРАНА */
         .grid {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 50%;
             background-image: 
                 linear-gradient(transparent 0%, var(--pink) 1px, transparent 2px),
                 linear-gradient(90deg, transparent 0%, var(--pink) 1px, transparent 2px);
-            background-size: 40px 40px;
-            transform: perspective(300px) rotateX(65deg) scale(2);
+            background-size: 50px 50px;
+            transform: perspective(200px) rotateX(60deg);
             transform-origin: center bottom;
             animation: move-grid 2s linear infinite;
-            opacity: 0.3; z-index: -8;
+            opacity: 0.4; z-index: -4;
         }
 
         @keyframes move-grid {
             from { background-position: 0 0; }
-            to { background-position: 0 40px; }
+            to { background-position: 0 50px; }
         }
 
-        /* СЕРДЕЧКИ */
+        /* СЛОЙ ДЛЯ СЕРДЕЧЕК */
         #heart-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none;
+            z-index: 1; pointer-events: none;
         }
 
-        /* ИНТЕРФЕЙС */
-        .music-btn {
-            position: fixed; top: 20px; right: 20px; z-index: 100;
-            background: rgba(0,0,0,0.6); border: 2px solid var(--blue);
-            color: var(--blue); padding: 12px; border-radius: 50%;
+        /* ГЛАВНЫЙ БЛОК */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+            background: transparent; /* Убираем черный фон, чтобы видеть солнце */
         }
-
-        header { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         
         h1 { 
-            font-family: 'Press Start 2P', cursive; font-size: 1.8rem; 
-            text-shadow: 4px 4px var(--pink); margin: 0;
+            font-family: 'Press Start 2P', cursive; 
+            font-size: 2.5rem; 
+            text-shadow: 0 0 10px var(--pink), 0 0 20px var(--pink);
+            margin: 0;
+            color: #fff;
         }
 
-        .timer {
-            margin-top: 30px; background: rgba(0,0,0,0.8); padding: 15px;
-            border: 2px solid var(--blue); box-shadow: 0 0 15px var(--blue);
-            display: flex; gap: 10px;
+        .timer-box {
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border: 2px solid var(--blue);
+            box-shadow: 0 0 20px var(--blue);
+            backdrop-filter: blur(5px);
         }
-        .t-num { font-size: 1.8rem; color: white; display: block; }
-        .t-lab { font-size: 0.5rem; color: var(--pink); font-family: 'Press Start 2P'; }
 
-        .container { max-width: 800px; margin: 0 auto; padding: 50px 20px; }
+        .t-num { font-size: 2.5rem; font-weight: bold; color: #fff; }
+        .t-lab { font-size: 0.6rem; color: var(--pink); font-family: 'Press Start 2P'; display: block; }
 
-        .moment { margin-bottom: 150px; text-align: center; }
-
+        /* КОНТЕНТ НИЖЕ */
+        .container { position: relative; z-index: 20; padding: 50px 20px; background: var(--dark); }
+        
         .card {
-            background: #000; border: 2px solid var(--blue);
-            padding: 8px; box-shadow: 0 0 20px var(--blue);
-            display: inline-block; max-width: 90%;
+            background: #000; border: 2px solid var(--blue); padding: 10px;
+            box-shadow: 0 0 20px var(--blue); display: inline-block;
         }
-        .card img { width: 100%; height: auto; display: block; }
+        .card img { max-width: 100%; height: auto; }
 
-        .phrase { margin-top: 25px; font-size: 1.1rem; font-weight: bold; text-shadow: 0 0 10px var(--blue); color: #fff; }
-
-        .btn-order {
-            font-family: 'Press Start 2P', cursive; font-size: 10px;
-            padding: 20px 30px; background: transparent; border: 3px solid var(--pink);
-            color: white; cursor: pointer; box-shadow: 0 0 15px var(--pink);
+        .music-btn {
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            background: rgba(0,0,0,0.5); border: 2px solid var(--blue);
+            color: var(--blue); padding: 10px; border-radius: 50%;
         }
+
     </style>
 </head>
 <body>
 
-    <div class="bg-fixed"></div>
+    <div class="bg-space"></div>
     <div class="sun"></div>
     <div class="grid"></div>
     <div id="heart-layer"></div>
 
-    <button class="music-btn" onclick="playM()">🎵
+    <button class="music-btn" onclick="toggleM()">🎵
         <audio id="audio" loop><source src="music.mp3" type="audio/mpeg"></audio>
     </button>
 
     <header>
         <h1 data-aos="zoom-in">VIOLETTA</h1>
-        <div class="timer" data-aos="fade-up">
-            <div id="countdown" style="display:flex; gap:15px;"></div>
+        <div class="timer-box" data-aos="fade-up">
+            <div id="countdown" style="display:flex; gap:20px; text-align:center;"></div>
         </div>
     </header>
 
     <div class="container">
-        <div class="moment" data-aos="fade-right">
-            <div class="card">
-                <img src="1.jpg">
-                <p style="font-family:'Press Start 2P'; font-size:8px; color:var(--pink); margin-top:10px;">IMG_DATA_01</p>
-            </div>
-            <p id="p1" class="phrase"></p>
-        </div>
-
-        <div class="moment" data-aos="fade-left">
-            <div class="card">
-                <img src="2.jpg">
-                <p style="font-family:'Press Start 2P'; font-size:8px; color:var(--pink); margin-top:10px;">IMG_DATA_02</p>
-            </div>
-            <p id="p2" class="phrase"></p>
-        </div>
-
         <center>
-            <button class="btn-order" data-aos="flip-up" onclick="send()">ЗАПРОСИТЬ ПОДАРОК // 100 STARS</button>
+            <div class="moment" data-aos="fade-up">
+                <div class="card">
+                    <img src="1.jpg" style="width: 300px;">
+                </div>
+                <p id="phrase1" style="font-weight:bold; margin: 20px 0 100px; text-shadow: 0 0 10px var(--blue);"></p>
+            </div>
+
+            <div class="moment" data-aos="fade-up">
+                <div class="card">
+                    <img src="2.jpg" style="width: 300px;">
+                </div>
+                <p id="phrase2" style="font-weight:bold; margin: 20px 0 100px; text-shadow: 0 0 10px var(--blue);"></p>
+            </div>
+
+            <button onclick="sendReq()" style="font-family:'Press Start 2P'; padding:20px; border:2px solid var(--pink); background:transparent; color:white; cursor:pointer; box-shadow:0 0 15px var(--pink);">
+                ПОЛУЧИТЬ ПОДАРОК // 100 STARS
+            </button>
         </center>
     </div>
 
     <script>
-        AOS.init({ once: true });
+        AOS.init();
 
         const phrases = [
-            "Ты — мой ритм в этом синтвейве.",
-            "Реальность с тобой ярче неона.",
-            "Твоя улыбка — энергия города.",
-            "Ты — яркая звезда на моем небе.",
-            "Сердце бьется в темпе 120 BPM.",
+            "Ты — мой главный ритм в этом синтвейве.",
+            "С тобой реальность ярче любого неона.",
+            "Твоя улыбка — энергия этого города.",
+            "Ты — самая яркая звезда на моем небе.",
             "Ты — лучший баг в моей системе.",
-            "Моя любовь зациклена бесконечно.",
+            "Любовь к тебе зациклена бесконечно.",
             "Ты — мой неоновый рай."
         ];
 
         function shuffle() {
-            const s = [...phrases].sort(() => 0.5 - Math.random());
-            document.getElementById('p1').innerText = s[0];
-            document.getElementById('p2').innerText = s[1];
+            const s = phrases.sort(() => 0.5 - Math.random());
+            document.getElementById('phrase1').innerText = s[0];
+            document.getElementById('phrase2').innerText = s[1];
         }
         window.onload = shuffle;
 
@@ -180,39 +189,43 @@
             const mins = Math.floor((d / 60000) % 60);
             const secs = Math.floor((d / 1000) % 60);
             document.getElementById('countdown').innerHTML = `
-                <div><span class="t-num">${days}</span><br><span class="t-lab">DAYS</span></div>
-                <div><span class="t-num">${hours}</span><br><span class="t-lab">HRS</span></div>
-                <div><span class="t-num">${mins}</span><br><span class="t-lab">MIN</span></div>
-                <div><span class="t-num">${secs}</span><br><span class="t-lab">SEC</span></div>
+                <div><span class="t-num">${days}</span><span class="t-lab">DAYS</span></div>
+                <div><span class="t-num">${hours}</span><span class="t-lab">HRS</span></div>
+                <div><span class="t-num">${mins}</span><span class="t-lab">MIN</span></div>
+                <div><span class="t-num">${secs}</span><span class="t-lab">SEC</span></div>
             `;
         }
         setInterval(update, 1000); update();
 
-        function playM() {
+        function toggleM() {
             const a = document.getElementById('audio');
             a.paused ? a.play() : a.pause();
         }
 
-        // УПРОЩЕННЫЕ СЕРДЕЧКИ
-        function createH() {
-            const lyr = document.getElementById('heart-layer');
+        function createHeart() {
+            const container = document.getElementById('heart-layer');
             const h = document.createElement('div');
             h.innerHTML = Math.random() > 0.5 ? '💜' : '✨';
-            h.style.cssText = `
-                position: absolute; left: ${Math.random()*100}vw; top: -50px;
-                font-size: 20px; text-shadow: 0 0 10px #ff00ff; opacity: 0.7;
-            `;
-            const dur = 5000;
-            const a = h.animate([{transform:'translateY(0)'}, {transform:'translateY(110vh)'}], dur);
-            lyr.appendChild(h);
-            a.onfinish = () => h.remove();
-        }
-        setInterval(createH, 400);
+            h.style.position = 'absolute';
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.top = '-50px';
+            h.style.fontSize = '20px';
+            h.style.textShadow = '0 0 10px #ff00ff';
+            
+            const anim = h.animate([
+                { transform: 'translateY(0)' },
+                { transform: 'translateY(110vh)' }
+            ], { duration: 5000 });
 
-        function send() {
+            container.appendChild(h);
+            anim.onfinish = () => h.remove();
+        }
+        setInterval(createHeart, 300);
+
+        function sendReq() {
             confetti({ particleCount: 200, spread: 70, colors: ['#ff00ff', '#00ffff'] });
             setTimeout(() => {
-                window.location.href = `https://t.me/brvg23?text=${encodeURIComponent("Любимый, я выбираю подарок: Кольцо за 100 звёзд! 💍")}`;
+                window.location.href = "https://t.me/brvg23?text=" + encodeURIComponent("Милый, я выбираю подарок: Кольцо за 100 звёзд! 💍");
             }, 1000);
         }
     </script>
