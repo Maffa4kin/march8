@@ -3,36 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Виолетта ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Pacifico&display=swap" rel="stylesheet">
+    <title>VIOLETTA // 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:ital,wght@1,700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --bg-color: #0d0415;
-            --accent-purple: #9d50bb;
-            --text-lavender: #dcd0ff;
+            --neon-pink: #ff00ff;
+            --neon-blue: #00ffff;
+            --bg-dark: #0d0221;
         }
 
         body {
             margin: 0; padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-lavender);
-            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--neon-blue);
+            font-family: 'Exo 2', sans-serif;
             overflow-x: hidden;
+            /* Эффект старого телевизора */
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+        }
+
+        /* Ретро-сетка */
+        .grid {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(transparent 0%, var(--neon-pink) 2%, transparent 3%),
+                linear-gradient(90deg, transparent 0%, var(--neon-pink) 2%, transparent 3%);
+            background-size: 60px 60px;
+            transform: perspective(500px) rotateX(60deg);
+            transform-origin: center bottom;
+            animation: move-grid 2s linear infinite;
+            opacity: 0.15; z-index: -1;
+        }
+
+        @keyframes move-grid {
+            from { background-position: 0 0; }
+            to { background-position: 0 60px; }
+        }
+
+        /* Закатное солнце */
+        .sun {
+            position: fixed; top: 15%; left: 50%; transform: translateX(-50%);
+            width: 300px; height: 300px;
+            background: linear-gradient(#ff0080, #ff8c00);
+            border-radius: 50%;
+            box-shadow: 0 0 80px #ff0080;
+            z-index: -2;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 0% 70%, 0% 75%, 100% 75%, 100% 80%, 0% 80%, 0% 85%, 100% 85%, 100% 90%, 0% 90%, 0% 95%, 100% 95%, 100% 100%, 0% 100%);
         }
 
         .music-btn {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
-            background: rgba(255,255,255,0.1); border: 1px solid var(--accent-purple);
-            padding: 12px; border-radius: 50%; cursor: pointer; backdrop-filter: blur(10px);
-            color: white; font-size: 20px;
-        }
-
-        .heart-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none;
+            background: transparent; border: 2px solid var(--neon-blue);
+            color: var(--neon-blue); padding: 15px; border-radius: 50%;
+            cursor: pointer; box-shadow: 0 0 10px var(--neon-blue);
         }
 
         header {
@@ -41,47 +69,60 @@
         }
 
         h1 {
-            font-family: 'Pacifico', cursive; font-size: 3rem; color: white;
-            text-shadow: 0 0 20px var(--accent-purple); margin: 0;
+            font-family: 'Press Start 2P', cursive; font-size: 2.2rem;
+            color: white; text-shadow: 4px 4px var(--neon-pink);
+            margin: 0; animation: glitch 1s infinite alternate;
+        }
+
+        @keyframes glitch {
+            0% { transform: skew(0); }
+            100% { transform: skew(2deg); opacity: 0.8; }
         }
 
         .timer-box {
-            margin-top: 30px; background: rgba(255,255,255,0.05);
-            padding: 20px; border-radius: 20px; border: 1px solid rgba(157, 80, 187, 0.3);
+            margin-top: 50px; background: rgba(0,0,0,0.8);
+            padding: 25px; border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 20px var(--neon-blue);
         }
-        .timer-display { display: flex; gap: 15px; }
-        .t-num { font-size: 2rem; font-weight: 600; color: white; display: block; }
-        .t-text { font-size: 0.7rem; opacity: 0.7; text-transform: uppercase; }
+        .timer-display { display: flex; gap: 20px; }
+        .t-num { font-size: 2.5rem; font-weight: bold; color: white; }
+        .t-text { font-size: 0.8rem; text-transform: uppercase; }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 50px 20px; }
+        .container { max-width: 900px; margin: 0 auto; padding: 100px 20px; }
 
-        .moment {
-            margin-bottom: 150px; display: flex; flex-direction: column; align-items: center;
-        }
+        .moment { margin-bottom: 250px; display: flex; flex-direction: column; align-items: center; }
 
         .photo-holder {
-            width: 100%; max-width: 400px; background: white; padding: 12px 12px 45px 12px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8); margin-bottom: 30px;
+            width: 100%; max-width: 450px; background: #000; padding: 10px;
+            border: 3px solid var(--neon-blue); box-shadow: 0 0 30px var(--neon-blue);
         }
 
-        .photo-holder img { width: 100%; height: auto; display: block; background: #eee; }
+        .photo-holder img { width: 100%; height: auto; display: block; filter: saturate(1.5) contrast(1.2); }
+
+        .photo-label {
+            font-family: 'Press Start 2P', cursive; font-size: 10px;
+            color: var(--neon-pink); padding-top: 15px; text-align: center;
+        }
 
         .moment-desc {
-            font-size: 1.1rem; font-style: italic; text-align: center;
-            line-height: 1.6; max-width: 500px; opacity: 0.9;
+            font-size: 1.2rem; text-align: center; margin-top: 30px;
+            color: white; text-shadow: 0 0 5px var(--neon-blue);
         }
 
         .btn-end {
-            background: linear-gradient(45deg, #6a11cb, #9d50bb);
-            color: white; border: none; padding: 20px 40px;
-            border-radius: 50px; font-weight: bold; cursor: pointer;
-            font-size: 1.1rem; transition: 0.3s; margin-top: 30px;
-            box-shadow: 0 0 20px rgba(157, 80, 187, 0.4);
+            font-family: 'Press Start 2P', cursive; font-size: 14px;
+            background: transparent; color: var(--neon-pink);
+            border: 3px solid var(--neon-pink); padding: 25px 50px;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px var(--neon-pink);
         }
 
-        .btn-end:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--accent-purple); }
+        .btn-end:hover {
+            background: var(--neon-pink); color: white;
+            box-shadow: 0 0 50px var(--neon-pink);
+        }
 
-        footer { padding: 40px; text-align: center; opacity: 0.3; font-size: 0.8rem; }
+        footer { padding: 50px; text-align: center; opacity: 0.5; font-family: 'Press Start 2P', sans-serif; font-size: 8px; }
+
     </style>
 </head>
 <body>
@@ -90,54 +131,48 @@
         <audio id="track" loop><source src="music.mp3" type="audio/mpeg"></audio>
     </button>
 
-    <div id="hearts"></div>
+    <div class="grid"></div>
+    <div class="sun"></div>
 
     <header>
-        <h1 data-aos="zoom-in">Виолетта</h1>
+        <h1 data-aos="zoom-in">VIOLETTA</h1>
         <div class="timer-box" data-aos="fade-up" data-aos-delay="400">
-            <p>Мы вместе уже:</p>
             <div id="countdown" class="timer-display"></div>
         </div>
     </header>
 
     <div class="container">
         
-        <div class="moment">
-            <div class="photo-holder" style="transform: rotate(-2deg);" data-aos="fade-up">
-                <img src="1.jpg" alt="Фото 1">
-                <p style="color: #333; font-family: 'Pacifico'; margin-top: 15px; text-align: center;">Тот самый миг</p>
+        <div class="moment" data-aos="fade-right">
+            <div class="photo-holder">
+                <img src="1.jpg" alt="Photo 1">
+                <p class="photo-label">FILE_001.JPG</p>
             </div>
-            <div class="moment-desc" data-aos="fade-up">
-                С этого момента моя жизнь изменилась навсегда.
-            </div>
+            <p class="moment-desc">С этого момента моя реальность стала ярче неона.</p>
         </div>
 
-        <div class="moment">
-            <div class="photo-holder" style="transform: rotate(3deg);" data-aos="fade-up">
-                <img src="2.jpg" alt="Фото 2">
-                <p style="color: #333; font-family: 'Pacifico'; margin-top: 15px; text-align: center;">Твоя нежность</p>
+        <div class="moment" data-aos="fade-left">
+            <div class="photo-holder">
+                <img src="2.jpg" alt="Photo 2">
+                <p class="photo-label">FILE_002.JPG</p>
             </div>
-            <div class="moment-desc" data-aos="fade-up">
-                Обожаю, как ты улыбаешься.
-            </div>
+            <p class="moment-desc">В твоей улыбке — вся энергия ночного города.</p>
         </div>
 
         <center>
-            <div data-aos="zoom-in">
-                <p style="font-family: 'Pacifico'; font-size: 1.5rem;">Готова к подарку?</p>
+            <div data-aos="flip-up">
                 <button class="btn-end" onclick="sendGiftRequest()">
-                    Отправить запрос на 100 звёзд 💍
+                    ЗАПРОСИТЬ ПОДАРОК: 100 STARS
                 </button>
             </div>
         </center>
     </div>
 
-    <footer>Создано для Виолетты ❤️ 2026</footer>
+    <footer>ACCESS GRANTED // LOVE.SYS // 2026</footer>
 
     <script>
-        AOS.init({ duration: 1000 });
+        AOS.init({ duration: 1200 });
 
-        // Таймер на 2 ноября 2025
         const start = new Date(2025, 10, 2); 
         function update() {
             const now = new Date();
@@ -147,10 +182,10 @@
             const mins = Math.floor((d / 60000) % 60);
             const secs = Math.floor((d / 1000) % 60);
             document.getElementById('countdown').innerHTML = `
-                <div class="t-unit"><span class="t-num">${days}</span><span class="t-text">дн</span></div>
-                <div class="t-unit"><span class="t-num">${hours}</span><span class="t-text">ч</span></div>
-                <div class="t-unit"><span class="t-num">${mins}</span><span class="t-text">м</span></div>
-                <div class="t-unit"><span class="t-num">${secs}</span><span class="t-text">с</span></div>
+                <div class="t-unit"><span class="t-num">${days}</span><span class="t-text">DAYS</span></div>
+                <div class="t-unit"><span class="t-num">${hours}</span><span class="t-text">HRS</span></div>
+                <div class="t-unit"><span class="t-num">${mins}</span><span class="t-text">MIN</span></div>
+                <div class="t-unit"><span class="t-num">${secs}</span><span class="t-text">SEC</span></div>
             `;
         }
         setInterval(update, 1000); update();
@@ -163,23 +198,13 @@
         }
 
         function sendGiftRequest() {
-            confetti({ particleCount: 300, spread: 100, origin: { y: 0.6 } });
+            confetti({ particleCount: 400, spread: 120, origin: { y: 0.6 }, colors: ['#ff00ff', '#00ffff', '#ffffff'] });
             setTimeout(() => {
                 const nick = "brvg23"; 
-                const text = encodeURIComponent("Милый, я выбираю подарок: Кольцо за 100 звёзд! ✨💍");
+                const text = encodeURIComponent("Милый, я выбираю подарок: Кольцо за 100 звёзд! 💍✨");
                 window.location.href = `https://t.me/${nick}?text=${text}`;
             }, 1500);
         }
-
-        setInterval(() => {
-            const h = document.createElement('div');
-            h.innerHTML = '💜';
-            h.style.position = 'fixed'; h.style.left = Math.random() * 100 + 'vw';
-            h.style.top = '-20px'; h.style.zIndex = '-1';
-            h.animate([{transform: 'translateY(0)'}, {transform: 'translateY(105vh)'}], 5000);
-            document.body.appendChild(h);
-            setTimeout(() => h.remove(), 5000);
-        }, 600);
     </script>
 </body>
 </html>
