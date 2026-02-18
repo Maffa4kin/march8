@@ -3,37 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для Виолетты ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Pacifico&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <title>VIOLETTA // 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:ital,wght@1,700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
     <style>
         :root {
-            --bg-dark: #120520;
-            --accent-violet: #9d50bb;
-            --text-lavender: #dcd0ff;
+            --neon-pink: #ff00ff;
+            --neon-blue: #00ffff;
+            --bg-dark: #050110; /* Глубокий черный с оттенком */
         }
 
-        body {
-            margin: 0; padding: 0;
+        /* Убираем белый фон на корню */
+        html, body {
             background-color: var(--bg-dark) !important;
-            color: var(--text-lavender);
-            font-family: 'Montserrat', sans-serif;
+            margin: 0; padding: 0;
+            color: var(--neon-blue);
+            font-family: 'Exo 2', sans-serif;
             overflow-x: hidden;
         }
 
-        /* Анимированный фон с сердечками */
-        #hearts-container {
+        /* Ретро-сетка (движущийся пол) */
+        .grid {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 80%;
+            background-image: 
+                linear-gradient(transparent 0%, var(--neon-pink) 1px, transparent 2px),
+                linear-gradient(90deg, transparent 0%, var(--neon-pink) 1px, transparent 2px);
+            background-size: 50px 50px;
+            transform: perspective(500px) rotateX(60deg);
+            transform-origin: center bottom;
+            animation: move-grid 2.5s linear infinite;
+            opacity: 0.2; z-index: -1;
+        }
+
+        @keyframes move-grid {
+            from { background-position: 0 0; }
+            to { background-position: 0 50px; }
+        }
+
+        /* Полосатое солнце */
+        .sun {
+            position: fixed; top: 15%; left: 50%; transform: translateX(-50%);
+            width: 280px; height: 280px;
+            background: linear-gradient(#ff0080, #ff8c00);
+            border-radius: 50%;
+            box-shadow: 0 0 60px #ff0080;
+            z-index: -2;
+            /* Эффект полос на солнце */
+            -webkit-mask-image: linear-gradient(to bottom, 
+                black 0%, black 65%, 
+                transparent 65%, transparent 70%, 
+                black 70%, black 75%, 
+                transparent 75%, transparent 80%, 
+                black 80%, black 85%, 
+                transparent 85%, transparent 90%, 
+                black 90%, black 95%, 
+                transparent 95%, transparent 100%);
+        }
+
+        /* Эффект помех VHS */
+        .vhs-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 3px, 2px 100%;
+            pointer-events: none; z-index: 10;
         }
 
         .music-btn {
-            position: fixed; top: 20px; right: 20px; z-index: 1000;
-            background: rgba(255,255,255,0.05); border: 1px solid var(--accent-violet);
-            padding: 12px; border-radius: 50%; cursor: pointer; backdrop-filter: blur(10px);
-            color: white; font-size: 20px; box-shadow: 0 0 10px var(--accent-violet);
+            position: fixed; top: 20px; right: 20px; z-index: 1001;
+            background: rgba(0,0,0,0.5); border: 2px solid var(--neon-blue);
+            color: var(--neon-blue); padding: 15px; border-radius: 50%;
+            cursor: pointer; box-shadow: 0 0 15px var(--neon-blue);
         }
 
         header {
@@ -42,109 +85,114 @@
         }
 
         h1 {
-            font-family: 'Pacifico', cursive; font-size: 3.5rem; color: white;
-            text-shadow: 0 0 20px var(--accent-violet); margin: 0;
+            font-family: 'Press Start 2P', cursive; font-size: 2rem;
+            color: white; text-shadow: 4px 4px var(--neon-pink), -2px -2px var(--neon-blue);
+            margin: 0; animation: glitch 2s infinite alternate;
+        }
+
+        @keyframes glitch {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(-1deg); }
+            40% { transform: skew(1deg); }
+            100% { transform: skew(0deg); opacity: 0.9; }
         }
 
         .timer-box {
-            margin-top: 30px; background: rgba(255,255,255,0.03);
-            padding: 25px; border-radius: 30px; border: 1px solid rgba(157, 80, 187, 0.2);
+            margin-top: 40px; background: rgba(0,0,0,0.8);
+            padding: 20px; border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 20px var(--neon-blue);
         }
-        .timer-display { display: flex; gap: 20px; }
-        .t-num { font-size: 2.2rem; font-weight: 600; color: white; display: block; }
-        .t-text { font-size: 0.8rem; opacity: 0.7; text-transform: uppercase; }
+        .timer-display { display: flex; gap: 15px; }
+        .t-num { font-size: 2rem; font-weight: bold; color: white; }
+        .t-text { font-size: 0.6rem; text-transform: uppercase; color: var(--neon-pink); }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 50px 20px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 100px 20px; }
 
-        .moment {
-            margin-bottom: 200px; display: flex; flex-direction: column; align-items: center;
+        .moment { margin-bottom: 200px; display: flex; flex-direction: column; align-items: center; }
+
+        .photo-holder {
+            width: 100%; max-width: 400px; background: #000; padding: 10px;
+            border: 2px solid var(--neon-blue); box-shadow: 0 0 25px var(--neon-blue);
         }
 
-        /* Тот самый стиль Полароида из первой версии */
-        .photo-card {
-            width: 100%; max-width: 400px; background: white; padding: 15px 15px 50px 15px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6); margin-bottom: 40px;
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .photo-card:hover { transform: scale(1.05) rotate(0deg) !important; }
+        .photo-holder img { width: 100%; height: auto; display: block; }
 
-        .photo-card img { width: 100%; height: auto; display: block; background: #eee; }
-
-        .photo-caption {
-            margin-top: 20px; font-family: 'Pacifico', cursive;
-            color: #2a1b3d; font-size: 1.4rem; text-align: center;
+        .photo-label {
+            font-family: 'Press Start 2P', cursive; font-size: 9px;
+            color: var(--neon-pink); padding-top: 12px; text-align: center;
         }
 
         .moment-desc {
-            font-size: 1.2rem; font-style: italic; text-align: center;
-            line-height: 1.6; max-width: 600px; color: var(--text-lavender);
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            font-size: 1.1rem; text-align: center; margin-top: 25px;
+            color: white; text-shadow: 0 0 10px var(--neon-blue); line-height: 1.5;
         }
 
-        .btn-order {
-            background: linear-gradient(45deg, #6a11cb, var(--accent-violet));
-            color: white; border: none; padding: 22px 45px;
-            border-radius: 50px; font-weight: bold; cursor: pointer;
-            font-size: 1.2rem; transition: 0.4s;
-            box-shadow: 0 10px 30px rgba(157, 80, 187, 0.4);
+        .btn-end {
+            font-family: 'Press Start 2P', cursive; font-size: 11px;
+            background: transparent; color: var(--neon-pink);
+            border: 2px solid var(--neon-pink); padding: 20px 35px;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px var(--neon-pink);
         }
-        .btn-order:hover { transform: translateY(-5px); box-shadow: 0 15px 40px var(--accent-violet); }
 
-        footer { padding: 60px; text-align: center; opacity: 0.3; font-size: 0.8rem; }
+        .btn-end:hover {
+            background: var(--neon-pink); color: white;
+            box-shadow: 0 0 40px var(--neon-pink); transform: scale(1.05);
+        }
+
+        footer { padding: 40px; text-align: center; opacity: 0.4; font-family: 'Press Start 2P', sans-serif; font-size: 7px; color: var(--neon-blue); }
+
     </style>
 </head>
 <body>
+
+    <div class="vhs-overlay"></div>
+    <div class="grid"></div>
+    <div class="sun"></div>
 
     <button class="music-btn" onclick="toggleMusic()" id="mBtn">🎵
         <audio id="track" loop><source src="music.mp3" type="audio/mpeg"></audio>
     </button>
 
-    <div id="hearts-container"></div>
-
     <header>
-        <h1 data-aos="zoom-in">Виолетта</h1>
-        <div class="timer-box" data-aos="fade-up" data-aos-delay="400">
+        <h1 data-aos="zoom-in">VIOLETTA</h1>
+        <div class="timer-box" data-aos="fade-up">
             <div id="countdown" class="timer-display"></div>
         </div>
     </header>
 
     <div class="container">
         
-        <div class="moment">
-            <div class="photo-card" style="transform: rotate(-3deg);" data-aos="fade-up">
-                <img src="1.jpg" alt="Photo 1">
-                <div class="photo-caption">Начало...</div>
+        <div class="moment" data-aos="fade-right">
+            <div class="photo-holder">
+                <img src="1.jpg" alt="Memory 1">
+                <p class="photo-label">DATA_ENTRY_001</p>
             </div>
-            <div class="moment-desc" data-aos="fade-up">
-                Ты — лучшее, что случилось со мной в 2025 году.
-            </div>
+            <p class="moment-desc">С этого момента моя реальность стала ярче неона.</p>
         </div>
 
-        <div class="moment">
-            <div class="photo-card" style="transform: rotate(3deg);" data-aos="fade-up">
-                <img src="2.jpg" alt="Photo 2">
-                <div class="photo-caption">Твоя магия</div>
+        <div class="moment" data-aos="fade-left">
+            <div class="photo-holder">
+                <img src="2.jpg" alt="Memory 2">
+                <p class="photo-label">DATA_ENTRY_002</p>
             </div>
-            <div class="moment-desc" data-aos="fade-up">
-                Обожаю твой смех и то, как ты на меня смотришь.
-            </div>
+            <p class="moment-desc">В твоей улыбке — вся энергия ночного города.</p>
         </div>
 
         <center>
-            <div data-aos="zoom-in">
-                <button class="btn-order" onclick="sendRequest()">
-                    Запросить подарок: 100 STARS 💍
+            <div data-aos="flip-up">
+                <button class="btn-end" onclick="sendGiftRequest()">
+                    ЗАПРОСИТЬ ПОДАРОК: 100 STARS
                 </button>
             </div>
         </center>
     </div>
 
-    <footer>ACCESS GRANTED // LOVE.SYS // 2026</footer>
+    <footer>// ACCESS_GRANTED // 2026 // SYSTEM_LOVE</footer>
 
     <script>
-        AOS.init({ duration: 1200, once: false });
+        AOS.init({ duration: 1200 });
 
-        // ТАЙМЕР (2 ноября 2025)
+        // Таймер на 2 ноября 2025
         const start = new Date(2025, 10, 2); 
         function update() {
             const now = new Date();
@@ -154,10 +202,10 @@
             const mins = Math.floor((d / 60000) % 60);
             const secs = Math.floor((d / 1000) % 60);
             document.getElementById('countdown').innerHTML = `
-                <div class="t-unit"><span class="t-num">${days}</span><span class="t-text">дн</span></div>
-                <div class="t-unit"><span class="t-num">${hours}</span><span class="t-text">чс</span></div>
-                <div class="t-unit"><span class="t-num">${mins}</span><span class="t-text">мн</span></div>
-                <div class="t-unit"><span class="t-num">${secs}</span><span class="t-text">ск</span></div>
+                <div class="t-unit"><span class="t-num">${days}</span><br><span class="t-text">DAYS</span></div>
+                <div class="t-unit"><span class="t-num">${hours}</span><br><span class="t-text">HRS</span></div>
+                <div class="t-unit"><span class="t-num">${mins}</span><br><span class="t-text">MIN</span></div>
+                <div class="t-unit"><span class="t-num">${secs}</span><br><span class="t-text">SEC</span></div>
             `;
         }
         setInterval(update, 1000); update();
@@ -165,32 +213,18 @@
         function toggleMusic() {
             const a = document.getElementById('track');
             const b = document.getElementById('mBtn');
-            a.paused ? (a.play(), b.innerText = '⏸️') : (a.pause(), b.innerText = '🎵');
+            if(a.paused) { a.play(); b.innerText = '⏸️'; } 
+            else { a.pause(); b.innerText = '🎵'; }
         }
 
-        function sendRequest() {
-            confetti({ particleCount: 300, spread: 100, origin: { y: 0.6 }, colors: ['#9d50bb', '#ffffff', '#00ffff'] });
+        function sendGiftRequest() {
+            confetti({ particleCount: 300, spread: 100, origin: { y: 0.6 }, colors: ['#ff00ff', '#00ffff'] });
             setTimeout(() => {
-                window.location.href = `https://t.me/brvg23?text=${encodeURIComponent("Любимый, я выбираю подарок: Кольцо за 100 звёзд! 💍✨")}`;
+                const nick = "brvg23"; 
+                const text = encodeURIComponent("Милый, я выбираю подарок: Кольцо за 100 звёзд! 💍✨");
+                window.location.href = `https://t.me/${nick}?text=${text}`;
             }, 1500);
         }
-
-        // Анимированные фиолетовые сердечки на фоне
-        const container = document.getElementById('hearts-container');
-        function createHeart() {
-            const h = document.createElement('div');
-            h.innerHTML = Math.random() > 0.5 ? '💜' : '✨';
-            h.style.position = 'absolute';
-            h.style.left = Math.random() * 100 + 'vw';
-            h.style.top = '-20px';
-            h.style.fontSize = Math.random() * 15 + 10 + 'px';
-            h.style.opacity = Math.random() * 0.5 + 0.2;
-            const duration = 5000 + Math.random() * 3000;
-            h.animate([{ transform: 'translateY(0) rotate(0deg)' }, { transform: `translateY(110vh) rotate(${Math.random() * 360}deg)` }], { duration: duration });
-            container.appendChild(h);
-            setTimeout(() => h.remove(), duration);
-        }
-        setInterval(createHeart, 400);
     </script>
 </body>
 </html>
