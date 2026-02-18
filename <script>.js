@@ -20,6 +20,6 @@ function sendGiftRequest() {
     setTimeout(() => {
         const myTelegramNick = "brvg23"; // ЗАМЕНИ НА СВОЙ НИК
         const message = encodeURIComponent("Милый, я выбираю подарок: Кольцо за 100 звёзд! ✨💍");
-        window.location.href = `https://t.me/${myTelegramNick}?text=${message}`;
+        window.location.href = `https://t.me/${brvg23}?text=${message}`;
     }, 2000);
 }
