@@ -30,6 +30,7 @@
             min-height: 100vh;
         }
 
+        /* Тонкая золотая рамка */
         body::before {
             content: ''; position: fixed; top: 10px; left: 10px; right: 10px; bottom: 10px;
             border: 2px solid var(--gold-soft);
@@ -90,37 +91,39 @@
         @keyframes shine { to { background-position: 200% center; } }
         .btn-luxe:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 40px rgba(184, 134, 11, 0.6); }
 
+        /* --- ГАЛЕРЕЯ (2 ФОТО И СЕРДЦЕ) --- */
         .gallery-section { padding: 120px 20px; text-align: center; z-index: 10; position: relative; }
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+        .duo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
-            align-items: center;
         }
         .polaroid {
-            display: inline-block; background: #fff; padding: 15px 15px 40px 15px;
+            background: #fff; padding: 15px 15px 40px 15px;
             border-radius: 2px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            transform: rotate(-2deg);
+            max-width: 320px;
             transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             border: 1px solid #eee;
         }
-        .polaroid:nth-child(even) { transform: rotate(3deg); }
-        .polaroid:hover { transform: rotate(0deg) translateY(-15px); box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
+        .polaroid.left { transform: rotate(-4deg); }
+        .polaroid.right { transform: rotate(4deg); }
+        .polaroid:hover { transform: rotate(0deg) translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
         .polaroid img { width: 100%; height: auto; display: block; border-radius: 2px; }
-        .caption { font-family: 'Playfair Display', serif; font-style: italic; margin-top: 20px; color: var(--deep-red); font-size: 1.1rem; }
-
+        
         .center-heart {
             background: rgba(255, 255, 255, 0.15);
             border: 2px dashed var(--gold-soft);
-            border-radius: 20px;
-            min-height: 250px;
+            border-radius: 50%;
+            width: 250px; height: 250px;
             display: flex; align-items: center; justify-content: center;
             backdrop-filter: blur(10px);
+            padding: 20px;
         }
-        .heart-content { font-family: 'Playfair Display', serif; color: #fff; font-style: italic; text-align: center; }
+        .heart-content { font-family: 'Playfair Display', serif; color: #fff; font-style: italic; text-align: center; line-height: 1.4; }
 
         .music-widget {
             position: fixed; top: 25px; right: 25px; z-index: 1001;
@@ -140,9 +143,9 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
 
-        @media (max-width: 768px) {
-            .photo-grid { grid-template-columns: 1fr; }
-            .center-heart { order: -1; margin-bottom: 20px; }
+        @media (max-width: 900px) {
+            .duo-container { flex-direction: column; }
+            .center-heart { order: -1; width: 200px; height: 200px; }
         }
     </style>
 </head>
@@ -172,7 +175,7 @@
     </header>
 
     <div class="gallery-section">
-        <div class="photo-grid" id="main-grid">
+        <div class="duo-container" id="photo-duo">
             </div>
 
         <div style="margin-top: 60px;">
@@ -193,44 +196,42 @@
     <script>
         AOS.init({ duration: 1000, once: true });
 
-        // --- РАНДОМ ГАЛЕРЕИ ---
-        const totalPhotos = 11; // Всего твоих фото в папке
-        const gridLimit = 8;    // Сколько показывать одновременно
+        // --- ЛОГИКА РАНДОМА ДВУХ ФОТО ---
+        const totalPhotos = 11;
         const captions = ["Моя Вселенная", "Нежность", "Твоя улыбка", "Особенный момент", "Самая лучшая", "Весна в тебе", "Любимая", "Виолетта", "Сияние", "Прекрасная", "Чудо"];
 
-        function shuffle(array) {
-            return array.sort(() => Math.random() - 0.5);
-        }
-
-        function loadGallery() {
-            const grid = document.getElementById('main-grid');
-            let photoIndices = [];
-            for(let i=1; i<=totalPhotos; i++) photoIndices.push(i);
+        function loadDuoGallery() {
+            const duoContainer = document.getElementById('photo-duo');
             
-            // Перемешиваем индексы и берем первые 8
-            const selected = shuffle(photoIndices).slice(0, gridLimit);
+            // Генерируем список доступных чисел
+            let pool = [];
+            for(let i=1; i<=totalPhotos; i++) pool.push(i);
             
-            selected.forEach((num, index) => {
-                // Вставляем сердце посередине (после 3-го фото на десктопе)
-                if(index === 3) {
-                    grid.innerHTML += `
-                        <div class="center-heart" data-aos="fade-up">
-                            <div class="heart-content">
-                                <span style="font-size: 1.5rem;">❤</span>
-                                <p>ТЫ В ЦЕНТРЕ МОЕГО МИРА</p>
-                                <span style="font-size: 1.5rem;">❤</span>
-                            </div>
-                        </div>`;
-                }
+            // Перемешиваем и берем 2
+            const selected = pool.sort(() => Math.random() - 0.5).slice(0, 2);
+            
+            // Вставляем первое фото
+            duoContainer.innerHTML = `
+                <div class="polaroid left" data-aos="fade-right">
+                    <img src="${selected[0]}.jpg">
+                    <div class="caption">${captions[selected[0]-1]}</div>
+                </div>
+                
+                <div class="center-heart" data-aos="zoom-in">
+                    <div class="heart-content">
+                        <span style="font-size: 1.5rem;">❤</span>
+                        <p>ТЫ В ЦЕНТРЕ МОЕГО МИРА</p>
+                        <span style="font-size: 1.5rem;">❤</span>
+                    </div>
+                </div>
 
-                grid.innerHTML += `
-                    <div class="polaroid" data-aos="zoom-in" data-aos-delay="${index * 100}">
-                        <img src="${num}.jpg">
-                        <div class="caption">${captions[num-1] || "Прекрасная"}</div>
-                    </div>`;
-            });
+                <div class="polaroid right" data-aos="fade-left">
+                    <img src="${selected[1]}.jpg">
+                    <div class="caption">${captions[selected[1]-1]}</div>
+                </div>
+            `;
         }
-        loadGallery();
+        loadDuoGallery();
 
         // --- МУЗЫКА ---
         const audio = document.getElementById('bg-track');
