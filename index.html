@@ -3,327 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Для моей Виолетты</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>8 Марта для Виолетты</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
     <style>
         :root {
-            --primary-pink: #ff69b4; /* Нежно-розовый */
-            --secondary-gold: #ffd700; /* Золотой */
-            --bg-light: #fdf2f7; /* Очень светлый фон */
-            --text-dark: #333; /* Темный текст для контраста */
-            --text-light: #fff;
+            --dusty-rose: #d4a3a3;
+            --deep-rose: #a67575;
+            --gold: #d4af37;
+            --bg-soft: #f4e1e1;
         }
 
         body, html {
             margin: 0; padding: 0;
-            background: linear-gradient(135deg, #fce4ec 0%, #e0f2f7 50%, #f3e5f5 100%); /* Весенний градиент */
-            color: var(--text-dark);
+            /* Фон стал темнее и мягче */
+            background: linear-gradient(135deg, #e9cfcf 0%, #d4a3a3 100%);
+            color: #4a3434;
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
             min-height: 100vh;
-            position: relative;
         }
 
-        /* --- ФОН: АКВАРЕЛЬНЫЕ ПЯТНА И ПЫЛЬЦА --- */
-        .bg-gradient-blobs {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 70% 20%, rgba(255, 192, 203, 0.4) 0%, transparent 60%),
-                        radial-gradient(circle at 20% 80%, rgba(173, 216, 230, 0.4) 0%, transparent 60%),
-                        radial-gradient(circle at 50% 50%, rgba(221, 160, 221, 0.3) 0%, transparent 60%);
-            animation: bgBlobsMove 25s infinite alternate ease-in-out;
-            z-index: -10;
-        }
-
-        @keyframes bgBlobsMove {
-            0% { transform: scale(1) translate(0, 0); }
-            100% { transform: scale(1.2) translate(50px, -30px); }
-        }
-
-        /* "СОЛНЦЕ" - НЕЖНОЕ СЕРДЦЕ */
-        .heart-center {
-            position: fixed; top: 40%; left: 50%;
+        /* Мягкое свечение в центре (вместо резкого солнца) */
+        .aura {
+            position: fixed; top: 45%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 250px; height: 250px;
-            background: linear-gradient(135deg, var(--primary-pink) 0%, #ffbbd0 100%);
-            border-radius: 50%;
-            box-shadow: 0 0 60px rgba(255, 105, 180, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.5);
-            animation: pulseHeart 2s infinite alternate;
-            z-index: -5;
-        }
-        @keyframes pulseHeart {
-            0% { transform: translate(-50%, -50%) scale(1); }
-            100% { transform: translate(-50%, -50%) scale(1.05); }
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            z-index: -1;
         }
 
-        /* ПАДАЮЩИЕ ЛЕПЕСТКИ/СЕРДЕЧКИ */
+        /* Эффект падающих лепестков */
         .petal {
-            position: fixed; opacity: 0; pointer-events: none;
-            animation: fallPetal 15s infinite linear;
-            font-size: 20px; z-index: 100;
+            position: fixed; pointer-events: none; z-index: 100;
+            animation: fall 10s infinite linear;
+            font-size: 24px; filter: drop-shadow(0 0 5px rgba(0,0,0,0.1));
         }
-        @keyframes fallPetal {
-            0% { transform: translate(0, -10vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.8; }
-            100% { transform: translate(var(--x-end), 110vh) rotate(720deg); opacity: 0; }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(110vh) translateX(50px) rotate(360deg); opacity: 0; }
         }
 
-        /* --- ОСНОВНОЙ ИНТЕРФЕЙС --- */
         header {
             height: 100vh; display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            position: relative; z-index: 10;
-            text-align: center;
+            align-items: center; justify-content: center; text-align: center;
+            padding: 20px;
         }
 
         h1 {
-            font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 4.5rem);
-            color: var(--primary-pink); text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-            margin-bottom: 30px; letter-spacing: 2px;
-            font-weight: 700;
+            font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 8vw, 4rem);
+            color: #fff; text-shadow: 2px 4px 10px rgba(0,0,0,0.15);
+            margin: 0; font-style: italic;
         }
 
-        .subtitle {
-            font-family: 'Montserrat', sans-serif; font-weight: 400;
-            color: #666; font-size: clamp(0.9rem, 2vw, 1.2rem); margin-bottom: 20px;
-        }
-
-        .timer-elegant {
-            display: flex; gap: clamp(15px, 3vw, 30px);
-            background: rgba(255, 255, 255, 0.6);
-            padding: clamp(15px, 4vw, 30px); border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        .timer-wrap {
+            margin-top: 30px; display: flex; gap: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 25px; border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            color: var(--text-dark);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
-        .t-col { text-align: center; }
-        .t-val { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 700; display: block; line-height: 1; color: var(--primary-pink); }
-        .t-lbl { font-family: 'Montserrat', sans-serif; font-size: clamp(0.6rem, 1.5vw, 0.8rem); text-transform: uppercase; color: #888; margin-top: 8px; }
+        .t-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #fff; display: block; }
+        .t-txt { font-size: 0.7rem; color: #6e4c4c; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
 
-        .btn-elegant {
-            margin-top: 40px; padding: 15px 35px;
-            background: linear-gradient(45deg, var(--primary-pink), #ffbbd0);
-            border: none; border-radius: 30px;
-            color: var(--text-light); font-family: 'Montserrat', sans-serif;
-            font-size: clamp(0.8rem, 2vw, 1rem); font-weight: 700;
-            cursor: pointer; transition: 0.3s ease;
-            box-shadow: 0 8px 15px rgba(255, 105, 180, 0.3);
-            text-transform: uppercase; letter-spacing: 1px;
+        .btn-gold {
+            margin-top: 50px; padding: 18px 40px;
+            background: linear-gradient(45deg, #d4af37, #f4e1e1);
+            border: none; border-radius: 50px;
+            color: #4a3434; font-weight: bold; font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+            transition: 0.4s; letter-spacing: 1px;
         }
-        .btn-elegant:hover {
-            background: linear-gradient(45deg, #ffbbd0, var(--primary-pink));
-            box-shadow: 0 10px 20px rgba(255, 105, 180, 0.5);
-            transform: translateY(-3px);
-        }
+        .btn-gold:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5); }
 
-        /* СЕКЦИЯ С ФОТОГРАФИЯМИ */
-        .photo-section {
-            padding: 80px 20px; text-align: center;
-            position: relative; z-index: 10;
-        }
+        /* Карточки с фото */
+        .photo-area { padding: 100px 20px; max-width: 900px; margin: 0 auto; text-align: center; }
         .photo-card {
-            max-width: 350px; margin: 0 auto 100px;
-            background: var(--bg-light); border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            padding: 15px;
-            overflow: hidden; /* Чтобы рамка была внутри */
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px; border-radius: 10px;
+            display: inline-block; margin-bottom: 80px;
+            border: 1px solid var(--gold);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
-        .photo-card img {
-            width: 100%; border-radius: 10px;
-            border: 3px solid var(--secondary-gold); /* Золотистая рамка */
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-            transition: transform 0.3s ease;
-        }
-        .photo-card img:hover { transform: scale(1.03); }
-        .photo-caption {
-            font-family: 'Playfair Display', serif; font-size: clamp(1rem, 2.5vw, 1.3rem);
-            color: var(--primary-pink); margin-top: 20px; font-style: italic;
-        }
+        .photo-card img { width: 100%; max-width: 350px; border-radius: 5px; }
+        .photo-card p { font-family: 'Playfair Display', serif; font-style: italic; margin-top: 15px; font-size: 1.2rem; }
 
-        /* МОДАЛЬНОЕ ОКНО */
-        #poem-modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); z-index: 5000;
-            align-items: center; justify-content: center;
-            backdrop-filter: blur(8px);
-        }
-        .modal-content {
-            background: var(--bg-light); border-radius: 20px;
-            padding: 40px; max-width: 600px; width: 90%;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            position: relative; text-align: center;
-        }
-        .poem-text {
-            font-family: 'Montserrat', sans-serif; font-size: clamp(1rem, 2.5vw, 1.2rem);
-            color: var(--text-dark); line-height: 1.8; margin-bottom: 30px;
-            white-space: pre-line;
-        }
-
-        /* КНОПКА МУЗЫКИ */
-        .music-toggle {
-            position: fixed; top: 25px; right: 25px; z-index: 6000;
+        /* Плеер */
+        .music-btn {
+            position: fixed; bottom: 20px; right: 20px;
             width: 50px; height: 50px; border-radius: 50%;
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid var(--primary-pink);
-            color: var(--primary-pink); font-size: 1.2rem;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 0 3px 10px rgba(255, 105, 180, 0.2);
-            transition: 0.3s ease;
+            background: #fff; border: 2px solid var(--gold);
+            cursor: pointer; z-index: 1000;
         }
-        .music-toggle:hover { transform: scale(1.1); box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4); }
 
-        #particles-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;
+        #modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(74, 52, 52, 0.8); z-index: 2000; align-items: center; justify-content: center;
+        }
+        .modal-body {
+            background: #fdf2f7; padding: 40px; border-radius: 30px;
+            max-width: 500px; width: 85%; text-align: center; border: 2px solid var(--gold);
         }
     </style>
 </head>
-<body id="main-body">
+<body>
 
-    <div class="bg-gradient-blobs"></div>
-    <div class="heart-center"></div>
-    <div id="particles-container"></div> <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🎵
-        <audio id="track" loop>
-            <source src="XdrianGM - Hold Me (Quavier Edit).mp3" type="audio/mpeg">
-        </audio>
+    <div class="aura"></div>
+    <div id="petals"></div>
+
+    <button class="music-btn" onclick="toggleM()" id="mBtn">🎵
+        <audio id="track" loop><source src="XdrianGM - Hold Me (Quavier Edit).mp3" type="audio/mpeg"></audio>
     </button>
 
     <header>
-        <div class="subtitle" data-aos="fade-down" data-aos-duration="1000">Посвящается моей единственной</div>
-        <h1 data-aos="zoom-in" data-aos-duration="1200">Виолетта</h1>
+        <p data-aos="fade-down" style="color: #fff; letter-spacing: 3px;">SPECIAL MOMENTS</p>
+        <h1 data-aos="zoom-in">Для моей Виолетты</h1>
         
-        <div class="timer-elegant" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
-            <div class="t-col"><span class="t-val" id="days">00</span><span class="t-lbl">ДНЕЙ</span></div>
-            <div class="t-col"><span class="t-val" id="hours">00</span><span class="t-lbl">ЧАСОВ</span></div>
-            <div class="t-col"><span class="t-val" id="minutes">00</span><span class="t-lbl">МИНУТ</span></div>
-            <div class="t-col"><span class="t-val" id="seconds">00</span><span class="t-lbl">СЕКУНД</span></div>
+        <div class="timer-wrap" data-aos="fade-up">
+            <div style="text-align: center;"><span class="t-num" id="d">00</span><span class="t-txt">Дней</span></div>
+            <div style="text-align: center;"><span class="t-num" id="h">00</span><span class="t-txt">Часов</span></div>
+            <div style="text-align: center;"><span class="t-num" id="m">00</span><span class="t-txt">Мин</span></div>
+            <div style="text-align: center;"><span class="t-num" id="s">00</span><span class="t-txt">Сек</span></div>
         </div>
 
-        <button class="btn-elegant" onclick="openPoemModal()" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="600">Открыть послание</button>
+        <button class="btn-gold" onclick="openMsg()">Открыть послание</button>
     </header>
 
-    <div class="photo-section">
-        <div class="photo-card" data-aos="fade-right" data-aos-duration="1000">
-            <img src="1.jpg" alt="Момент 1">
-            <p class="photo-caption">Момент, когда всё началось</p>
+    <div class="photo-area">
+        <div class="photo-card" data-aos="fade-right">
+            <img src="1.jpg">
+            <p>Свет твоей улыбки</p>
         </div>
-        
-        <div class="photo-card" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="300">
-            <img src="2.jpg" alt="Момент 2">
-            <p class="photo-caption">Твое сияние - мой вечный рассвет</p>
+        <br>
+        <div class="photo-card" data-aos="fade-left">
+            <img src="2.jpg">
+            <p>Весна в твоем сердце</p>
         </div>
-
-        <button onclick="activateGift()" class="btn-elegant" style="margin-top: 80px;" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="600">Подарить цветок</button>
+        <br>
+        <button class="btn-gold" onclick="getGift()" style="background: #fff; color: var(--gold); border: 2px solid var(--gold);">
+            🎁 ПОЛУЧИТЬ ПОДАРОК
+        </button>
     </div>
 
-    <div id="poem-modal">
-        <div class="modal-content">
-            <p class="poem-text" id="poem-target"></p>
-            <button class="btn-elegant" onclick="closePoemModal()" style="width:100%;">Закрыть</button>
+    <div id="modal">
+        <div class="modal-body">
+            <p id="msg-text" style="font-size: 1.2rem; line-height: 1.8; color: #4a3434; font-style: italic;"></p>
+            <button class="btn-gold" onclick="closeMsg()" style="width: 100%;">Закрыть</button>
         </div>
     </div>
 
     <script>
-        AOS.init();
+        AOS.init({ duration: 1000 });
 
         const audio = document.getElementById('track');
-        const mainBody = document.getElementById('main-body');
-
-        function toggleMusic() {
-            if (audio.paused) {
-                audio.play().then(() => {
-                    document.getElementById('musicBtn').innerText = '⏸';
-                    mainBody.classList.add('playing'); // Для анимации пульсации сердца
-                }).catch(e => console.error("Ошибка при воспроизведении аудио:", e));
-            } else {
-                audio.pause();
-                document.getElementById('musicBtn').innerText = '🎵';
-                mainBody.classList.remove('playing');
-            }
+        function toggleM() {
+            if (audio.paused) { audio.play(); document.getElementById('mBtn').innerText = '⏸'; }
+            else { audio.pause(); document.getElementById('mBtn').innerText = '🎵'; }
         }
 
-        const poems = [
-            `В твоих глазах я вижу отраженье\nТого, что долго в памяти искал.\nТы — мое лучшее везенье,\nМой самый тихий и родной причал.\n\nС 8 Марта, моя нежность!`,
-            `Пусть мир шумит, меняя города,\nИ время крутит стрелки слишком быстро,\nТы в моем сердце — раз и навсегда,\nКак самая теплая и солнечная искра.\n\nЛюблю тебя, Виолетта!`,
-            `Я не умею говорить красиво,\nНо знаю точно: без тебя нельзя.\nТы — мое маленькое, доброе спасибо\nЗа то, что светятся теперь мои глаза.\n\nТвой единственный.`,
-            `С тобой каждый день - это весна,\nИ сердце поёт, как будто птица.\nТы свет, ты радость, ты моя судьба,\nМоя прекрасная царица.\n\nПоздравляю с 8 Марта!`
+        const msgs = [
+            "Виолетта, ты — самое прекрасное, что случилось в моей жизни. С 8 Марта!",
+            "С каждым днем я люблю тебя всё сильнее. Пусть эта весна будет для нас особенной.",
+            "Ты сияешь ярче любого солнца. Спасибо, что ты есть у меня!"
         ];
 
-        function openPoemModal() {
-            document.getElementById('poem-target').innerText = poems[Math.floor(Math.random() * poems.length)];
-            document.getElementById('poem-modal').style.display = 'flex';
-            confetti({
-                particleCount: 150,
-                spread: 90,
-                origin: { y: 0.6 },
-                colors: ['#ff69b4', '#ffd700', '#ffffff']
-            });
+        function openMsg() {
+            document.getElementById('msg-text').innerText = msgs[Math.floor(Math.random()*msgs.length)];
+            document.getElementById('modal').style.display = 'flex';
+            confetti({ particleCount: 100, spread: 70, colors: ['#d4af37', '#f4e1e1', '#ff69b4'] });
         }
-        function closePoemModal() {
-            document.getElementById('poem-modal').style.display = 'none';
-        }
+        function closeMsg() { document.getElementById('modal').style.display = 'none'; }
 
         // Таймер
-        const startDate = new Date(2025, 10, 2, 0, 0, 0); // 2 ноября 2025 года, 00:00:00
-        function updateTimer() {
-            const now = new Date();
-            const diff = now - startDate;
-
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById('days').innerText = String(d);
-            document.getElementById('hours').innerText = String(h).padStart(2, '0');
-            document.getElementById('minutes').innerText = String(m).padStart(2, '0');
-            document.getElementById('seconds').innerText = String(s).padStart(2, '0');
+        const start = new Date(2025, 10, 2); 
+        function update() {
+            const diff = new Date() - start;
+            document.getElementById('d').innerText = Math.floor(diff / 86400000);
+            document.getElementById('h').innerText = String(Math.floor((diff/3600000)%24)).padStart(2, '0');
+            document.getElementById('m').innerText = String(Math.floor((diff/60000)%60)).padStart(2, '0');
+            document.getElementById('s').innerText = String(Math.floor((diff/1000)%60)).padStart(2, '0');
         }
-        setInterval(updateTimer, 1000);
-        updateTimer();
+        setInterval(update, 1000); update();
 
-        // Анимированные лепестки/сердечки
-        const particlesContainer = document.getElementById('particles-container');
-        const particleIcons = ['🌸', '💖', '✨', '💜']; // Иконки для частиц
-
+        // Лепестки
         setInterval(() => {
-            const particle = document.createElement('div');
-            const icon = particleIcons[Math.floor(Math.random() * particleIcons.length)];
-            particle.innerHTML = icon;
-            particle.classList.add('petal');
-            
-            const startX = Math.random() * 100; // От 0 до 100vw
-            const endX = startX + (Math.random() - 0.5) * 50; // Смещение влево/вправо
-            const delay = Math.random() * 5; // Задержка для плавного появления
-            const duration = 10 + Math.random() * 10; // Длительность падения
+            const p = document.createElement('div');
+            p.innerHTML = '🌸'; p.className = 'petal';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            document.getElementById('petals').appendChild(p);
+            setTimeout(() => p.remove(), 10000);
+        }, 500);
 
-            particle.style.left = `${startX}vw`;
-            particle.style.animationDelay = `${delay}s`;
-            particle.style.animationDuration = `${duration}s`;
-            particle.style.setProperty('--x-end', `${endX}vw`); // Передаем переменную в keyframes
-
-            particlesContainer.appendChild(particle);
-
-            // Удаляем элемент после анимации
-            setTimeout(() => {
-                particle.remove();
-            }, duration * 1000);
-
-        }, 300); // Создаем новую частицу каждые 300мс
-
-        function activateGift() {
-            confetti({
-                particleCount: 250,
-                spread: 120,
-                origin: { y: 0.8 },
-                colors: ['#ff69b4', '#ffd700', '#fce4ec', '#ffffff']
-            });
-            setTimeout(() => {
-                window.location.href = "https://t.me/brvg23?text=" + encodeURIComponent("С 8 Марта, моя любимая Виолетта! Мой подарок для тебя!");
-            }, 1500);
+        function getGift() {
+            confetti({ particleCount: 200, spread: 100 });
+            setTimeout(() => { window.location.href="https://t.me/brvg23"; }, 1500);
         }
     </script>
 </body>
