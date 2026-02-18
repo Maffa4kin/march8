@@ -3,26 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для тебя ❤️</title>
+    <title>Для Виолетты ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Pacifico&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --primary-pink: #ffafbd;
-            --dark-pink: #ff8e91;
-            --text-color: #4a4a4a;
+            --bg-dark: #1a0b2e; /* Глубокий фиолетовый */
+            --accent-violet: #9d50bb; /* Яркий фиолет */
+            --soft-lavender: #e0c3fc; /* Лавандовый для текста */
+            --glass: rgba(255, 255, 255, 0.1);
         }
 
         body {
             margin: 0;
             padding: 0;
             font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(to bottom, #ffafbd, #ffc3a0);
-            color: var(--text-color);
+            background: radial-gradient(circle at center, #2e1a47 0%, #1a0b2e 100%);
+            color: var(--soft-lavender);
             overflow-x: hidden;
             text-align: center;
         }
 
+        /* Анимированный фон с частицами */
         .heart-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -31,7 +33,7 @@
         }
 
         header {
-            min-height: 60vh;
+            min-height: 70vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -41,52 +43,55 @@
 
         h1 {
             font-family: 'Pacifico', cursive;
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: white;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            text-shadow: 0 0 20px rgba(157, 80, 187, 0.8);
             margin: 0;
+            letter-spacing: 2px;
         }
 
         .timer-label {
             margin-top: 30px;
             font-size: 1.1rem;
-            color: white;
+            color: var(--soft-lavender);
             font-weight: 300;
+            opacity: 0.8;
         }
 
         .timer {
-            background: rgba(255, 255, 255, 0.25);
-            padding: 20px;
+            background: var(--glass);
+            padding: 25px;
             border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 30px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,255,255,0.1);
             display: flex;
             justify-content: center;
             margin-top: 15px;
-            border: 1px solid rgba(255,255,255,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .timer-unit {
-            margin: 0 10px;
+            margin: 0 15px;
         }
 
         .timer-num {
             font-weight: 600;
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             display: block;
             color: white;
+            text-shadow: 0 0 10px var(--accent-violet);
         }
 
         .timer-text {
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: white;
+            color: var(--soft-lavender);
         }
 
         .section {
-            padding: 40px 20px;
-            max-width: 1000px;
+            padding: 60px 20px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
@@ -94,26 +99,26 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 25px;
-            margin-top: 20px;
+            gap: 30px;
+            margin-top: 30px;
         }
 
         .photo-frame {
             width: 280px;
-            background: white;
-            padding: 12px 12px 35px 12px;
-            box-shadow: 0 15px 25px rgba(0,0,0,0.1);
-            transition: 0.4s ease;
+            background: #fff; /* Классический белый для контраста фото */
+            padding: 12px 12px 40px 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
         }
 
         .photo-placeholder {
             width: 100%;
-            height: 250px;
-            background: #ffeef0;
+            height: 260px;
+            background: #2a1b3d;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px dashed var(--primary-pink);
             overflow: hidden;
         }
 
@@ -126,36 +131,52 @@
         .photo-caption {
             margin-top: 15px;
             font-family: 'Pacifico', cursive;
-            font-size: 1.1rem;
-            color: var(--dark-pink);
+            font-size: 1.2rem;
+            color: #4a148c; /* Темно-фиолетовый для подписи на белом */
         }
 
         .frame-1 { transform: rotate(-3deg); }
-        .frame-2 { transform: rotate(2deg); }
+        .frame-2 { transform: rotate(3deg); }
         .frame-3 { transform: rotate(-2deg); }
 
+        .photo-frame:hover {
+            transform: scale(1.1) rotate(0deg) translateY(-10px);
+            box-shadow: 0 30px 50px rgba(157, 80, 187, 0.3);
+        }
+
         .btn-surprise {
-            background: white;
-            color: var(--dark-pink);
+            background: linear-gradient(45deg, var(--accent-violet), #6a11cb);
+            color: white;
             border: none;
-            padding: 18px 40px;
-            font-size: 1.2rem;
+            padding: 20px 50px;
+            font-size: 1.3rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin: 40px 0;
+            box-shadow: 0 10px 25px rgba(106, 17, 203, 0.4);
+            margin: 50px 0;
             transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .btn-surprise:active { transform: scale(0.95); }
+        .btn-surprise:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(106, 17, 203, 0.6);
+        }
 
         footer {
-            padding: 40px;
-            color: white;
+            padding: 60px;
+            color: var(--soft-lavender);
             font-size: 0.9rem;
-            font-weight: 300;
+            opacity: 0.6;
+            letter-spacing: 2px;
         }
+
+        /* Кастомный скроллбар под стиль */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-violet); border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -163,45 +184,44 @@
     <div class="heart-bg" id="hearts"></div>
 
     <header>
-        <h1>С 8 Марта!</h1>
-        <p class="timer-label">Мы вместе уже:</p>
-        <div class="timer" id="timer">
-            </div>
+        <h1>Виолетта, ты мой мир</h1>
+        <p class="timer-label">Счастливы вместе уже:</p>
+        <div class="timer" id="timer"></div>
     </header>
 
     <div class="section">
         <div class="gallery">
             <div class="photo-frame frame-1">
                 <div class="photo-placeholder">
-                    <span style="color: var(--dark-pink)">Твое фото №1</span>
+                    <span style="color: var(--soft-lavender)">Фото №1</span>
                 </div>
-                <div class="photo-caption">Помнишь этот день?</div>
+                <div class="photo-caption">Твоя магия...</div>
             </div>
 
             <div class="photo-frame frame-2">
                 <div class="photo-placeholder">
-                    <span style="color: var(--dark-pink)">Твое фото №2</span>
+                    <span style="color: var(--soft-lavender)">Фото №2</span>
                 </div>
-                <div class="photo-caption">Самая красивая</div>
+                <div class="photo-caption">Моя бесконечность</div>
             </div>
 
             <div class="photo-frame frame-3">
                 <div class="photo-placeholder">
-                    <span style="color: var(--dark-pink)">Твое фото №3</span>
+                    <span style="color: var(--soft-lavender)">Фото №3</span>
                 </div>
-                <div class="photo-caption">Люблю тебя</div>
+                <div class="photo-caption">Наше «навсегда»</div>
             </div>
         </div>
 
-        <button class="btn-surprise" onclick="celebrate()">Нажми на меня! ✨</button>
+        <button class="btn-surprise" onclick="celebrate()">Увидеть магию ✨</button>
     </div>
 
     <footer>
-        Для моей любимой ❤️ 2025
+        Специально для Виолетты ❤️ 2026
     </footer>
 
     <script>
-        // ДАТА: 2 ноября 2025 (Месяц 10 = Ноябрь)
+        // ДАТА: 2 ноября 2025
         const startDate = new Date(2025, 10, 2, 0, 0, 0); 
 
         function updateTimer() {
@@ -226,36 +246,36 @@
 
         function celebrate() {
             confetti({
-                particleCount: 150,
-                spread: 70,
+                particleCount: 200,
+                spread: 100,
                 origin: { y: 0.6 },
-                colors: ['#ffffff', '#ff8e91', '#ffafbd']
+                colors: ['#e0c3fc', '#9d50bb', '#ffffff', '#6a11cb']
             });
         }
 
-        // Фоновые сердечки
         const heartContainer = document.getElementById('hearts');
         function createHeart() {
             const heart = document.createElement('div');
-            heart.innerHTML = '❤️';
+            // Чередуем сердечки и искорки
+            heart.innerHTML = Math.random() > 0.5 ? '💜' : '✨';
             heart.style.position = 'absolute';
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.top = '-20px';
             heart.style.fontSize = Math.random() * 15 + 10 + 'px';
-            heart.style.opacity = Math.random() * 0.5 + 0.3;
+            heart.style.opacity = Math.random() * 0.5 + 0.2;
             
             heart.animate([
                 { transform: 'translateY(0) rotate(0deg)', opacity: heart.style.opacity },
                 { transform: `translateY(100vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
             ], {
-                duration: 4000 + Math.random() * 3000,
+                duration: 5000 + Math.random() * 3000,
                 easing: 'linear'
             });
             
             heartContainer.appendChild(heart);
-            setTimeout(() => heart.remove(), 7000);
+            setTimeout(() => heart.remove(), 8000);
         }
-        setInterval(createHeart, 400);
+        setInterval(createHeart, 600);
     </script>
 </body>
 </html>
