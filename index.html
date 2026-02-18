@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VIOLETTA // CORE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:wght@300;700&display=swap" rel="stylesheet">
+    <title>SYSTEM // VIOLETTA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -14,183 +14,177 @@
             --pink: #ff00ff;
             --blue: #00ffff;
             --dark: #050110;
-            --scan: rgba(0, 255, 255, 0.1);
+            --line: rgba(0, 255, 255, 0.2);
         }
 
-        body, html {
-            margin: 0; padding: 0;
-            background-color: var(--dark);
-            color: white;
-            font-family: 'Exo 2', sans-serif;
-            overflow-x: hidden;
+        * { box-sizing: border-box; }
+        body, html { 
+            margin: 0; padding: 0; background-color: var(--dark); 
+            color: white; font-family: 'Exo 2', sans-serif; overflow-x: hidden;
         }
 
-        /* ЭФФЕКТ ШУМА И СКАНЕРА */
-        body::after {
-            content: "";
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(0deg, transparent, transparent 2px, var(--scan) 3px);
-            pointer-events: none; z-index: 100; opacity: 0.3;
-        }
-
-        /* ТО САМОЕ СОЛНЦЕ (через псевдоэлемент задника) */
-        .viewport-bg {
+        /* --- BACKGROUND LAYER --- */
+        .bg-system {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 50%, #1a0533 0%, #050110 100%);
+            z-index: -20;
+        }
+
+        /* SUN ENGINE */
+        .sun-engine {
+            position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%);
+            width: 320px; height: 320px;
+            background: linear-gradient(180deg, var(--pink), #ff8c00);
+            border-radius: 50%;
+            box-shadow: 0 0 120px rgba(255, 0, 255, 0.4), inset 0 -20px 50px rgba(0,0,0,0.5);
             z-index: -10;
         }
 
-        .cyber-sun {
-            position: fixed; top: 40%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px; height: 300px;
-            background: linear-gradient(to bottom, var(--pink), #ff8c00);
-            border-radius: 50%;
-            box-shadow: 0 0 100px var(--pink), 0 0 20px white;
-            z-index: -9;
-        }
-
-        /* ПУЛЬСИРУЮЩИЕ КОЛЬЦА */
         .ring {
-            position: fixed; top: 40%; left: 50%;
-            transform: translate(-50%, -50%);
-            border: 1px solid var(--blue);
-            border-radius: 50%;
-            width: 300px; height: 300px;
-            opacity: 0; z-index: -8;
+            position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%);
+            border: 1px solid var(--blue); border-radius: 50%; width: 320px; height: 320px;
+            opacity: 0; z-index: -11; pointer-events: none;
         }
-        .playing .ring { animation: pulse 3s infinite linear; }
-        .playing .ring:nth-child(2) { animation-delay: 1.5s; }
+        .playing .ring { animation: pulse 2.5s infinite ease-out; }
+        .playing .ring:nth-child(2) { animation-delay: 0.8s; }
         @keyframes pulse {
-            0% { width: 300px; height: 300px; opacity: 0.8; }
-            100% { width: 700px; height: 700px; opacity: 0; }
+            0% { width: 320px; height: 320px; opacity: 1; border-color: var(--blue); }
+            100% { width: 800px; height: 800px; opacity: 0; border-color: var(--pink); }
         }
 
-        /* СЕТКА С ЭФФЕКТОМ ТУМАНА */
-        .grid {
-            position: fixed; bottom: 0; left: -50%; width: 200%; height: 60%;
-            background-image: linear-gradient(var(--pink) 1px, transparent 1px), 
-                              linear-gradient(90deg, var(--pink) 1px, transparent 1px);
-            background-size: 60px 60px;
-            transform: perspective(300px) rotateX(65deg);
-            transform-origin: center bottom;
-            animation: moveGrid 2s linear infinite;
-            z-index: -5; opacity: 0.3;
-        }
-        @keyframes moveGrid { from { background-position: 0 0; } to { background-position: 0 60px; } }
-
-        /* ИНТЕРФЕЙС */
-        header {
-            height: 100vh; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; position: relative; z-index: 20;
+        /* SCANLINES */
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%),
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 4px, 3px 100%; z-index: 100; pointer-events: none;
         }
 
-        .glitch-title {
-            font-family: 'Press Start 2P', cursive; font-size: 2rem;
-            text-shadow: 3px 3px var(--blue), -3px -3px var(--pink);
-            letter-spacing: 5px; margin-bottom: 40px;
+        /* HUD DECORATIONS */
+        .hud-corner {
+            position: fixed; width: 40px; height: 40px; border: 2px solid var(--blue); z-index: 50; opacity: 0.5;
         }
+        .top-l { top: 20px; left: 20px; border-right: 0; border-bottom: 0; }
+        .top-r { top: 20px; right: 20px; border-left: 0; border-bottom: 0; }
+        .bot-l { bottom: 20px; left: 20px; border-right: 0; border-top: 0; }
+        .bot-r { bottom: 20px; right: 20px; border-left: 0; border-top: 0; }
 
-        .timer-container {
-            display: flex; gap: 20px;
-            background: rgba(0,0,0,0.6); padding: 25px;
-            border: 1px solid var(--blue);
-            backdrop-filter: blur(10px);
-            box-shadow: inset 0 0 20px var(--blue);
-        }
-
-        .t-segment { text-align: center; min-width: 60px; }
-        .t-num { font-size: 2rem; font-weight: 700; color: #fff; display: block; }
-        .t-desc { font-family: 'Press Start 2P'; font-size: 0.5rem; color: var(--blue); }
-
-        .poem-trigger {
-            margin-top: 40px; padding: 15px 30px;
-            background: transparent; border: 1px solid var(--pink);
-            color: var(--pink); font-family: 'Press Start 2P'; font-size: 0.7rem;
-            cursor: pointer; transition: 0.3s;
-            box-shadow: 0 0 15px var(--pink);
-        }
-        .poem-trigger:hover { background: var(--pink); color: white; }
-
-        /* КАРТОЧКИ ФОТО */
-        .container { padding: 100px 20px; position: relative; z-index: 20; text-align: center; }
-        .moment-wrap { margin-bottom: 200px; display: inline-block; position: relative; }
+        /* HEADER & TIMER */
+        header { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; position: relative; }
         
-        .photo-frame {
-            padding: 10px; background: #000; border: 1px solid var(--blue);
-            position: relative; transition: 0.5s;
-        }
-        .photo-frame::before {
-            content: ""; position: absolute; top: -5px; left: -5px; width: 20px; height: 20px;
-            border-top: 3px solid var(--pink); border-left: 3px solid var(--pink);
-        }
-        .photo-frame img { width: 300px; filter: grayscale(20%) contrast(110%); }
+        .sys-label { font-family: 'Press Start 2P'; font-size: 0.6rem; color: var(--blue); letter-spacing: 4px; margin-bottom: 10px; opacity: 0.8; }
         
-        .caption { 
-            margin-top: 20px; font-family: 'Press Start 2P'; font-size: 0.6rem; 
-            color: var(--blue); text-transform: uppercase;
-        }
+        h1 { font-family: 'Exo 2'; font-weight: 900; font-size: 4rem; margin: 0; letter-spacing: 15px; text-shadow: 0 0 30px var(--pink); }
 
-        /* МОДАЛКА */
+        .timer-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
+            margin-top: 30px; background: rgba(0, 255, 255, 0.05); padding: 20px;
+            border: 1px solid var(--blue); position: relative;
+        }
+        .timer-grid::after { content: "CORE_STABILITY: 100%"; position: absolute; bottom: -20px; left: 0; font-size: 8px; color: var(--blue); font-family: 'Press Start 2P'; }
+
+        .t-box { text-align: center; border-right: 1px solid var(--line); padding: 0 10px; }
+        .t-box:last-child { border: none; }
+        .t-val { font-size: 2.2rem; font-weight: 900; color: #fff; display: block; }
+        .t-sub { font-family: 'Press Start 2P'; font-size: 0.5rem; color: var(--pink); }
+
+        /* BUTTONS */
+        .btn-hex {
+            margin-top: 50px; padding: 15px 40px; background: transparent;
+            border: 1px solid var(--pink); color: white; font-family: 'Press Start 2P';
+            font-size: 0.7rem; cursor: pointer; position: relative; transition: 0.3s;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        }
+        .btn-hex:hover { background: var(--pink); box-shadow: 0 0 30px var(--pink); }
+
+        /* MOMENTS CARDS */
+        .content-area { padding: 100px 20px; position: relative; z-index: 20; }
+        .moment-card {
+            max-width: 400px; margin: 0 auto 150px; position: relative;
+            background: rgba(0,0,0,0.8); border: 1px solid var(--blue); padding: 15px;
+        }
+        .moment-card::before {
+            content: "DATA_RECORD_#0" attr(data-id); position: absolute; top: -15px; left: 10px;
+            font-family: 'Press Start 2P'; font-size: 8px; color: var(--blue);
+        }
+        .moment-card img { width: 100%; border: 1px solid rgba(0,255,255,0.3); filter: brightness(1.1); }
+        .moment-info { margin-top: 15px; font-family: 'Press Start 2P'; font-size: 10px; color: var(--blue); display: flex; justify-content: space-between; }
+
+        /* MODAL */
         #modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 1, 16, 0.95); z-index: 1000; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; padding: 20px;
         }
-        .modal-box {
-            width: 80%; padding: 40px; border: 1px solid var(--pink);
-            background: #000; box-shadow: 0 0 50px var(--pink);
-            position: relative;
+        .modal-body {
+            border: 1px solid var(--pink); padding: 40px; background: #050110;
+            max-width: 600px; position: relative; box-shadow: 0 0 60px rgba(255,0,255,0.3);
         }
 
-        .music-ctrl {
-            position: fixed; top: 30px; right: 30px; z-index: 2000;
-            width: 60px; height: 60px; border: 1px solid var(--blue);
-            background: rgba(0,0,0,0.8); color: var(--blue); border-radius: 50%;
-            cursor: pointer; font-size: 1.5rem; display: flex; align-items: center; justify-content: center;
+        .music-player {
+            position: fixed; top: 30px; right: 30px; z-index: 500;
+            width: 50px; height: 50px; border: 1px solid var(--blue);
+            background: rgba(0,0,0,0.8); color: var(--blue); border-radius: 4px;
+            cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
         }
+
+        #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
     </style>
 </head>
-<body id="core">
+<body id="system-root">
 
-    <div class="viewport-bg"></div>
-    <div class="cyber-sun"></div>
+    <div class="bg-system"></div>
+    <div class="sun-engine"></div>
     <div class="ring"></div><div class="ring"></div>
-    <div class="grid"></div>
-    <div id="hearts"></div>
+    <div id="particles"></div>
 
-    <button class="music-ctrl" onclick="toggleM()" id="mBtn">🎵
+    <div class="hud-corner top-l"></div><div class="hud-corner top-r"></div>
+    <div class="hud-corner bot-l"></div><div class="hud-corner bot-r"></div>
+
+    <button class="music-player" onclick="toggleM()" id="mBtn">▶
         <audio id="track" loop><source src="track.mp3" type="audio/mpeg"></audio>
     </button>
 
     <header>
-        <div class="glitch-title" data-aos="zoom-in">VIOLETTA</div>
-        <div class="timer-container" data-aos="fade-up">
-            <div class="t-segment"><span class="t-num" id="d">00</span><span class="t-desc">DAYS</span></div>
-            <div class="t-segment"><span class="t-num" id="h">00</span><span class="t-desc">HRS</span></div>
-            <div class="t-segment"><span class="t-num" id="m">00</span><span class="t-desc">MIN</span></div>
-            <div class="t-segment"><span class="t-num" id="s">00</span><span class="t-desc">SEC</span></div>
+        <div class="sys-label" data-aos="fade-down">VIRTUAL_AFFECTION_OS</div>
+        <h1 data-aos="zoom-in">VIOLETTA</h1>
+        
+        <div class="timer-grid" data-aos="fade-up">
+            <div class="t-box"><span class="t-val" id="d">00</span><span class="t-sub">DAYS</span></div>
+            <div class="t-box"><span class="t-val" id="h">00</span><span class="t-sub">HRS</span></div>
+            <div class="t-box"><span class="t-val" id="m">00</span><span class="t-sub">MIN</span></div>
+            <div class="t-box"><span class="t-val" id="s">00</span><span class="t-sub">SEC</span></div>
         </div>
-        <button class="poem-trigger" onclick="openPoem()" data-aos="fade-up">OPEN SYSTEM MESSAGE</button>
+
+        <button class="btn-hex" onclick="openPoem()" data-aos="fade-up">DECRYPT MESSAGE</button>
     </header>
 
-    <div class="container">
-        <div class="moment-wrap" data-aos="fade-right">
-            <div class="photo-frame"><img src="1.jpg"></div>
-            <div class="caption">// ЭНЕРГИЯ_СИСТЕМЫ</div>
+    <div class="content-area">
+        <div class="moment-card" data-id="1" data-aos="fade-right">
+            <img src="1.jpg">
+            <div class="moment-info">
+                <span>STATUS: VIBRANT</span>
+                <span>SYNC: 100%</span>
+            </div>
         </div>
-        <br>
-        <div class="moment-wrap" data-aos="fade-left">
-            <div class="photo-frame"><img src="2.jpg"></div>
-            <div class="caption">// ТОЧКА_ОТСЧЕТА</div>
+
+        <div class="moment-card" data-id="2" data-aos="fade-left">
+            <img src="2.jpg">
+            <div class="moment-info">
+                <span>COORD: ETERNAL</span>
+                <span>LEVEL: PEAK</span>
+            </div>
         </div>
-        <br>
-        <button onclick="gift()" class="poem-trigger" style="border-color: var(--blue); color: var(--blue); box-shadow: 0 0 15px var(--blue);">INITIATE GIFT_TRANSFER</button>
+
+        <center>
+            <button onclick="gift()" class="btn-hex" style="border-color:var(--blue); margin-bottom: 100px;">INITIATE GIFT_PROTOCOL</button>
+        </center>
     </div>
 
     <div id="modal">
-        <div class="modal-box">
-            <span onclick="closePoem()" style="position:absolute; top:10px; right:20px; cursor:pointer; color:var(--pink);">[CLOSE_SESSION]</span>
-            <div id="poem-content" style="white-space: pre-line; line-height: 2; font-style: italic; font-size: 1.2rem;"></div>
+        <div class="modal-body">
+            <div class="sys-label" style="margin-bottom: 20px;">[INCOMING_TRANSMISSION]</div>
+            <div id="poem-text" style="line-height: 1.8; font-size: 1.1rem; color: #fff;"></div>
+            <button class="btn-hex" onclick="closePoem()" style="margin-top: 30px; width: 100%;">CLOSE_SESSION</button>
         </div>
     </div>
 
@@ -198,55 +192,59 @@
         AOS.init({ duration: 1000 });
 
         const audio = document.getElementById('track');
-        const coreBody = document.getElementById('core');
+        const root = document.getElementById('system-root');
 
         function toggleM() {
             if (audio.paused) {
                 audio.play().then(() => {
                     document.getElementById('mBtn').innerText = '⏸';
-                    coreBody.classList.add('playing');
+                    root.classList.add('playing');
                 });
             } else {
                 audio.pause();
-                document.getElementById('mBtn').innerText = '🎵';
-                coreBody.classList.remove('playing');
+                document.getElementById('mBtn').innerText = '▶';
+                root.classList.remove('playing');
             }
         }
 
         const poems = [
-            `В этой холодной, пустой тишине,\nТы — единственный свет, что дорог мне.\nКогда мир замирает, теряя черты,\nВ моих мыслях останешься только ты.`,
-            `Пусть время летит, замерзают года,\nНо ты в моем сердце теперь навсегда.\nВиолетта, ты — солнце в моей темноте,\nЕдинственный смысл в земной суете.`
+            `Она — мой код, мой главный бит,\nВ её глазах неон горит.\nСквозь километры и года\nЯ с ней душою навсегда.`,
+            `В системе нет таких программ,\nЧтоб описать её богам.\nВиолетта — солнце в пустоте,\nМой идеал в земной черте.`
         ];
 
         function openPoem() {
-            document.getElementById('poem-content').innerText = poems[Math.floor(Math.random()*poems.length)];
+            document.getElementById('poem-text').innerText = poems[Math.floor(Math.random()*poems.length)];
             document.getElementById('modal').style.display = 'flex';
-            confetti({ particleCount: 150, spread: 100, colors: ['#ff00ff', '#00ffff'] });
+            confetti({ particleCount: 150, spread: 80, colors: ['#ff00ff', '#00ffff'] });
         }
         function closePoem() { document.getElementById('modal').style.display = 'none'; }
 
         // ТАЙМЕР
-        const start = new Date(2025, 10, 2); 
-        function updateTimer() {
-            const diff = new Date() - start;
-            document.getElementById('d').innerText = Math.floor(diff / 86400000);
-            document.getElementById('h').innerText = Math.floor((diff / 3600000) % 24);
-            document.getElementById('m').innerText = Math.floor((diff / 60000) % 60);
-            document.getElementById('s').innerText = Math.floor((diff / 1000) % 60);
+        const startDate = new Date(2025, 10, 2); 
+        function update() {
+            const now = new Date();
+            const diff = now - startDate;
+            document.getElementById('d').innerText = String(Math.floor(diff / 86400000)).padStart(2, '0');
+            document.getElementById('h').innerText = String(Math.floor((diff / 3600000) % 24)).padStart(2, '0');
+            document.getElementById('m').innerText = String(Math.floor((diff / 60000) % 60)).padStart(2, '0');
+            document.getElementById('s').innerText = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
         }
-        setInterval(updateTimer, 1000); updateTimer();
+        setInterval(update, 1000); update();
 
-        // ЧАСТИЦЫ (СЕРДЕЧКИ)
+        // СЕРДЕЧКИ-ПИКСЕЛИ
         setInterval(() => {
-            const h = document.createElement('div');
-            h.innerHTML = Math.random() > 0.5 ? '💜' : '✨';
-            h.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; z-index:50; font-size:20px; filter: drop-shadow(0 0 10px var(--pink));`;
-            h.animate([{transform:'translateY(0) rotate(0deg)'},{transform:'translateY(110vh) rotate(360deg)'}], 6000);
-            document.getElementById('hearts').appendChild(h);
-            setTimeout(() => h.remove(), 6000);
+            const p = document.createElement('div');
+            p.innerHTML = '💜';
+            p.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-30px; z-index:10; font-size:20px; text-shadow:0 0 10px var(--pink);`;
+            const anim = p.animate([{transform:'translateY(0) scale(1)'},{transform:'translateY(110vh) scale(0.5)'}], 6000);
+            document.getElementById('particles').appendChild(p);
+            anim.onfinish = () => p.remove();
         }, 400);
 
-        function gift() { confetti(); setTimeout(() => { window.location.href="https://t.me/brvg23"; }, 1000); }
+        function gift() { 
+            confetti({ particleCount: 300, spread: 150 }); 
+            setTimeout(() => { window.location.href="https://t.me/brvg23?text=" + encodeURIComponent("Система активирована. Я люблю тебя!"); }, 1000); 
+        }
     </script>
 </body>
 </html>
