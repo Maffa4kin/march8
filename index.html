@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIOLETTA // SYNTHWAVE</title>
+    <title>VIOLETTA // FOREVER</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:ital,wght@1,700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -24,113 +24,111 @@
             overflow-x: hidden;
         }
 
-        /* Звездное небо на фоне */
-        .stars-bg {
+        /* Анимированный живой фон */
+        .bg-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(157, 80, 187, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(0, 255, 255, 0.1) 0%, transparent 40%);
             z-index: -3;
         }
 
-        /* Генерация звезд через тени (производительно) */
-        .stars {
-            width: 1px; height: 1px; background: transparent;
-            box-shadow: 10vw 20vh #fff, 50vw 40vh #fff, 80vw 10vh #fff, 30vw 80vh #fff, 90vw 70vh #fff, 15vw 90vh #fff;
-            position: fixed; top: 0; left: 0; z-index: -2;
-            animation: stars-blink 3s infinite alternate;
+        /* Тот самый дождь из сердечек */
+        #particles-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
         }
 
-        @keyframes stars-blink { from { opacity: 0.5; } to { opacity: 1; } }
-
         .grid {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 80%;
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 70%;
             background-image: 
                 linear-gradient(transparent 0%, var(--neon-pink) 1px, transparent 2px),
                 linear-gradient(90deg, transparent 0%, var(--neon-pink) 1px, transparent 2px);
             background-size: 50px 50px;
-            transform: perspective(500px) rotateX(60deg);
+            transform: perspective(500px) rotateX(65deg);
             transform-origin: center bottom;
-            animation: move-grid 2.5s linear infinite;
-            opacity: 0.25; z-index: -1;
+            animation: move-grid 3s linear infinite;
+            opacity: 0.2; z-index: -2;
         }
 
         @keyframes move-grid { from { background-position: 0 0; } to { background-position: 0 50px; } }
 
         .sun {
-            position: fixed; top: 15%; left: 50%; transform: translateX(-50%);
-            width: 300px; height: 300px;
+            position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
+            width: 350px; height: 350px;
             background: linear-gradient(#ff0080 0%, #ff8c00 100%);
             border-radius: 50%;
-            box-shadow: 0 0 100px #ff0080;
-            z-index: -2;
-            -webkit-mask-image: repeating-linear-gradient(to bottom, black 0, black 15px, transparent 20px);
+            box-shadow: 0 0 120px rgba(255, 0, 128, 0.4);
+            z-index: -4;
+            -webkit-mask-image: repeating-linear-gradient(to bottom, black 0, black 12px, transparent 16px);
         }
 
         .music-btn {
             position: fixed; top: 20px; right: 20px; z-index: 1001;
-            background: rgba(0,0,0,0.7); border: 2px solid var(--neon-blue);
-            color: var(--neon-blue); padding: 15px; border-radius: 50%;
+            background: rgba(0,0,0,0.6); border: 2px solid var(--neon-blue);
+            color: var(--neon-blue); padding: 12px; border-radius: 50%;
             cursor: pointer; box-shadow: 0 0 15px var(--neon-blue);
+            backdrop-filter: blur(5px);
         }
 
         header { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 
         h1 {
             font-family: 'Press Start 2P', cursive; font-size: 2.2rem;
-            color: white; text-shadow: 4px 4px var(--neon-pink);
-            animation: neon-pulse 1.5s infinite alternate;
+            color: white; text-shadow: 4px 4px var(--neon-pink), 0 0 20px var(--neon-pink);
+            letter-spacing: 5px; text-transform: uppercase;
         }
-
-        @keyframes neon-pulse { from { text-shadow: 2px 2px var(--neon-pink), 0 0 10px var(--neon-blue); } to { text-shadow: 4px 4px var(--neon-pink), 0 0 25px var(--neon-blue); } }
 
         .timer-box {
-            margin-top: 40px; background: rgba(0,0,0,0.85);
-            padding: 25px; border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 30px var(--neon-blue);
+            margin-top: 40px; background: rgba(0,0,0,0.8);
+            padding: 20px 40px; border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 30px var(--neon-blue), inset 0 0 10px var(--neon-blue);
+            border-radius: 4px;
         }
         .timer-display { display: flex; gap: 20px; }
-        .t-num { font-size: 2.5rem; font-weight: bold; color: white; }
-        .t-text { font-size: 0.7rem; color: var(--neon-pink); letter-spacing: 2px; }
+        .t-num { font-size: 2.2rem; font-weight: bold; color: white; text-shadow: 0 0 10px var(--neon-blue); }
+        .t-text { font-size: 0.7rem; color: var(--neon-pink); font-family: 'Press Start 2P'; }
 
         .container { max-width: 800px; margin: 0 auto; padding: 100px 20px; }
 
         .moment { margin-bottom: 250px; display: flex; flex-direction: column; align-items: center; }
 
-        .photo-holder {
-            width: 100%; max-width: 450px; background: #000; padding: 12px;
-            border: 3px solid var(--neon-blue); box-shadow: 0 0 40px var(--neon-blue);
-            transition: 0.3s;
+        .photo-card {
+            width: 100%; max-width: 420px; background: #000; padding: 12px;
+            border: 2px solid var(--neon-blue); box-shadow: 0 0 30px var(--neon-blue);
+            position: relative; transition: 0.4s;
         }
-        .photo-holder:hover { transform: scale(1.02); box-shadow: 0 0 60px var(--neon-pink); border-color: var(--neon-pink); }
+        .photo-card:hover { border-color: var(--neon-pink); box-shadow: 0 0 50px var(--neon-pink); transform: rotate(1deg) scale(1.03); }
 
-        .photo-holder img { width: 100%; height: auto; display: block; filter: saturate(1.3); }
+        .photo-card img { width: 100%; height: auto; display: block; filter: saturate(1.2) contrast(1.1); }
 
         .photo-label {
-            font-family: 'Press Start 2P', cursive; font-size: 10px;
+            font-family: 'Press Start 2P', cursive; font-size: 9px;
             color: var(--neon-pink); padding-top: 15px; text-align: center;
         }
 
         .random-phrase {
-            font-size: 1.3rem; text-align: center; margin-top: 35px;
-            color: white; text-shadow: 0 0 15px var(--neon-blue);
-            font-weight: bold; min-height: 1.5em;
+            font-size: 1.2rem; text-align: center; margin-top: 40px;
+            color: white; text-shadow: 0 0 10px var(--neon-blue);
+            font-weight: bold; line-height: 1.6; max-width: 500px;
         }
 
         .btn-end {
             font-family: 'Press Start 2P', cursive; font-size: 12px;
-            background: transparent; color: var(--neon-pink);
-            border: 3px solid var(--neon-pink); padding: 25px 50px;
-            cursor: pointer; box-shadow: 0 0 25px var(--neon-pink);
-            transition: 0.4s;
+            background: transparent; color: #fff;
+            border: 2px solid var(--neon-pink); padding: 25px 50px;
+            cursor: pointer; box-shadow: 0 0 20px var(--neon-pink);
+            transition: 0.4s; text-shadow: 0 0 5px var(--neon-pink);
         }
-        .btn-end:hover { background: var(--neon-pink); color: white; box-shadow: 0 0 60px var(--neon-pink); }
+        .btn-end:hover { background: var(--neon-pink); box-shadow: 0 0 60px var(--neon-pink); transform: translateY(-5px); }
 
-        footer { padding: 60px; text-align: center; opacity: 0.5; font-family: 'Press Start 2P', cursive; font-size: 8px; color: var(--neon-blue); }
+        footer { padding: 60px; text-align: center; opacity: 0.4; font-family: 'Press Start 2P'; font-size: 7px; color: var(--neon-blue); }
     </style>
 </head>
 <body>
 
-    <div class="stars-bg"></div>
-    <div class="stars"></div>
+    <div class="bg-overlay"></div>
+    <div id="particles-container"></div>
     <div class="grid"></div>
     <div class="sun"></div>
 
@@ -147,34 +145,33 @@
 
     <div class="container">
         <div class="moment" data-aos="fade-right">
-            <div class="photo-holder">
+            <div class="photo-card">
                 <img src="1.jpg" alt="Memory 1">
-                <p class="photo-label">SCAN_ERROR_404</p>
+                <p class="photo-label">SYSTEM_ENTRY_01</p>
             </div>
             <p id="phrase1" class="random-phrase"></p>
         </div>
 
         <div class="moment" data-aos="fade-left">
-            <div class="photo-holder">
+            <div class="photo-card">
                 <img src="2.jpg" alt="Memory 2">
-                <p class="photo-label">DATA_RECOVERED</p>
+                <p class="photo-label">SYSTEM_ENTRY_02</p>
             </div>
             <p id="phrase2" class="random-phrase"></p>
         </div>
 
         <center>
             <button class="btn-end" onclick="sendGiftRequest()" data-aos="flip-up">
-                ЗАПРОСИТЬ ПОДАРОК // 100 STARS
+                ПОЛУЧИТЬ ПОДАРОК // 100 STARS
             </button>
         </center>
     </div>
 
-    <footer>ACCESS GRANTED // LOVE.EXE // 2026</footer>
+    <footer>// HEARTS_ENCRYPTED // LOVE.EXE // 2026</footer>
 
     <script>
         AOS.init({ duration: 1200 });
 
-        // МАССИВ РАНДОМНЫХ ФРАЗ
         const phrases = [
             "Ты — мой главный ритм в этом бесконечном синтвейве.",
             "С тобой реальность ярче любого неона.",
@@ -183,20 +180,19 @@
             "Ты — моя любимая мелодия из 80-х.",
             "Моё сердце бьется в темпе 120 BPM, когда ты рядом.",
             "Ты — самая яркая звезда на моем цифровом небе.",
-            "С тобой даже бесконечная сетка кажется уютной.",
-            " ACCESS_LEVEL: INFINITE_LOVE ",
-            "Ты — мой лучший баг в системе."
+            "Ты — мой лучший баг в системе, который я не хочу исправлять.",
+            "ACCESS_LEVEL: INFINITE_LOVE",
+            "С тобой даже бесконечный космос кажется уютным."
         ];
 
-        function setRandomPhrases() {
-            // Перемешиваем массив, чтобы фразы не повторялись на двух фото
+        function setPhrases() {
             const shuffled = phrases.sort(() => 0.5 - Math.random());
             document.getElementById('phrase1').innerText = shuffled[0];
             document.getElementById('phrase2').innerText = shuffled[1];
         }
+        window.onload = setPhrases;
 
-        window.onload = setRandomPhrases;
-
+        // Таймер
         const start = new Date(2025, 10, 2); 
         function update() {
             const now = new Date();
@@ -206,10 +202,10 @@
             const mins = Math.floor((d / 60000) % 60);
             const secs = Math.floor((d / 1000) % 60);
             document.getElementById('countdown').innerHTML = `
-                <div class="t-unit"><span class="t-num">${days}</span><br><span class="t-text">DAYS</span></div>
-                <div class="t-unit"><span class="t-num">${hours}</span><br><span class="t-text">HRS</span></div>
-                <div class="t-unit"><span class="t-num">${mins}</span><br><span class="t-text">MIN</span></div>
-                <div class="t-unit"><span class="t-num">${secs}</span><br><span class="t-text">SEC</span></div>
+                <div class="t-unit"><span class="t-num">${days}</span><br><span class="t-text">ДН</span></div>
+                <div class="t-unit"><span class="t-num">${hours}</span><br><span class="t-text">ЧС</span></div>
+                <div class="t-unit"><span class="t-num">${mins}</span><br><span class="t-text">МН</span></div>
+                <div class="t-unit"><span class="t-num">${secs}</span><br><span class="t-text">СК</span></div>
             `;
         }
         setInterval(update, 1000); update();
@@ -219,6 +215,31 @@
             const b = document.getElementById('mBtn');
             a.paused ? (a.play(), b.innerText = '⏸️') : (a.pause(), b.innerText = '🎵');
         }
+
+        // ГЕНЕРАЦИЯ ПАДАЮЩИХ СЕРДЕЧЕК
+        const particles = document.getElementById('particles-container');
+        function createParticle() {
+            const p = document.createElement('div');
+            const isHeart = Math.random() > 0.3;
+            p.innerHTML = isHeart ? '💜' : '✨';
+            p.style.position = 'absolute';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = '-30px';
+            p.style.fontSize = Math.random() * 15 + 10 + 'px';
+            p.style.color = isHeart ? '#ff00ff' : '#00ffff';
+            p.style.opacity = Math.random() * 0.6 + 0.2;
+            p.style.textShadow = `0 0 10px ${isHeart ? '#ff00ff' : '#00ffff'}`;
+            
+            const duration = 4000 + Math.random() * 4000;
+            p.animate([
+                { transform: 'translateY(0) rotate(0deg)' },
+                { transform: `translateY(110vh) rotate(${Math.random() * 360}deg)` }
+            ], { duration: duration, easing: 'linear' });
+
+            particles.appendChild(p);
+            setTimeout(() => p.remove(), duration);
+        }
+        setInterval(createParticle, 300);
 
         function sendGiftRequest() {
             confetti({ particleCount: 300, spread: 100, origin: { y: 0.6 }, colors: ['#ff00ff', '#00ffff'] });
