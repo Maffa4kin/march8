@@ -30,7 +30,6 @@
             min-height: 100vh;
         }
 
-        /* Золотая рамка по периметру */
         body::before {
             content: ''; position: fixed; top: 10px; left: 10px; right: 10px; bottom: 10px;
             border: 2px solid var(--gold-soft);
@@ -134,7 +133,7 @@
         <span id="music-text" style="font-size: 0.7rem; font-weight: 700; color: var(--gold);">SOUND: OFF</span>
         <span id="music-icon">🎵</span>
         <audio id="bg-track" loop>
-            <source src="XdrianGM - Hold Me (Quavier Edit).mp3" type="audio/mpeg">
+            <source src="track.mp3" type="audio/mpeg">
         </audio>
     </div>
 
@@ -182,7 +181,6 @@
     <script>
         AOS.init({ duration: 1200, once: true });
 
-        // --- МУЗЫКАЛЬНЫЙ ДВИЖОК ---
         const audio = document.getElementById('bg-track');
         const mText = document.getElementById('music-text');
         const mIcon = document.getElementById('music-icon');
@@ -196,8 +194,7 @@
         function togglePlay(e) {
             if (e) e.stopPropagation();
             if (audio.paused) {
-                audio.play();
-                updateUI(true);
+                audio.play().then(() => updateUI(true)).catch(err => console.log(err));
             } else {
                 audio.pause();
                 updateUI(false);
@@ -205,20 +202,21 @@
             audioUnlocked = true;
         }
 
-        // Ключ к успеху: пытаемся запустить при любом клике по BODY
-        document.body.addEventListener('click', () => {
+        // Активация звука при любом взаимодействии
+        const unlockAudio = () => {
             if (!audioUnlocked) {
                 audio.play().then(() => {
                     updateUI(true);
                     audioUnlocked = true;
-                }).catch(() => {
-                    console.log("Ждем осознанного взаимодействия");
-                });
+                }).catch(() => {});
             }
-        }, { once: true });
+        };
+
+        document.body.addEventListener('click', unlockAudio, { once: true });
+        document.body.addEventListener('touchstart', unlockAudio, { once: true });
+        window.addEventListener('scroll', unlockAudio, { once: true });
 
 
-        // --- КОНТЕНТ МОДАЛОК ---
         const modalData = {
             letter: {
                 title: "Мое письмо",
@@ -228,7 +226,7 @@
             },
             gift: {
                 title: "Твой сюрприз",
-                text: "Этот подарок — лишь малая часть того, что ты заслуживаешь. Нажми на кнопку ниже, чтобы забрать его в Telegram. Я уже подготовил всё для тебя!",
+                text: "Я подготовил для тебя кое-что особенное. Нажми на кнопку ниже, чтобы забрать свой подарок в Telegram. Я уже жду твоего сообщения!",
                 btn: "ЗАБРАТЬ ПОДАРОК 💖",
                 isGift: true
             }
@@ -255,7 +253,6 @@
             }
         }
 
-        // --- ТАЙМЕР ---
         const startDate = new Date(2025, 10, 2); 
         function updateTimer() {
             const diff = new Date() - startDate;
@@ -266,7 +263,6 @@
         }
         setInterval(updateTimer, 1000); updateTimer();
 
-        // --- ВИЗУАЛЬНЫЕ ЭФФЕКТЫ ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let parts = [];
