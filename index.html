@@ -22,45 +22,45 @@
             color: white;
             font-family: 'Exo 2', sans-serif;
             min-height: 100vh;
-            width: 100%;
         }
 
-        /* ФОНОВЫЙ ГРАДИЕНТ */
-        .fixed-bg {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        /* ГЛУБОКИЙ ФОН */
+        .bg-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 50%, #1a0533 0%, #050110 100%);
             z-index: -10;
         }
 
-        /* СОЛНЦЕ - ТЕПЕРЬ С ФИКСИРОВАННЫМИ РАЗМЕРАМИ ДЛЯ ТЕСТА */
+        /* СОЛНЦЕ (Фиксированное, на заднем плане) */
         .sun {
-            position: fixed; top: 40%; left: 50%;
+            position: fixed;
+            top: 40%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 250px; height: 250px;
-            background: linear-gradient(to bottom, #ff0080, #ff8c00);
+            width: min(300px, 70vw);
+            height: min(300px, 70vw);
+            background: linear-gradient(to bottom, #ff0080 0%, #ff8c00 100%);
             border-radius: 50%;
             box-shadow: 0 0 80px var(--pink);
-            z-index: -5; /* Строго между фоном и текстом */
+            z-index: -8;
         }
 
-        /* КОЛЬЦА ВОКРУГ СОЛНЦА */
+        /* КОЛЬЦА */
         .ring {
             position: fixed; top: 40%; left: 50%;
             transform: translate(-50%, -50%);
             border: 2px solid var(--blue);
             border-radius: 50%;
-            width: 250px; height: 250px;
+            width: min(300px, 70vw);
+            height: min(300px, 70vw);
             opacity: 0;
-            z-index: -6;
+            z-index: -9;
             pointer-events: none;
         }
-
         .playing .ring { animation: pulse-ring 2s infinite; }
         .playing .ring:nth-child(2) { animation-delay: 0.5s; }
-        
         @keyframes pulse-ring {
-            0% { width: 250px; height: 250px; opacity: 0.8; }
-            100% { width: 500px; height: 500px; opacity: 0; }
+            0% { width: 300px; height: 300px; opacity: 0.8; }
+            100% { width: 600px; height: 600px; opacity: 0; }
         }
 
         /* СЕТКА */
@@ -69,10 +69,10 @@
             background-image: linear-gradient(rgba(255, 0, 255, 0.2) 1px, transparent 1px), 
                               linear-gradient(90deg, rgba(255, 0, 255, 0.2) 1px, transparent 1px);
             background-size: 50px 50px;
-            transform: perspective(250px) rotateX(60deg);
+            transform: perspective(200px) rotateX(60deg);
             transform-origin: center bottom;
-            animation: move-grid 2s linear infinite;
-            z-index: -4;
+            animation: move-grid 2.5s linear infinite;
+            z-index: -7;
         }
         @keyframes move-grid { from { background-position: 0 0; } to { background-position: 0 50px; } }
 
@@ -85,42 +85,50 @@
             position: relative; z-index: 10;
         }
 
-        h1 { font-family: 'Press Start 2P', cursive; font-size: 1.8rem; text-shadow: 0 0 20px var(--pink); }
+        h1 { font-family: 'Press Start 2P', cursive; font-size: 1.8rem; text-shadow: 0 0 20px var(--pink); margin: 0 0 20px 0; }
 
         .timer-box { 
-            background: rgba(0,0,0,0.8); padding: 20px; 
+            background: rgba(0,0,0,0.7); padding: 15px; 
             border: 2px solid var(--blue); box-shadow: 0 0 15px var(--blue); 
-            display: flex; gap: 15px; margin: 20px 0;
+            display: flex; gap: 15px; backdrop-filter: blur(5px);
         }
+        .t-val { font-size: 1.5rem; display: block; font-weight: bold; }
+        .t-label { font-size: 0.6rem; color: var(--pink); font-family: 'Press Start 2P'; }
 
         .poem-btn {
             font-family: 'Press Start 2P', cursive; font-size: 10px;
             background: transparent; border: 2px solid var(--pink); color: white;
-            padding: 15px 20px; cursor: pointer; box-shadow: 0 0 10px var(--pink);
+            padding: 15px 20px; cursor: pointer; margin-top: 30px;
+            box-shadow: 0 0 10px var(--pink); transition: 0.3s;
         }
+        .poem-btn:hover { background: var(--pink); }
 
-        /* СТИХИ */
+        /* МОДАЛКА */
         #poem-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center;
+            backdrop-filter: blur(10px);
         }
         .modal-content {
             border: 2px solid var(--pink); padding: 30px; max-width: 80%;
             text-align: center; box-shadow: 0 0 30px var(--pink); background: #0a0219;
+            position: relative;
         }
+        .close-x { position: absolute; top: 10px; right: 15px; color: var(--pink); cursor: pointer; font-family: 'Press Start 2P'; }
 
-        .container { padding: 100px 20px; text-align: center; position: relative; z-index: 10; }
-        .card { border: 2px solid var(--blue); padding: 5px; background: #000; display: inline-block; margin-bottom: 20px; }
+        /* ФОТО */
+        .container { padding: 50px 20px; text-align: center; position: relative; z-index: 10; }
+        .card { border: 2px solid var(--blue); padding: 5px; background: #000; display: inline-block; margin-bottom: 20px; box-shadow: 0 0 15px var(--blue); }
         .card img { width: 280px; display: block; }
-        .phrase { font-weight: bold; margin-bottom: 150px; }
+        .phrase { font-weight: bold; margin-bottom: 150px; text-shadow: 0 0 5px var(--blue); }
 
-        .music-btn { position: fixed; top: 20px; right: 20px; z-index: 2000; width: 50px; height: 50px; border-radius: 50%; background: rgba(0,0,0,0.6); color: var(--blue); border: 2px solid var(--blue); cursor: pointer; }
+        .music-btn { position: fixed; top: 20px; right: 20px; z-index: 2000; width: 50px; height: 50px; border-radius: 50%; background: rgba(0,0,0,0.6); color: var(--blue); border: 2px solid var(--blue); cursor: pointer; font-size: 1.2rem; }
         #hearts { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; }
     </style>
 </head>
 <body id="main-body">
 
-    <div class="fixed-bg"></div>
+    <div class="bg-layer"></div>
     <div class="sun"></div>
     <div class="ring"></div><div class="ring"></div>
     <div class="grid"></div>
@@ -131,30 +139,30 @@
     </button>
 
     <header>
-        <h1 data-aos="fade-down">VIOLETTA</h1>
-        <div class="timer-box" data-aos="zoom-in">
-            <div id="countdown" style="display:flex; gap:10px;"></div>
+        <h1 data-aos="zoom-in">VIOLETTA</h1>
+        <div class="timer-box" data-aos="fade-up">
+            <div id="countdown" style="display:flex; gap:15px;"></div>
         </div>
         <button class="poem-btn" onclick="openPoem()" data-aos="fade-up">ПОСЛАНИЕ ДЛЯ ТЕБЯ</button>
     </header>
 
     <div id="poem-modal">
         <div class="modal-content">
-            <span onclick="closePoem()" style="float:right; cursor:pointer; color:var(--pink);">[X]</span>
-            <div id="dynamic-poem" style="white-space: pre-line; margin-top: 20px; line-height: 1.6;"></div>
+            <span class="close-x" onclick="closePoem()">X</span>
+            <div id="dynamic-poem" style="white-space: pre-line; margin-top: 10px; line-height: 1.8; font-style: italic;"></div>
         </div>
     </div>
 
     <div class="container">
         <div data-aos="fade-right">
             <div class="card"><img src="1.jpg"></div>
-            <p class="phrase" id="p1"></p>
+            <p class="phrase" id="p1">Ты мой неон</p>
         </div>
         <div data-aos="fade-left">
             <div class="card"><img src="2.jpg"></div>
-            <p class="phrase" id="p2"></p>
+            <p class="phrase" id="p2">Ярче всех звезд</p>
         </div>
-        <button onclick="gift()" style="font-family:'Press Start 2P'; padding:20px; background:var(--pink); border:none; color:white; cursor:pointer;">GET GIFT</button>
+        <button onclick="gift()" style="font-family:'Press Start 2P'; padding:20px; background:transparent; border:2px solid var(--pink); color:white; cursor:pointer; margin-bottom: 50px;">GET GIFT</button>
     </div>
 
     <script>
@@ -167,7 +175,7 @@
                 audio.play().then(() => {
                     document.getElementById('mBtn').innerText = '⏸️';
                     sunBody.classList.add('playing');
-                });
+                }).catch(()=>alert("Нажми еще раз!"));
             } else {
                 audio.pause();
                 document.getElementById('mBtn').innerText = '🎵';
@@ -176,35 +184,47 @@
         }
 
         const myPoems = [
-            `В этой холодной, пустой тишине,\nТы — единственный свет, что дорог мне.`,
-            `Пусть время летит, замерзают года,\nНо ты в моем сердце теперь навсегда.`
+            `В этой холодной, пустой тишине,\nТы — единственный свет, что дорог мне.\nКогда мир замирает, теряя черты,\nВ моих мыслях останешься только ты.`,
+            `Пусть время летит, замерзают года,\nНо ты в моем сердце теперь навсегда.\nВиолетта, ты — солнце в моей темноте,\nЕдинственный смысл в земной суете.`
         ];
 
         function openPoem() {
             document.getElementById('dynamic-poem').innerText = myPoems[Math.floor(Math.random()*myPoems.length)];
             document.getElementById('poem-modal').style.display = 'flex';
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
         }
         function closePoem() { document.getElementById('poem-modal').style.display = 'none'; }
 
-        // ТАЙМЕР
+        // ИСПРАВЛЕННЫЙ ТАЙМЕР
         const start = new Date(2025, 10, 2); 
-        setInterval(() => {
-            const d = new Date() - start;
-            document.getElementById('countdown').innerHTML = Math.floor(d/86400000) + " ДНЕЙ";
-        }, 1000);
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - start;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
 
-        // ФРАЗЫ И СЕРДЕЧКИ
-        document.getElementById('p1').innerText = "Ты — мой главный ритм.";
-        document.getElementById('p2').innerText = "Ярче любого неона.";
+            document.getElementById('countdown').innerHTML = `
+                <div><span class="t-val">${days}</span><span class="t-label">ДНИ</span></div>
+                <div><span class="t-val">${hours}</span><span class="t-label">ЧАС</span></div>
+                <div><span class="t-val">${minutes}</span><span class="t-label">МИН</span></div>
+                <div><span class="t-val">${seconds}</span><span class="t-label">СЕК</span></div>
+            `;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
 
+        // СЕРДЕЧКИ
         setInterval(() => {
             const h = document.createElement('div');
             h.innerHTML = '💜';
-            h.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-20px; z-index:999;`;
-            h.animate([{top:'-20px'},{top:'100vh'}], 5000);
+            h.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-30px; z-index:999; font-size:20px;`;
+            h.animate([{transform:'translateY(0)'},{transform:'translateY(110vh)'}], 5000);
             document.getElementById('hearts').appendChild(h);
             setTimeout(() => h.remove(), 5000);
-        }, 400);
+        }, 350);
 
         function gift() { confetti(); setTimeout(() => { window.location.href="https://t.me/brvg23"; }, 1000); }
     </script>
