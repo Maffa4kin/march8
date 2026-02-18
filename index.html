@@ -9,58 +9,55 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        :root {
-            --neon-pink: #ff00ff;
-            --neon-blue: #00ffff;
-            --bg-dark: #0d0221;
-        }
-
-        body {
+        /* Жестко задаем темный фон сразу для всего */
+        html, body {
+            background-color: #0d0221 !important; 
             margin: 0; padding: 0;
-            background-color: var(--bg-dark);
-            color: var(--neon-blue);
+            color: #00ffff;
             font-family: 'Exo 2', sans-serif;
             overflow-x: hidden;
-            /* Эффект старого телевизора */
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 4px, 3px 100%;
         }
 
-        /* Ретро-сетка */
-        .grid {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 100%;
+        /* Эффект ретро-сетки */
+        .grid-container {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%; height: 100%;
             background-image: 
-                linear-gradient(transparent 0%, var(--neon-pink) 2%, transparent 3%),
-                linear-gradient(90deg, transparent 0%, var(--neon-pink) 2%, transparent 3%);
-            background-size: 60px 60px;
-            transform: perspective(500px) rotateX(60deg);
+                linear-gradient(transparent 0%, #ff00ff 1px, transparent 2px),
+                linear-gradient(90deg, transparent 0%, #ff00ff 1px, transparent 2px);
+            background-size: 50px 50px;
+            perspective: 500px;
+            transform: rotateX(60deg);
             transform-origin: center bottom;
-            animation: move-grid 2s linear infinite;
-            opacity: 0.15; z-index: -1;
+            animation: moveGrid 2s linear infinite;
+            opacity: 0.2;
+            z-index: -1;
         }
 
-        @keyframes move-grid {
+        @keyframes moveGrid {
             from { background-position: 0 0; }
-            to { background-position: 0 60px; }
+            to { background-position: 0 50px; }
         }
 
-        /* Закатное солнце */
-        .sun {
-            position: fixed; top: 15%; left: 50%; transform: translateX(-50%);
-            width: 300px; height: 300px;
-            background: linear-gradient(#ff0080, #ff8c00);
+        /* Полосатое неоновое солнце */
+        .retro-sun {
+            position: fixed;
+            top: 10%; left: 50%;
+            transform: translateX(-50%);
+            width: 250px; height: 250px;
+            background: linear-gradient(#ff0080 20%, #ff8c00 100%);
             border-radius: 50%;
-            box-shadow: 0 0 80px #ff0080;
+            box-shadow: 0 0 50px #ff0080;
             z-index: -2;
-            clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 0% 70%, 0% 75%, 100% 75%, 100% 80%, 0% 80%, 0% 85%, 100% 85%, 100% 90%, 0% 90%, 0% 95%, 100% 95%, 100% 100%, 0% 100%);
+            mask-image: linear-gradient(to bottom, black 70%, transparent 75%, black 80%, transparent 85%, black 90%, transparent 95%, black 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 75%, black 80%, transparent 85%, black 90%, transparent 95%, black 100%);
         }
 
         .music-btn {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
-            background: transparent; border: 2px solid var(--neon-blue);
-            color: var(--neon-blue); padding: 15px; border-radius: 50%;
-            cursor: pointer; box-shadow: 0 0 10px var(--neon-blue);
+            background: rgba(13, 2, 33, 0.8); border: 2px solid #00ffff;
+            color: #00ffff; padding: 12px; border-radius: 50%;
+            cursor: pointer; box-shadow: 0 0 15px #00ffff;
         }
 
         header {
@@ -69,110 +66,115 @@
         }
 
         h1 {
-            font-family: 'Press Start 2P', cursive; font-size: 2.2rem;
-            color: white; text-shadow: 4px 4px var(--neon-pink);
-            margin: 0; animation: glitch 1s infinite alternate;
-        }
-
-        @keyframes glitch {
-            0% { transform: skew(0); }
-            100% { transform: skew(2deg); opacity: 0.8; }
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.8rem;
+            color: #fff;
+            text-shadow: 3px 3px #ff00ff, -3px -3px #00ffff;
+            margin: 0;
+            letter-spacing: 4px;
         }
 
         .timer-box {
-            margin-top: 50px; background: rgba(0,0,0,0.8);
-            padding: 25px; border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 20px var(--neon-blue);
-        }
-        .timer-display { display: flex; gap: 20px; }
-        .t-num { font-size: 2.5rem; font-weight: bold; color: white; }
-        .t-text { font-size: 0.8rem; text-transform: uppercase; }
-
-        .container { max-width: 900px; margin: 0 auto; padding: 100px 20px; }
-
-        .moment { margin-bottom: 250px; display: flex; flex-direction: column; align-items: center; }
-
-        .photo-holder {
-            width: 100%; max-width: 450px; background: #000; padding: 10px;
-            border: 3px solid var(--neon-blue); box-shadow: 0 0 30px var(--neon-blue);
+            margin-top: 40px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border: 2px solid #ff00ff;
+            box-shadow: 0 0 20px #ff00ff;
         }
 
-        .photo-holder img { width: 100%; height: auto; display: block; filter: saturate(1.5) contrast(1.2); }
+        .timer-display { display: flex; gap: 15px; }
+        .t-num { font-size: 2rem; font-weight: bold; color: #fff; text-shadow: 0 0 10px #00ffff; }
+        .t-text { font-size: 0.7rem; color: #ff00ff; }
 
-        .photo-label {
-            font-family: 'Press Start 2P', cursive; font-size: 10px;
-            color: var(--neon-pink); padding-top: 15px; text-align: center;
+        .container { max-width: 800px; margin: 0 auto; padding: 50px 20px; }
+
+        .moment {
+            margin-bottom: 180px;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        .moment-desc {
-            font-size: 1.2rem; text-align: center; margin-top: 30px;
-            color: white; text-shadow: 0 0 5px var(--neon-blue);
+        .photo-frame {
+            width: 100%; max-width: 400px;
+            border: 3px solid #00ffff;
+            background: #000;
+            padding: 8px;
+            box-shadow: 0 0 25px #00ffff;
         }
 
-        .btn-end {
-            font-family: 'Press Start 2P', cursive; font-size: 14px;
-            background: transparent; color: var(--neon-pink);
-            border: 3px solid var(--neon-pink); padding: 25px 50px;
-            cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px var(--neon-pink);
+        .photo-frame img { width: 100%; height: auto; display: block; filter: saturate(1.2); }
+
+        .photo-tag {
+            font-family: 'Press Start 2P', cursive; font-size: 8px;
+            color: #ff00ff; margin-top: 10px; text-align: center;
         }
 
-        .btn-end:hover {
-            background: var(--neon-pink); color: white;
-            box-shadow: 0 0 50px var(--neon-pink);
+        .desc {
+            margin-top: 25px; font-size: 1.1rem; text-align: center;
+            color: #fff; text-shadow: 0 0 8px #ff00ff; line-height: 1.6;
         }
 
-        footer { padding: 50px; text-align: center; opacity: 0.5; font-family: 'Press Start 2P', sans-serif; font-size: 8px; }
+        .btn-order {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            background: transparent;
+            color: #ff00ff;
+            border: 3px solid #ff00ff;
+            padding: 25px 40px;
+            cursor: pointer;
+            box-shadow: 0 0 20px #ff00ff;
+            transition: 0.3s;
+        }
 
+        .btn-order:hover {
+            background: #ff00ff; color: #fff;
+            box-shadow: 0 0 40px #ff00ff;
+        }
     </style>
 </head>
 <body>
+
+    <div class="grid-container"></div>
+    <div class="retro-sun"></div>
 
     <button class="music-btn" onclick="toggleMusic()" id="mBtn">🎵
         <audio id="track" loop><source src="music.mp3" type="audio/mpeg"></audio>
     </button>
 
-    <div class="grid"></div>
-    <div class="sun"></div>
-
     <header>
         <h1 data-aos="zoom-in">VIOLETTA</h1>
-        <div class="timer-box" data-aos="fade-up" data-aos-delay="400">
+        <div class="timer-box" data-aos="fade-up">
             <div id="countdown" class="timer-display"></div>
         </div>
     </header>
 
     <div class="container">
-        
         <div class="moment" data-aos="fade-right">
-            <div class="photo-holder">
-                <img src="1.jpg" alt="Photo 1">
-                <p class="photo-label">FILE_001.JPG</p>
+            <div class="photo-frame">
+                <img src="1.jpg" alt="Memory 1">
+                <p class="photo-tag">IMG_DATA_01</p>
             </div>
-            <p class="moment-desc">С этого момента моя реальность стала ярче неона.</p>
+            <p class="desc">Ты — мой главный ритм в этом бесконечном синтвейве.</p>
         </div>
 
         <div class="moment" data-aos="fade-left">
-            <div class="photo-holder">
-                <img src="2.jpg" alt="Photo 2">
-                <p class="photo-label">FILE_002.JPG</p>
+            <div class="photo-frame">
+                <img src="2.jpg" alt="Memory 2">
+                <p class="photo-tag">IMG_DATA_02</p>
             </div>
-            <p class="moment-desc">В твоей улыбке — вся энергия ночного города.</p>
+            <p class="desc">Обожаю каждый момент, проведенный с тобой.</p>
         </div>
 
         <center>
-            <div data-aos="flip-up">
-                <button class="btn-end" onclick="sendGiftRequest()">
-                    ЗАПРОСИТЬ ПОДАРОК: 100 STARS
-                </button>
-            </div>
+            <button class="btn-order" onclick="sendRequest()" data-aos="flip-up">
+                ЗАПРОСИТЬ ПОДАРОК // 100 STARS
+            </button>
         </center>
     </div>
 
-    <footer>ACCESS GRANTED // LOVE.SYS // 2026</footer>
-
     <script>
-        AOS.init({ duration: 1200 });
+        AOS.init({ duration: 1000 });
 
+        // Таймер (2 ноября 2025)
         const start = new Date(2025, 10, 2); 
         function update() {
             const now = new Date();
@@ -182,10 +184,10 @@
             const mins = Math.floor((d / 60000) % 60);
             const secs = Math.floor((d / 1000) % 60);
             document.getElementById('countdown').innerHTML = `
-                <div class="t-unit"><span class="t-num">${days}</span><span class="t-text">DAYS</span></div>
-                <div class="t-unit"><span class="t-num">${hours}</span><span class="t-text">HRS</span></div>
-                <div class="t-unit"><span class="t-num">${mins}</span><span class="t-text">MIN</span></div>
-                <div class="t-unit"><span class="t-num">${secs}</span><span class="t-text">SEC</span></div>
+                <div class="t-unit"><span class="t-num">${days}</span><br><span class="t-text">ДН</span></div>
+                <div class="t-unit"><span class="t-num">${hours}</span><br><span class="t-text">ЧС</span></div>
+                <div class="t-unit"><span class="t-num">${mins}</span><br><span class="t-text">МН</span></div>
+                <div class="t-unit"><span class="t-num">${secs}</span><br><span class="t-text">СК</span></div>
             `;
         }
         setInterval(update, 1000); update();
@@ -193,16 +195,13 @@
         function toggleMusic() {
             const a = document.getElementById('track');
             const b = document.getElementById('mBtn');
-            if(a.paused) { a.play(); b.innerText = '⏸️'; } 
-            else { a.pause(); b.innerText = '🎵'; }
+            a.paused ? (a.play(), b.innerText = '⏸️') : (a.pause(), b.innerText = '🎵');
         }
 
-        function sendGiftRequest() {
-            confetti({ particleCount: 400, spread: 120, origin: { y: 0.6 }, colors: ['#ff00ff', '#00ffff', '#ffffff'] });
+        function sendRequest() {
+            confetti({ particleCount: 300, spread: 100, colors: ['#ff00ff', '#00ffff'] });
             setTimeout(() => {
-                const nick = "brvg23"; 
-                const text = encodeURIComponent("Милый, я выбираю подарок: Кольцо за 100 звёзд! 💍✨");
-                window.location.href = `https://t.me/${nick}?text=${text}`;
+                window.location.href = `https://t.me/brvg23?text=${encodeURIComponent("Милый, я выбираю подарок: Кольцо за 100 звёзд! 💍✨")}`;
             }, 1500);
         }
     </script>
