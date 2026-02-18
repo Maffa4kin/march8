@@ -30,7 +30,6 @@
             min-height: 100vh;
         }
 
-        /* Золотая рамка по периметру */
         body::before {
             content: ''; position: fixed; top: 10px; left: 10px; right: 10px; bottom: 10px;
             border: 2px solid var(--gold-soft);
@@ -91,7 +90,6 @@
         @keyframes shine { to { background-position: 200% center; } }
         .btn-luxe:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 40px rgba(184, 134, 11, 0.6); }
 
-        /* --- ГАЛЕРЕЯ (СЕТКА) --- */
         .gallery-section { padding: 120px 20px; text-align: center; z-index: 10; position: relative; }
         .photo-grid {
             display: grid;
@@ -111,7 +109,7 @@
         }
         .polaroid:nth-child(even) { transform: rotate(3deg); }
         .polaroid:hover { transform: rotate(0deg) translateY(-15px); box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
-        .polaroid img { width: 100%; height: auto; display: block; }
+        .polaroid img { width: 100%; height: auto; display: block; border-radius: 2px; }
         .caption { font-family: 'Playfair Display', serif; font-style: italic; margin-top: 20px; color: var(--deep-red); font-size: 1.1rem; }
 
         .center-heart {
@@ -124,7 +122,6 @@
         }
         .heart-content { font-family: 'Playfair Display', serif; color: #fff; font-style: italic; text-align: center; }
 
-        /* Музыкальный виджет */
         .music-widget {
             position: fixed; top: 25px; right: 25px; z-index: 1001;
             background: #fff; padding: 10px 20px; border-radius: 40px;
@@ -132,7 +129,6 @@
             cursor: pointer; display: flex; align-items: center; gap: 10px;
         }
 
-        /* Модалка */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(48, 31, 31, 0.95); z-index: 2000;
@@ -166,37 +162,18 @@
     <header>
         <div class="decorative-text" data-aos="fade-down">8 March • Spring Symphony</div>
         <h1 data-aos="fade-up">Виолетта</h1>
-        
         <div class="timer-container" data-aos="zoom-in">
             <div class="timer-unit"><span class="timer-val" id="d">00</span><span class="timer-label">Дней</span></div>
             <div class="timer-unit"><span class="timer-val" id="h">00</span><span class="timer-label">Час</span></div>
             <div class="timer-unit"><span class="timer-val" id="m">00</span><span class="timer-label">Мин</span></div>
             <div class="timer-unit"><span class="timer-val" id="s">00</span><span class="timer-label">Сек</span></div>
         </div>
-
         <button class="btn-luxe" onclick="openModal('letter')">ПРОЧИТАТЬ ПОСЛАНИЕ</button>
     </header>
 
     <div class="gallery-section">
-        <div class="photo-grid">
-            <div class="polaroid" data-aos="zoom-in"><img src="1.jpg"><div class="caption">Моя Вселенная</div></div>
-            <div class="polaroid" data-aos="zoom-in" data-aos-delay="100"><img src="2.jpg"><div class="caption">Нежность</div></div>
-            <div class="polaroid" data-aos="zoom-in" data-aos-delay="200"><img src="3.jpg"><div class="caption">Твоя улыбка</div></div>
-            
-            <div class="center-heart" data-aos="fade-up">
-                <div class="heart-content">
-                    <span style="font-size: 1.5rem;">❤</span>
-                    <p>ТЫ В ЦЕНТРЕ МОЕГО МИРА</p>
-                    <span style="font-size: 1.5rem;">❤</span>
-                </div>
+        <div class="photo-grid" id="main-grid">
             </div>
-
-            <div class="polaroid" data-aos="zoom-in" data-aos-delay="300"><img src="4.jpg"><div class="caption">Особенный момент</div></div>
-            <div class="polaroid" data-aos="zoom-in" data-aos-delay="400"><img src="5.jpg"><div class="caption">Самая лучшая</div></div>
-            <div class="polaroid" data-aos="zoom-in" data-aos-delay="500"><img src="6.jpg"><div class="caption">Весна в тебе</div></div>
-            <div class="polaroid" data-aos="zoom-in" data-aos-delay="600"><img src="7.jpg"><div class="caption">Любимая</div></div>
-            <div class="polaroid" data-aos="zoom-in" data-aos-delay="700"><img src="8.jpg"><div class="caption">Виолетта</div></div>
-        </div>
 
         <div style="margin-top: 60px;">
             <button class="btn-luxe" onclick="openModal('gift')" style="background: #fff; color: var(--gold); border: 1px solid var(--gold);">
@@ -216,7 +193,46 @@
     <script>
         AOS.init({ duration: 1000, once: true });
 
-        // МУЗЫКА
+        // --- РАНДОМ ГАЛЕРЕИ ---
+        const totalPhotos = 11; // Всего твоих фото в папке
+        const gridLimit = 8;    // Сколько показывать одновременно
+        const captions = ["Моя Вселенная", "Нежность", "Твоя улыбка", "Особенный момент", "Самая лучшая", "Весна в тебе", "Любимая", "Виолетта", "Сияние", "Прекрасная", "Чудо"];
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function loadGallery() {
+            const grid = document.getElementById('main-grid');
+            let photoIndices = [];
+            for(let i=1; i<=totalPhotos; i++) photoIndices.push(i);
+            
+            // Перемешиваем индексы и берем первые 8
+            const selected = shuffle(photoIndices).slice(0, gridLimit);
+            
+            selected.forEach((num, index) => {
+                // Вставляем сердце посередине (после 3-го фото на десктопе)
+                if(index === 3) {
+                    grid.innerHTML += `
+                        <div class="center-heart" data-aos="fade-up">
+                            <div class="heart-content">
+                                <span style="font-size: 1.5rem;">❤</span>
+                                <p>ТЫ В ЦЕНТРЕ МОЕГО МИРА</p>
+                                <span style="font-size: 1.5rem;">❤</span>
+                            </div>
+                        </div>`;
+                }
+
+                grid.innerHTML += `
+                    <div class="polaroid" data-aos="zoom-in" data-aos-delay="${index * 100}">
+                        <img src="${num}.jpg">
+                        <div class="caption">${captions[num-1] || "Прекрасная"}</div>
+                    </div>`;
+            });
+        }
+        loadGallery();
+
+        // --- МУЗЫКА ---
         const audio = document.getElementById('bg-track');
         const mText = document.getElementById('music-text');
         let audioActive = false;
@@ -233,14 +249,13 @@
             audioActive = true;
         }
 
-        // Авто-разблокировка при любом клике
         document.addEventListener('click', () => {
             if (!audioActive) {
                 audio.play().then(() => { updateUI(true); audioActive = true; }).catch(() => {});
             }
         }, { once: true });
 
-        // МОДАЛКИ
+        // --- МОДАЛКИ ---
         const modalData = {
             letter: { title: "Мое письмо", text: "Виолетта, ты — та самая мелодия, которая звучит в моем сердце каждый день. В этот прекрасный праздник весны я хочу пожелать тебе всегда оставаться такой же светлой и бесконечно любимой.", isGift: false },
             gift: { title: "Твой сюрприз", text: "Я подготовил для тебя кое-что особенное. Нажми кнопку, чтобы получить подарок и отправить мне весточку!", isGift: true }
@@ -265,7 +280,7 @@
             }
         }
 
-        // ТАЙМЕР
+        // --- ТАЙМЕР ---
         const startDate = new Date(2025, 10, 2); 
         function updateTimer() {
             const diff = new Date() - startDate;
@@ -276,7 +291,7 @@
         }
         setInterval(updateTimer, 1000); updateTimer();
 
-        // ЧАСТИЦЫ
+        // --- ЧАСТИЦЫ ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let parts = [];
