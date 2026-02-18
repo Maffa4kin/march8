@@ -19,7 +19,7 @@
         html { background-color: var(--dark); }
         body { margin: 0; padding: 0; color: white; font-family: 'Exo 2', sans-serif; overflow-x: hidden; background: transparent; }
 
-        /* ФОНОВЫЙ МИР */
+        /* ФОНОВЫЕ СЛОИ */
         .fixed-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 50%, #1a0533 0%, #050110 100%);
@@ -75,7 +75,6 @@
             box-shadow: 0 0 25px var(--blue);
             display: inline-block; transition: 0.5s ease;
         }
-        .card:hover { transform: scale(1.05) rotate(1deg); border-color: var(--pink); box-shadow: 0 0 40px var(--pink); }
         .card img { width: 300px; height: auto; display: block; }
 
         .phrase { 
@@ -90,13 +89,13 @@
             color: white; padding: 25px 35px; cursor: pointer;
             box-shadow: 0 0 20px var(--pink); transition: 0.3s;
         }
-        .btn-order:hover { background: var(--pink); transform: translateY(-5px); box-shadow: 0 0 40px var(--pink); }
 
         .music-btn {
             position: fixed; top: 25px; right: 25px; z-index: 1000;
             background: rgba(0,0,0,0.6); border: 2px solid var(--blue);
             color: var(--blue); border-radius: 50%; width: 55px; height: 55px; 
             cursor: pointer; box-shadow: 0 0 15px var(--blue); font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
         }
     </style>
 </head>
@@ -107,8 +106,11 @@
     <div class="grid"></div>
     <div id="hearts"></div>
 
-    <button class="music-btn" onclick="toggleM()" id="mBtn">🎵
-        <audio id="track" loop><source src="XdrianGM - Hold Me (Quavier Edit).mp3" type="audio/mpeg"></audio>
+    <button class="music-btn" onclick="toggleM()" id="mBtn">
+        🎵
+        <audio id="track" preload="auto">
+            <source src="track.mp3" type="audio/mpeg">
+        </audio>
     </button>
 
     <header>
@@ -137,26 +139,28 @@
     </div>
 
     <script>
-        AOS.init({ duration: 1000, once: false });
+        AOS.init({ duration: 1000, once: true });
 
-        const phrases = [
-            "Ты — мой главный ритм в этом бесконечном мире.",
-            "С тобой реальность ярче любого неона.",
-            "Твоя улыбка — чистая энергия моей системы.",
-            "Ты — самая яркая звезда в моем цифровом небе.",
-            "Моё сердце бьется в темпе твоей любви.",
-            "Ты — мой лучший баг, который я никогда не исправлю.",
-            "Наша история зациклена в бесконечном счастье.",
-            "Ты — мой персональный неоновый рай."
-        ];
+        // МУЗЫКА
+        const audio = document.getElementById('track');
+        const btn = document.getElementById('mBtn');
 
-        function shuffle() {
-            const s = [...phrases].sort(() => 0.5 - Math.random());
-            document.getElementById('phrase1').innerText = s[0];
-            document.getElementById('phrase2').innerText = s[1];
+        function toggleM() {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    btn.innerText = '⏸️';
+                    btn.style.boxShadow = "0 0 25px var(--blue)";
+                }).catch(e => {
+                    alert("Нажми еще раз, браузер блокирует первый запуск!");
+                });
+            } else {
+                audio.pause();
+                btn.innerText = '🎵';
+                btn.style.boxShadow = "0 0 15px var(--blue)";
+            }
         }
-        window.onload = shuffle;
 
+        // ТАЙМЕР (С 2 ноября 2025)
         const start = new Date(2025, 10, 2); 
         function update() {
             const d = new Date() - start;
@@ -172,27 +176,33 @@
         }
         setInterval(update, 1000); update();
 
-        function toggleM() { 
-            const a = document.getElementById('track'); 
-            const b = document.getElementById('mBtn');
-            if(a.paused) { a.play(); b.innerText = '⏸️'; } 
-            else { a.pause(); b.innerText = '🎵'; }
-        }
-
+        // СЕРДЕЧКИ
         function createH() {
             const c = document.getElementById('hearts');
             const h = document.createElement('div');
-            const isH = Math.random() > 0.4;
-            h.innerHTML = isH ? '💜' : '✨';
-            h.style.cssText = `position:absolute; left:${Math.random()*100}vw; top:-40px; font-size:${isH ? '24px' : '15px'}; text-shadow:0 0 15px #f0f; opacity:0.8;`;
-            const a = h.animate([{transform:'translateY(0) rotate(0deg)'},{transform:`translateY(110vh) rotate(${Math.random()*360}deg)`}], 6000);
+            h.innerHTML = Math.random() > 0.4 ? '💜' : '✨';
+            h.style.cssText = `position:absolute; left:${Math.random()*100}vw; top:-40px; font-size:20px; text-shadow:0 0 15px #f0f;`;
+            const a = h.animate([{transform:'translateY(0)'},{transform:'translateY(110vh)'}], 6000);
             c.appendChild(h); a.onfinish = () => h.remove();
         }
-        setInterval(createH, 250);
+        setInterval(createH, 300);
+
+        // ФРАЗЫ
+        const phrases = [
+            "Ты — мой главный ритм в синтвейве.",
+            "Ярче любого неона в этом городе.",
+            "Энергия моей системы — это ты.",
+            "Лучший баг в моей жизни.",
+            "Мой бесконечный неоновый рай."
+        ];
+        document.getElementById('phrase1').innerText = phrases[Math.floor(Math.random()*phrases.length)];
+        document.getElementById('phrase2').innerText = phrases[Math.floor(Math.random()*phrases.length)];
 
         function sendReq() {
-            confetti({particleCount:300, spread:80, colors:['#ff00ff','#00ffff','#ffffff']});
-            setTimeout(() => { window.location.href="https://t.me/brvg23?text=" + encodeURIComponent("Любимый, этот сайт — просто космос! Я выбираю свой подарок 💍✨"); }, 1500);
+            confetti({particleCount:200, spread:70, colors:['#f0f','#0ff']});
+            setTimeout(() => { 
+                window.location.href="https://t.me/brvg23?text=" + encodeURIComponent("Любимый, я выбираю подарок! 💍"); 
+            }, 1000);
         }
     </script>
 </body>
