@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Violetta | Eternal Spring</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -29,7 +30,7 @@
             min-height: 100vh;
         }
 
-        /* --- ЗОЛОТАЯ РАМКА ПО ПЕРИМЕТРУ --- */
+        /* Золотая рамка по периметру */
         body::before {
             content: ''; position: fixed; top: 10px; left: 10px; right: 10px; bottom: 10px;
             border: 2px solid var(--gold-soft);
@@ -38,8 +39,8 @@
             opacity: 0.6;
         }
 
-        /* --- ЧАСТИЦЫ И ЛЕПЕСТКИ --- */
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        
         .flower-petal {
             position: fixed; pointer-events: none; z-index: 100;
             animation: fallRotate 10s infinite linear; opacity: 0;
@@ -50,7 +51,6 @@
             100% { transform: translateY(110vh) rotate(360deg) translateX(120px); opacity: 0; }
         }
 
-        /* --- ШАПКА --- */
         header {
             height: 100vh; display: flex; flex-direction: column;
             align-items: center; justify-content: center; text-align: center;
@@ -65,7 +65,6 @@
             margin: 0; font-style: italic; line-height: 1;
         }
 
-        /* ТАЙМЕР */
         .timer-container {
             margin-top: 50px; display: flex; gap: 15px;
             padding: 25px; border-radius: 30px;
@@ -78,7 +77,6 @@
         .timer-val { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: #fff; display: block; }
         .timer-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; color: var(--deep-red); opacity: 0.8; }
 
-        /* КНОПКИ */
         .btn-luxe {
             margin-top: 50px; padding: 22px 55px;
             background: linear-gradient(45deg, #b8860b, #f1d38e, #b8860b);
@@ -93,7 +91,6 @@
         @keyframes shine { to { background-position: 200% center; } }
         .btn-luxe:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 40px rgba(184, 134, 11, 0.6); }
 
-        /* ГАЛЕРЕЯ */
         .gallery-section { padding: 120px 20px; text-align: center; z-index: 10; position: relative; }
         .polaroid {
             display: inline-block; background: #fff; padding: 15px 15px 40px 15px;
@@ -104,20 +101,16 @@
         }
         .polaroid:nth-child(even) { transform: rotate(4deg); }
         .polaroid:hover { transform: rotate(0deg) translateY(-15px); box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
-        .polaroid img { width: 100%; max-width: 300px; display: block; filter: sepia(0.2); }
+        .polaroid img { width: 100%; max-width: 300px; display: block; }
         .caption { font-family: 'Playfair Display', serif; font-style: italic; margin-top: 20px; color: var(--deep-red); font-size: 1.3rem; }
 
-        /* ПЛЕЕР */
         .music-widget {
             position: fixed; top: 25px; right: 25px; z-index: 1001;
             background: #fff; padding: 10px 20px; border-radius: 40px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1); border: 1px solid var(--gold-soft);
             cursor: pointer; display: flex; align-items: center; gap: 10px;
-            animation: pulseWidget 2s infinite;
         }
-        @keyframes pulseWidget { 0% { box-shadow: 0 0 0 0 rgba(212, 163, 163, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(212, 163, 163, 0); } 100% { box-shadow: 0 0 0 0 rgba(212, 163, 163, 0); } }
 
-        /* МОДАЛЬНОЕ ОКНО */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(48, 31, 31, 0.95); z-index: 2000;
@@ -132,12 +125,12 @@
         .modal-content h2 { font-family: 'Playfair Display', serif; color: var(--gold); margin-bottom: 20px; font-size: 2rem; }
     </style>
 </head>
-<body onclick="startAudioOnce()">
+<body>
 
     <canvas id="bg-canvas"></canvas>
     <div id="petal-layer"></div>
 
-    <div class="music-widget" onclick="togglePlay()">
+    <div class="music-widget" onclick="togglePlay(event)">
         <span id="music-text" style="font-size: 0.7rem; font-weight: 700; color: var(--gold);">SOUND: OFF</span>
         <span id="music-icon">🎵</span>
         <audio id="bg-track" loop>
@@ -189,69 +182,80 @@
     <script>
         AOS.init({ duration: 1200, once: true });
 
-        // МУЗЫКАЛЬНЫЙ ДВИЖОК
+        // --- МУЗЫКАЛЬНЫЙ ДВИЖОК ---
         const audio = document.getElementById('bg-track');
-        let initialized = false;
+        const mText = document.getElementById('music-text');
+        const mIcon = document.getElementById('music-icon');
+        let audioUnlocked = false;
 
-        function startAudioOnce() {
-            if(!initialized) {
-                audio.play().then(() => { audio.pause(); initialized = true; });
-            }
+        function updateUI(playing) {
+            mText.innerText = playing ? 'SOUND: ON' : 'SOUND: OFF';
+            mIcon.innerText = playing ? '⏸' : '🎵';
         }
 
-        function togglePlay() {
+        function togglePlay(e) {
+            if (e) e.stopPropagation();
             if (audio.paused) {
                 audio.play();
-                document.getElementById('music-text').innerText = 'SOUND: ON';
-                document.getElementById('music-icon').innerText = '⏸';
+                updateUI(true);
             } else {
                 audio.pause();
-                document.getElementById('music-text').innerText = 'SOUND: OFF';
-                document.getElementById('music-icon').innerText = '🎵';
+                updateUI(false);
             }
+            audioUnlocked = true;
         }
 
-        // КОНТЕНТ
+        // Ключ к успеху: пытаемся запустить при любом клике по BODY
+        document.body.addEventListener('click', () => {
+            if (!audioUnlocked) {
+                audio.play().then(() => {
+                    updateUI(true);
+                    audioUnlocked = true;
+                }).catch(() => {
+                    console.log("Ждем осознанного взаимодействия");
+                });
+            }
+        }, { once: true });
+
+
+        // --- КОНТЕНТ МОДАЛОК ---
         const modalData = {
             letter: {
                 title: "Мое письмо",
                 text: "Виолетта, ты — та самая мелодия, которая звучит в моем сердце каждый день. В этот прекрасный праздник весны я хочу пожелать тебе всегда оставаться такой же светлой, вдохновляющей и бесконечно любимой. Ты мой самый дорогой человек.",
-                btnText: "ЗАКРЫТЬ С ЛЮБОВЬЮ",
+                btn: "ЗАКРЫТЬ С ЛЮБОВЬЮ",
                 isGift: false
             },
             gift: {
                 title: "Твой сюрприз",
-                text: "Я подготовил для тебя кое-что особенное. Нажми на кнопку ниже, чтобы забрать свой подарок в Telegram. Я уже жду твоего сообщения!",
-                btnText: "ПОЛУЧИТЬ ПОДАРОК 💖",
+                text: "Этот подарок — лишь малая часть того, что ты заслуживаешь. Нажми на кнопку ниже, чтобы забрать его в Telegram. Я уже подготовил всё для тебя!",
+                btn: "ЗАБРАТЬ ПОДАРОК 💖",
                 isGift: true
             }
         };
 
-        let isGiftMode = false;
+        let giftModeActive = false;
 
         function openModal(type) {
-            const data = modalData[type];
-            document.getElementById('m-title').innerText = data.title;
-            document.getElementById('m-text').innerText = data.text;
-            document.getElementById('m-btn').innerText = data.btnText;
-            isGiftMode = data.isGift;
-
+            const d = modalData[type];
+            document.getElementById('m-title').innerText = d.title;
+            document.getElementById('m-text').innerText = d.text;
+            document.getElementById('m-btn').innerText = d.btn;
+            giftModeActive = d.isGift;
             document.getElementById('main-modal').style.display = 'flex';
-            confetti({ particleCount: 150, spread: 70, colors: ['#b8860b', '#f1d38e', '#ffffff'] });
+            confetti({ particleCount: 100, spread: 70, colors: ['#b8860b', '#f1d38e'] });
         }
 
         function handleModalAction() {
-            if (isGiftMode) {
-                // Текст, который она тебе отправит
-                const message = "Любимый, я зашла на сайт и хочу получить свой подарок! С 8 марта меня! 💖✨";
-                const telegramUrl = "https://t.me/brvg23?text=" + encodeURIComponent(message);
-                window.location.href = telegramUrl;
+            if (giftModeActive) {
+                const msg = "Любимый, я зашла на сайт и хочу получить свой подарок! С 8 марта меня! 💖✨";
+                window.location.href = "https://t.me/brvg23?text=" + encodeURIComponent(msg);
             } else {
                 document.getElementById('main-modal').style.display = 'none';
             }
         }
 
-        // ТАЙМЕР (С момента начала 2 ноября 2025)
+        // --- ТАЙМЕР ---
         const startDate = new Date(2025, 10, 2); 
         function updateTimer() {
             const diff = new Date() - startDate;
@@ -262,43 +266,34 @@
         }
         setInterval(updateTimer, 1000); updateTimer();
 
-        // АНИМАЦИЯ ЧАСТИЦ (ЗОЛОТАЯ ПЫЛЬ)
+        // --- ВИЗУАЛЬНЫЕ ЭФФЕКТЫ ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let parts = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.onresize = resize; resize();
 
-        class Part {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.s = Math.random() * 2;
-                this.vx = Math.random() * 0.4 - 0.2;
-                this.vy = Math.random() * 0.4 - 0.2;
-            }
+        class P {
+            constructor() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.v = Math.random()*0.3; this.s = Math.random()*2; }
             draw() {
                 ctx.fillStyle = 'rgba(184, 134, 11, 0.2)';
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.s, 0, Math.PI*2); ctx.fill();
-                this.x += this.vx; this.y += this.vy;
-                if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                this.y -= this.v; if(this.y < 0) this.y = canvas.height;
             }
         }
-        for(let i=0; i<60; i++) parts.push(new Part());
-        function anim() { ctx.clearRect(0,0,canvas.width, canvas.height); parts.forEach(p => p.draw()); requestAnimationFrame(anim); }
-        anim();
+        for(let i=0; i<70; i++) parts.push(new P());
+        function loop() { ctx.clearRect(0,0,canvas.width, canvas.height); parts.forEach(p => p.draw()); requestAnimationFrame(loop); }
+        loop();
 
-        // ЛЕПЕСТКИ
         setInterval(() => {
             const p = document.createElement('div');
             p.innerHTML = Math.random() > 0.5 ? '🌸' : '💖';
             p.className = 'flower-petal';
             p.style.left = Math.random() * 100 + 'vw';
-            p.style.fontSize = (Math.random() * 15 + 15) + 'px';
+            p.style.fontSize = (Math.random()*10 + 20) + 'px';
             document.getElementById('petal-layer').appendChild(p);
             setTimeout(() => p.remove(), 10000);
-        }, 800);
+        }, 700);
     </script>
 </body>
 </html>
