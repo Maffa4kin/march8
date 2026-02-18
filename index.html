@@ -3,256 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Виолетта ❤️</title>
+    <title>Для Виолетты ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Pacifico&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --bg-dark: #120520;
-            --accent-violet: #a166ab;
-            --soft-lavender: #dcd0ff;
-            --glass: rgba(255, 255, 255, 0.05);
+            --bg-color: #0d0415;
+            --accent-purple: #9d50bb;
+            --text-lavender: #dcd0ff;
         }
 
         body {
             margin: 0; padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-lavender);
             font-family: 'Montserrat', sans-serif;
-            background: #0f041a;
-            color: var(--soft-lavender);
             overflow-x: hidden;
         }
 
-        /* Музыкальный плеер */
-        .music-player {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 10px;
-            border-radius: 50%;
-            border: 1px solid var(--accent-violet);
-            cursor: pointer;
-            transition: 0.3s;
+        /* Плеер */
+        .music-btn {
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            background: rgba(255,255,255,0.1); border: 1px solid var(--accent-purple);
+            padding: 12px; border-radius: 50%; cursor: pointer; backdrop-filter: blur(10px);
         }
-        .music-player.playing {
-            animation: rotate 3s linear infinite;
-            box-shadow: 0 0 15px var(--accent-violet);
-        }
-        @keyframes rotate { from { transform: rotate(0); } to { transform: rotate(360deg); } }
 
         .heart-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
         }
 
         header {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
         }
 
         h1 {
-            font-family: 'Pacifico', cursive;
-            font-size: 3.5rem;
-            color: white;
-            text-shadow: 0 0 30px rgba(161, 102, 171, 0.6);
-            margin: 0;
+            font-family: 'Pacifico', cursive; font-size: 3.5rem; color: white;
+            text-shadow: 0 0 20px var(--accent-purple); margin: 0;
         }
 
-        .timer-container {
-            margin-top: 40px;
-            opacity: 0; /* Проявится через JS */
+        /* Счетчик */
+        .timer-box {
+            margin-top: 30px; background: rgba(255,255,255,0.05);
+            padding: 20px; border-radius: 20px; border: 1px solid rgba(157, 80, 187, 0.3);
+        }
+        .timer-display { display: flex; gap: 20px; }
+        .t-num { font-size: 2.2rem; font-weight: 600; color: white; display: block; }
+        .t-text { font-size: 0.8rem; opacity: 0.7; text-transform: uppercase; }
+
+        /* Секции с фото */
+        .container { max-width: 900px; margin: 0 auto; padding: 50px 20px; }
+
+        .moment {
+            margin-bottom: 200px; display: flex; flex-direction: column; align-items: center;
         }
 
-        .timer {
-            display: flex;
-            gap: 15px;
-            background: var(--glass);
-            padding: 20px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
+        .photo-holder {
+            width: 100%; max-width: 500px; background: white; padding: 15px 15px 50px 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); transform: rotate(-2deg);
+            margin-bottom: 40px;
         }
 
-        .timer-num { font-size: 2rem; font-weight: 600; display: block; color: white; }
-        .timer-text { font-size: 0.7rem; text-transform: uppercase; opacity: 0.7; }
+        .photo-holder img { width: 100%; height: auto; display: block; filter: grayscale(20%); }
 
-        /* Контент секций */
-        .content-section {
-            padding: 100px 20px;
-            max-width: 800px;
-            margin: 0 auto;
+        .moment-desc {
+            font-size: 1.3rem; font-style: italic; text-align: center;
+            line-height: 1.6; max-width: 600px; opacity: 0.9;
         }
 
-        .moment-card {
-            margin-bottom: 150px;
-            text-align: center;
+        .btn-end {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            color: white; border: none; padding: 20px 40px;
+            border-radius: 50px; font-weight: bold; cursor: pointer;
+            font-size: 1.2rem; transition: 0.3s; margin-bottom: 100px;
         }
 
-        .photo-wrap {
-            position: relative;
-            display: inline-block;
-            background: white;
-            padding: 15px 15px 60px 15px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-            margin-bottom: 30px;
-        }
+        footer { padding: 40px; text-align: center; opacity: 0.3; font-size: 0.8rem; }
 
-        .photo-wrap img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            background: #222;
-        }
-
-        .moment-text {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            font-weight: 300;
-            font-style: italic;
-            color: var(--soft-lavender);
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .btn-celebrate {
-            background: transparent;
-            color: white;
-            border: 2px solid var(--accent-violet);
-            padding: 20px 40px;
-            font-size: 1.2rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: 0.4s;
-            margin-bottom: 100px;
-        }
-        .btn-celebrate:hover { background: var(--accent-violet); box-shadow: 0 0 30px var(--accent-violet); }
-
-        footer { padding: 50px; opacity: 0.4; text-align: center; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
-    <div class="music-player" id="playerBtn" onclick="toggleMusic()">
-        <span id="musicIcon">🎵</span>
-        <audio id="myAudio" loop>
-            <source src="music.mp3" type="audio/mpeg">
-        </audio>
-    </div>
+    <button class="music-btn" onclick="toggleMusic()">🎵
+        <audio id="track" loop><source src="music.mp3" type="audio/mpeg"></audio>
+    </button>
 
     <div class="heart-bg" id="hearts"></div>
 
     <header>
-        <h1 class="reveal-title">Виолетта</h1>
-        <div class="timer-container reveal-timer">
-            <p>Счастливы вместе уже:</p>
-            <div class="timer" id="timer"></div>
+        <h1 data-aos="zoom-in">Виолетта</h1>
+        <div class="timer-box" data-aos="fade-up" data-aos-delay="400">
+            <p>Мы вместе уже:</p>
+            <div id="countdown" class="timer-display"></div>
         </div>
     </header>
 
-    <div class="content-section">
-        <div class="moment-card reveal-moment">
-            <div class="photo-wrap">
-                <div style="width:300px; height:400px; background:#2a1a35; display:flex; align-items:center; justify-content:center;">Фото 1</div>
+    <div class="container">
+        
+        <div class="moment">
+            <div class="photo-holder" data-aos="fade-up" data-aos-duration="1000">
+                <img src="1.jpg" alt="Наше фото">
+                <p style="color: #333; font-family: 'Pacifico'; margin-top: 15px;">Тот самый день...</p>
             </div>
-            <p class="moment-text">"Тут можно написать текст о вашем первом свидании или о том, что ты почувствовал в этот миг..."</p>
+            <div class="moment-desc" data-aos="fade-left" data-aos-delay="300">
+                С этого момента моя жизнь изменилась навсегда. Твой смех — моя любимая музыка.
+            </div>
         </div>
 
-        <div class="moment-card reveal-moment">
-            <div class="photo-wrap">
-                <div style="width:300px; height:400px; background:#2a1a35; display:flex; align-items:center; justify-content:center;">Фото 2</div>
+        <div class="moment">
+            <div class="photo-holder" style="transform: rotate(3deg);" data-aos="fade-up" data-aos-duration="1000">
+                <img src="2.jpg" alt="Наше фото">
+                <p style="color: #333; font-family: 'Pacifico'; margin-top: 15px;">Твоя нежность</p>
             </div>
-            <p class="moment-text">"Твоя улыбка — это то, ради чего я готов горы свернуть. Каждое фото с тобой — это сокровище."</p>
+            <div class="moment-desc" data-aos="fade-right" data-aos-delay="300">
+                Обожаю, как ты смотришь на мир. В твоих глазах я вижу наше будущее.
+            </div>
         </div>
 
-        <div class="moment-card reveal-moment">
-            <div class="photo-wrap">
-                <div style="width:300px; height:400px; background:#2a1a35; display:flex; align-items:center; justify-content:center;">Фото 3</div>
+        <div class="moment">
+            <div class="photo-holder" style="transform: rotate(-1deg);" data-aos="fade-up" data-aos-duration="1000">
+                <img src="3.jpg" alt="Наше фото">
+                <p style="color: #333; font-family: 'Pacifico'; margin-top: 15px;">Навсегда</p>
             </div>
-            <p class="moment-text">"2 ноября 2025 года — день, когда мой мир стал ярче. Люблю тебя бесконечно."</p>
+            <div class="moment-desc" data-aos="fade-up" data-aos-delay="300">
+                Я благодарен каждой секунде, проведенной с тобой. Ты — мой самый лучший подарок.
+            </div>
         </div>
 
         <center>
-            <button class="btn-celebrate" onclick="celebrate()">Нажми на меня ✨</button>
+            <button class="btn-end" onclick="boom()" data-aos="zoom-in">Нажми на меня ✨</button>
         </center>
     </div>
 
-    <footer>Создано для тебя с любовью ❤️</footer>
+    <footer>Сделано с любовью для Виолетты ❤️ 2026</footer>
 
     <script>
-        // ТАЙМЕР
-        const startDate = new Date(2025, 10, 2); 
-        function updateTimer() {
+        // Инициализация анимаций
+        AOS.init({ duration: 1000, once: false });
+
+        // ЛОГИКА ТАЙМЕРА (2 ноября 2025)
+        const start = new Date(2025, 10, 2); 
+        function update() {
             const now = new Date();
-            const diff = now - startDate;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const mins = Math.floor((diff / 1000 / 60) % 60);
-            const secs = Math.floor((diff / 1000) % 60);
-            document.getElementById('timer').innerHTML = `
-                <div class="timer-unit"><span class="timer-num">${days}</span><span class="timer-text">дн</span></div>
-                <div class="timer-unit"><span class="timer-num">${hours}</span><span class="timer-text">час</span></div>
-                <div class="timer-unit"><span class="timer-num">${mins}</span><span class="timer-text">мин</span></div>
-                <div class="timer-unit"><span class="timer-num">${secs}</span><span class="timer-text">сек</span></div>
+            const d = now - start;
+            const days = Math.floor(d / 86400000);
+            const hours = Math.floor((d / 3600000) % 24);
+            const mins = Math.floor((d / 60000) % 60);
+            const secs = Math.floor((d / 1000) % 60);
+            
+            document.getElementById('countdown').innerHTML = `
+                <div class="t-unit"><span class="t-num">${days}</span><span class="t-text">дн</span></div>
+                <div class="t-unit"><span class="t-num">${hours}</span><span class="t-text">ч</span></div>
+                <div class="t-unit"><span class="t-num">${mins}</span><span class="t-text">м</span></div>
+                <div class="t-unit"><span class="t-num">${secs}</span><span class="t-text">с</span></div>
             `;
         }
-        setInterval(updateTimer, 1000);
-        updateTimer();
+        setInterval(update, 1000); update();
 
         // МУЗЫКА
-        const audio = document.getElementById('myAudio');
-        const playerBtn = document.getElementById('playerBtn');
         function toggleMusic() {
-            if (audio.paused) {
-                audio.play();
-                playerBtn.classList.add('playing');
-                document.getElementById('musicIcon').innerText = '⏸️';
-            } else {
-                audio.pause();
-                playerBtn.classList.remove('playing');
-                document.getElementById('musicIcon').innerText = '🎵';
-            }
+            const a = document.getElementById('track');
+            a.paused ? a.play() : a.pause();
         }
-
-        // АНИМАЦИЯ ПОЯВЛЕНИЯ
-        ScrollReveal().reveal('.reveal-title', { delay: 200, distance: '50px', origin: 'top' });
-        ScrollReveal().reveal('.reveal-timer', { delay: 600, opacity: 0 });
-        ScrollReveal().reveal('.reveal-moment', { 
-            delay: 300, 
-            distance: '100px', 
-            origin: 'bottom',
-            interval: 200 
-        });
 
         // КОНФЕТТИ
-        function celebrate() {
-            confetti({ particleCount: 250, spread: 100, origin: { y: 0.7 }, colors: ['#a166ab', '#ffffff'] });
+        function boom() {
+            confetti({ particleCount: 300, spread: 100, origin: { y: 0.6 }, colors: ['#9d50bb', '#ffffff'] });
         }
 
-        // СЕРДЕЧКИ
-        const heartContainer = document.getElementById('hearts');
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.innerHTML = '💜';
-            heart.style.position = 'absolute';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.top = '-20px';
-            heart.style.opacity = Math.random() * 0.4 + 0.2;
-            heart.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(100vh)' }], {
-                duration: 5000 + Math.random() * 3000,
-                easing: 'linear'
-            });
-            heartContainer.appendChild(heart);
-            setTimeout(() => heart.remove(), 8000);
-        }
-        setInterval(createHeart, 500);
+        // ФОНОВЫЕ СЕРДЕЧКИ
+        setInterval(() => {
+            const h = document.createElement('div');
+            h.innerHTML = '💜'; h.className = 'heart-bg';
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.top = '-20px'; h.style.fontSize = '20px';
+            h.style.zIndex = '-1';
+            h.animate([{transform: 'translateY(0)'}, {transform: 'translateY(100vh)'}], 6000);
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 6000);
+        }, 500);
     </script>
 </body>
 </html>
